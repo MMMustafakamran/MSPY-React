@@ -76,15 +76,18 @@ import { definePages, type PageDefinition } from '../core/types';
  * that the server never started — the right failure, since it never became
  * reachable in a way this config recognises.
  */
+// `agentPort` mirrors `port` in the 81xx range: one Python agent per copy, none
+// of them on 8000, which this repo's own backend holds. Keep the two columns in
+// step — `AGENT_URL` is built from `agentPort` below.
 const DEMO_PAGES: PageDefinition[] = [
-  { pm: 'npm', command: 'npm', args: ['run', 'dev'], lockfile: 'package-lock.json', port: 3121 },
-  { pm: 'pnpm', command: 'pnpm', args: ['run', 'dev'], lockfile: 'pnpm-lock.yaml', port: 3122 },
-  { pm: 'yarn', command: 'yarn', args: ['run', 'dev'], lockfile: 'yarn.lock', port: 3123 },
+  { pm: 'npm', command: 'npm', args: ['run', 'dev'], lockfile: 'package-lock.json', port: 3121, agentPort: 8121 },
+  { pm: 'pnpm', command: 'pnpm', args: ['run', 'dev'], lockfile: 'pnpm-lock.yaml', port: 3122, agentPort: 8122 },
+  { pm: 'yarn', command: 'yarn', args: ['run', 'dev'], lockfile: 'yarn.lock', port: 3123, agentPort: 8123 },
   // bun 1.2 writes a text `bun.lock`; older bun wrote the binary `bun.lockb`,
   // which has nothing readable to put on screen. The doctor names this file if
   // the installed bun produced the other one.
-  { pm: 'bun', command: 'bun', args: ['run', 'dev'], lockfile: 'bun.lock', port: 3124 },
-].map(({ pm, command, args, lockfile, port }) => {
+  { pm: 'bun', command: 'bun', args: ['run', 'dev'], lockfile: 'bun.lock', port: 3124, agentPort: 8124 },
+].map(({ pm, command, args, lockfile, port, agentPort }) => {
   const app = `1-cli-testing/${pm}/app`;
   return {
     id: `demo-${pm}`,
@@ -122,7 +125,27 @@ const DEMO_PAGES: PageDefinition[] = [
       cwd: app,
       command,
       args,
-      env: { PORT: String(port), BROWSER: 'none' },
+      // The Python agent needs a relocated port of its own, for the same reason
+      // Next does — and it is the *agent* collision that is easy to miss.
+      //
+      // `agent/src/main.py` defaults to `AGENT_PORT` 8000, and this repo's own
+      // backend already listens there (`backend/main.py`, running since the repo
+      // was last worked on). The scaffolded agent therefore never binds, and the
+      // runtime POSTs to that other FastAPI app instead — which mounts AG-UI on
+      // a different path, so `POST /` returns `405 Method Not Allowed`. Observed
+      // 2026-09-07: `/health` on 8000 answered with an `instantiated_at` three
+      // days older than the run.
+      //
+      // `AGENT_URL` moves with it: `src/agent.ts` reads that to find the agent,
+      // and the CLI writes `http://localhost:8000` into the app's `.env`. A real
+      // env var wins over a `.env` entry in both Next and python-dotenv, so
+      // setting it here is enough — the file is left as the CLI wrote it.
+      env: {
+        PORT: String(port),
+        AGENT_PORT: String(agentPort),
+        AGENT_URL: `http://localhost:${agentPort}`,
+        BROWSER: 'none',
+      },
       readyPattern: /Ready in|ready in|started server on|Local:\s+http/i,
       // A first `next dev` compiles the whole app; on a cold cache this is slow
       // and a tighter cap would report a failure for a server that was fine.
