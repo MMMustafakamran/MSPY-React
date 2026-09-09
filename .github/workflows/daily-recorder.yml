@@ -464,13 +464,6 @@ jobs:
           npm install
           npx playwright install --with-deps chromium
 
-      # ffmpeg lives here, not in consolidate, because muxing happens once — in
-      # the worker that produced the video.
-      - name: Install FFmpeg
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends ffmpeg
-
       - name: Record demos (shard ${{ matrix.shard }}/3)
         env:
           SELECTED_PAGES: ${{ needs.prepare.outputs.pages }}

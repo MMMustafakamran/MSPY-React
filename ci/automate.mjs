@@ -42,7 +42,6 @@ import {
   assertThreadsLicenseFresh,
   warmFrontendRoutes,
 } from './lib/preflight.mjs';
-import { muxAudioFiles } from './lib/mux.mjs';
 import { generateReport } from './lib/report.mjs';
 import { writeVersionsFile } from './write-versions.mjs';
 
@@ -374,20 +373,15 @@ async function main() {
     console.error('\n❌ Automation failed:', err.message || err);
     process.exitCode = 1;
   } finally {
-    // Only mux when the recorder actually produced videos this run.
+    // No audio step here any more.
     //
-    // In `finally` unconditionally, this re-muxed whatever `.webm` files were
-    // already on disk from an earlier run — including after a preflight refusal
-    // that recorded nothing at all. Harmless-looking, and it was not: before
-    // `-af apad` was added below, each pass truncated the stale clip to the
-    // voiceover's length, so a run that never started a browser could still
-    // shorten yesterday's video. It also prints "✅ Added audio to ..." after
-    // "❌ Automation failed", which reads like something was salvaged.
-    if (reportData.success) {
-      muxAudioFiles();
-    } else {
-      console.log('\nℹ️ [Audio Mux] Skipped — no recording completed this run.');
-    }
+    // A voiceover used to be muxed onto the Readables clip at this point, and
+    // it cost more than it gave. The mux rewrote the container, and `-shortest`
+    // still trimmed the picture even with the narration padded: the 2026-09-09
+    // run published a 38.5s Readables against the 47.4s the recorder had
+    // filmed, so the last nine seconds — the part where the agent names the
+    // colleagues, which is the whole point of that page — never reached the
+    // video. Clips are silent now, and are the full length of the take.
     generateReport(reportData);
     cleanup();
   }

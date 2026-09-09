@@ -277,7 +277,19 @@ export const PAGES = definePages([
       'frontend/src/app/generative-ui/your-components/interactive/demo-chat/page.tsx',
     startLine: 23,
     endLine: 64,
-    prompt: 'Clear the temp cache for me by running rm -rf /tmp/cache',
+    // Was "Clear the temp cache for me by running rm -rf /tmp/cache". That
+    // reads as a request to destroy something, and a model is free to answer
+    // it in prose — refuse, ask what is in the directory, or explain the flag —
+    // in which case `humanApprovedCommand` is never called and the clip shows a
+    // chat turn where the gate should be. It did fire on 2026-09-09, but only
+    // because the model happened to cooperate; nothing in the prompt required
+    // the tool.
+    //
+    // This wording does. The command is harmless, so there is nothing to refuse,
+    // and "check with me before it runs" names the approval step the tool
+    // exists for — the same phrasing that makes the Governed Actions page fire
+    // its gate on every take.
+    prompt: 'Deploy the app for me by running npm run deploy, but check with me before it runs.',
     waitAfterPromptMs: 4000,
   },
   {
@@ -488,6 +500,48 @@ export const PAGES = definePages([
     ],
     prompt:
       'Please send an invoice reminder to acme@example.com, but check with me before it goes out.',
+    waitAfterPromptMs: 6000,
+  },
+
+  {
+    // Appended rather than filed under Generative UI, where the doc nav puts
+    // it. Filenames carry the position in this array, so slotting it at index 8
+    // would renumber every clip after it and break the alignment with the
+    // 01-22 files already published for earlier dates. New pages go at the end.
+    id: 'a2ui-fixed-schema',
+    name: 'Generative UI - A2UI - Fixed Schema',
+    videoName: 'A2UIFixedSchema',
+    docPath: 'generative-ui/a2ui/fixed-schema',
+    route: 'generative-ui/a2ui/fixed-schema',
+    // The catalog contract, not the page: these two components are the whole
+    // vocabulary the agent's tree is allowed to name.
+    ideFile: 'frontend/src/app/generative-ui/a2ui/fixed-schema/a2ui/definitions.ts',
+    startLine: 46,
+    endLine: 66,
+    extraTabs: [
+      // The tool that returns the operations container — the backend half.
+      { filePath: 'backend/agents.py', startLine: 363, endLine: 403 },
+      // And the two lines that make the middleware watch this agent alone.
+      {
+        filePath: 'frontend/src/app/api/copilotkit/[[...slug]]/route.ts',
+        startLine: 47,
+        endLine: 51,
+      },
+    ],
+    // "one" and "just the single best option" are load-bearing. Asked for
+    // flights plainly, the model offers three, calls `display_flight` once per
+    // airline, and all three draw over the same `surfaceId` — the card that
+    // survives is the last one, under a prose list naming two others it does not
+    // show. Tightening the agent's instructions did not stop it; constraining
+    // the question did.
+    prompt: 'Find me one flight from JFK to LHR — just the single best option.',
+    // The reply here is a tool call the model has to compose before anything is
+    // drawn, and a run that weighed up several airlines before settling took 43s
+    // end to end. The default 30s reply-start budget reports that as an agent
+    // that never answered.
+    timeouts: { replyStartMs: 90_000 },
+    // Longer than the 4s most pages take: the surface paints after the tool
+    // returns, which is one more round trip than a streamed text reply.
     waitAfterPromptMs: 6000,
   },
 

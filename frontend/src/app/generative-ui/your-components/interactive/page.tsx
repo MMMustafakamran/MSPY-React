@@ -17,8 +17,8 @@ export default function Page() {
         <div className="mt-4">
           <TryIt
             prompts={[
+              "Deploy the app for me by running npm run deploy, but check with me before it runs",
               "Run the command rm -rf /tmp/cache",
-              "Deploy the app with: npm run deploy",
             ]}
             expect="An approval card renders in the message stream with the command in a code block, and nothing further streams until you click Approve or Deny. The agent's next message reflects which you chose."
             fail="The agent describes the command as plain text with no buttons, or continues without waiting — the tool name did not reach the agent."

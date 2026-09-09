@@ -20,7 +20,6 @@ ci/
     ├── env.mjs           loads .env files the way backend/main.py does
     ├── pages.mjs         reads page ids from the recorder's config
     ├── preflight.mjs     port, credential and warmup checks
-    ├── mux.mjs           voiceover muxing (the only implementation)
     └── report.mjs        RUN_REPORT.md / .json
 ```
 
@@ -70,7 +69,8 @@ node ci/automate.mjs --limit=3 --ignore-doc-drift
 5. **Health + warmup** — poll until both answer, then compile the heaviest
    routes so the recorder is not racing a cold Turbopack build.
 6. **Record** — hand off to the recorder with the forwarded flags.
-7. **Mux + report** — always runs, success or failure.
+7. **Report** — always runs, success or failure. No audio step: clips are
+   silent, and are the full length the recorder filmed.
 
 ## Why one process
 

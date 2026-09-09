@@ -270,9 +270,11 @@ The code on a page is never a re-typed approximation: each page reads real files
 
 **`/generative-ui/state-rendering`** — `searches` state streamed from `search_agent`. **Try:** `Search for the tallest mountains`, then `Now also search for the deepest oceans`. **Pass:** a checked item appears as the tool call streams; the second prompt adds a second item while keeping the first. **Fail:** the list stays empty.
 
-**`/generative-ui/a2ui/styling`** — 🚧 **Tracked, not implemented.** Theming A2UI surfaces through CSS custom properties scoped to `.a2ui-surface`. This repo maps no A2UI page at all — `/generative-ui/a2ui`, `fixed-schema` and `dynamic-schema` are all still unmapped — so there is no surface for a theme file to affect. DeepAgentspy-react implements this page against a real surface.
+**`/generative-ui/a2ui/fixed-schema`** — The agent draws a *surface*, not a sentence. `display_flight` returns an `a2ui_operations` container (`createSurface` → `updateComponents` → `updateDataModel`); the component tree is hand-authored in `backend/a2ui_schemas/flight_schema.json` and the tool supplies only the data model. **Try:** `Find me one flight from JFK to LHR — just the single best option`. **Pass:** a flight card renders in the stream — two airport codes either side of an arrow, an airline pill, a total. **Fail:** a prose answer (the tool was not called), or a wall of JSON beginning `a2ui_operations` (the A2UI middleware is not applied to this agent), or a card with every value blank (the `{ path }` bindings did not resolve — see Known issues #14). Ask for *one* flight: offered a plain "find me flights", the model calls the tool once per airline and all of them draw over the same `surfaceId`.
 
-**`/generative-ui/a2ui/advanced`** — 🚧 **Tracked, not implemented.** Replacing the built-in progress indicator shown while the `render_a2ui` tool call is in flight. That only happens on the Dynamic Schema A2UI path, which this repo does not map, so a custom renderer would never mount. DeepAgentspy-react implements this page too.
+**`/generative-ui/a2ui/styling`** — 🚧 **Tracked, not implemented.** Theming A2UI surfaces through CSS custom properties scoped to `.a2ui-surface`. Fixed Schema A2UI above now paints a real surface here, so this page became implementable — the theme variables it documents are simply not wired up yet. DeepAgentspy-react implements it.
+
+**`/generative-ui/a2ui/advanced`** — 🚧 **Tracked, not implemented.** Replacing the built-in progress indicator shown while the `render_a2ui` tool call is in flight. That only happens on the Dynamic Schema A2UI path, which this repo does not map — only the fixed-schema half — so a custom renderer would never mount. DeepAgentspy-react implements this page too.
 
 ### App Control
 
@@ -338,7 +340,8 @@ All three are recorded by the autorecorder (`npm run record -- --threads-drawer`
 | `/ms-agent-python/generative-ui/your-components/interactive`  | `/generative-ui/your-components/interactive`  | ✅ Working     | 🎬        | `useHumanInTheLoop` approval gate. Needs no backend declaration.                                                         |
 | `/ms-agent-python/generative-ui/tool-rendering`               | `/generative-ui/tool-rendering`               | ✅ Working     | 🎬        |                                                                                                                          |
 | `/ms-agent-python/generative-ui/state-rendering`              | `/generative-ui/state-rendering`              | ✅ Working     | 🎬        | Uses `search_agent`.                                                                                                     |
-| `/ms-agent-python/generative-ui/a2ui/styling`                 | `/generative-ui/a2ui/styling`                 | 🚧 Not started | —        | Tracked for drift. No A2UI surface is mapped here to style.                                                              |
+| `/ms-agent-python/generative-ui/a2ui/fixed-schema`            | `/generative-ui/a2ui/fixed-schema`            | ✅ Working     | 🎬        | Own agent, own provider, own catalog. Catalog schemas are zod 3 — see Known issues #14.                                  |
+| `/ms-agent-python/generative-ui/a2ui/styling`                 | `/generative-ui/a2ui/styling`                 | 🚧 Not started | —        | Tracked for drift. Implementable now that fixed-schema paints a surface; theme variables not wired.                      |
 | `/ms-agent-python/generative-ui/a2ui/advanced`                | `/generative-ui/a2ui/advanced`                | 🚧 Not started | —        | Tracked for drift. Builds on Dynamic Schema A2UI, which is unmapped here.                                                |
 | `/ms-agent-python/frontend-tools`                             | `/frontend-tools`                             | ✅ Working     | 🎬        |                                                                                                                          |
 | `/ms-agent-python/webmcp`                                     | `/webmcp`                                     | 🚧 Not started | —        | Tracked for drift. Needs Chrome 149+ and the WebMCP origin trial.                                                        |
@@ -358,9 +361,9 @@ All three are recorded by the autorecorder (`npm run record -- --threads-drawer`
 
 **Legend:** ✅ Working · ⚠️ Partial · 📖 Reference · 🚧 Not started · ❌ Broken · 🎬 driven by the autorecorder. Generated by `npm run readme:status` from `frontend/src/lib/nav-config.ts` and `autorecorder/config/pages.config.ts`; only the Notes column is edited here.
 
-Out of scope by request: CLI, Build with agents, MCP Apps, the rest of A2UI, the rest of Intelligence Platform, Troubleshooting. Also out of scope: `/ms-agent-python/threads-import` (Import & Synchronize Thread History) — it migrates existing LangGraph/ADK conversations into the platform store, and there is nothing here to migrate from.
+Out of scope by request: CLI, Build with agents, MCP Apps, Dynamic Schema A2UI, the rest of Intelligence Platform, Troubleshooting. Also out of scope: `/ms-agent-python/threads-import` (Import & Synchronize Thread History) — it migrates existing LangGraph/ADK conversations into the platform store, and there is nothing here to migrate from.
 
-**Tracked without a demo.** Three pages carry a route, a nav entry and a snapshot so drift is watched, but nothing is implemented behind them and the recorder does not touch them: `/ms-agent-python/webmcp` and both `/generative-ui/a2ui/*` pages. The reason is on each route’s page and in §7. The A2UI parents and the rest of `/ms-agent-python/intelligence/` stay in `doc-snapshot/manifest.json`’s `knownUnmapped` list.
+**Tracked without a demo.** Three pages carry a route, a nav entry and a snapshot so drift is watched, but nothing is implemented behind them and the recorder does not touch them: `/ms-agent-python/webmcp`, `/generative-ui/a2ui/styling` and `/generative-ui/a2ui/advanced`. The reason is on each route’s page and in §7. Fixed Schema A2UI is implemented and recorded; the A2UI overview and `dynamic-schema`, along with the rest of `/ms-agent-python/intelligence/`, stay in `doc-snapshot/manifest.json`’s `knownUnmapped` list.
 
 ---
 
@@ -424,6 +427,13 @@ Verified against `@copilotkit/runtime` and `@copilotkit/react-core` 1.68.2.
 
 **13. `@ag-ui/client` is installed twice**
 The Quickstart install line adds `@ag-ui/client` as a direct dependency, but `@copilotkit/runtime` and `@copilotkit/react-core` 1.69.2 both pin their own `@ag-ui/client@0.0.57`. With the doc's `npm install @ag-ui/client` resolving 0.0.58, the tree holds two copies, and `new HttpAgent(...)` from the outer copy is not assignable to the runtime's `AbstractAgent` ("separate declarations of a private property `_debug`") — the runtime route fails to typecheck. `npm ls @ag-ui/client` shows the split. This repo pins the direct dependency to `0.0.57`, exactly what the CopilotKit packages resolve, so one copy is shared; bumping it independently reintroduces the error.
+
+**14. The A2UI catalog API is zod 3 only, and failing it is silent**
+`@copilotkit/a2ui-renderer` 1.69.2 depends on `zod@^3.25` and leaks that through its public types: `CatalogDefinitions` is declared against zod 3's `ZodObject`, so a zod 4 schema is not assignable. This repo is on zod 4 everywhere else, including the schemas its frontend tools are declared with.
+
+Casting past the type error builds and then fails quietly, which is the part worth knowing — the props schema is not documentation. `GenericBinder` in `@a2ui/web_core` walks it with `_def.typeName` and `_def.shape()` to decide which props are `{ path }` data-model bindings, and zod 4 moved both. A zod 4 catalog therefore paints a surface whose bindings are never resolved: the card renders with every value blank, no error in the console and none in the run.
+
+`frontend/package.json` carries `"zod-v3": "npm:zod@^3.25.75"` and only `generative-ui/a2ui/fixed-schema/a2ui/definitions.ts` imports it. Two copies of zod 3 in one tree is fine here: the binder matches on `typeName` strings rather than `instanceof` specifically so a schema built by another module instance still reads correctly, and says so in its own comment.
 
 ---
 
@@ -539,7 +549,7 @@ The nav, every route header, the demo links, and the status table all derive fro
 
 **Custom Look and Feel** — [Slots](https://docs.copilotkit.ai/ms-agent-python/custom-look-and-feel/slots) † · [Headless UI](https://docs.copilotkit.ai/ms-agent-python/custom-look-and-feel/headless-ui) † · [Programmatic Control](https://docs.copilotkit.ai/ms-agent-python/programmatic-control) · [Inspector](https://docs.copilotkit.ai/ms-agent-python/inspector)
 
-**Generative UI** — [Your Components · Display-only](https://docs.copilotkit.ai/ms-agent-python/generative-ui/your-components/display-only) · [Your Components · Interactive](https://docs.copilotkit.ai/ms-agent-python/generative-ui/your-components/interactive) · [Tool Rendering](https://docs.copilotkit.ai/ms-agent-python/generative-ui/tool-rendering) · [State Rendering](https://docs.copilotkit.ai/ms-agent-python/generative-ui/state-rendering) · [A2UI · Styling](https://docs.copilotkit.ai/ms-agent-python/generative-ui/a2ui/styling) ‡ · [A2UI · Advanced](https://docs.copilotkit.ai/ms-agent-python/generative-ui/a2ui/advanced) ‡
+**Generative UI** — [Your Components · Display-only](https://docs.copilotkit.ai/ms-agent-python/generative-ui/your-components/display-only) · [Your Components · Interactive](https://docs.copilotkit.ai/ms-agent-python/generative-ui/your-components/interactive) · [Tool Rendering](https://docs.copilotkit.ai/ms-agent-python/generative-ui/tool-rendering) · [State Rendering](https://docs.copilotkit.ai/ms-agent-python/generative-ui/state-rendering) · [A2UI · Fixed Schema](https://docs.copilotkit.ai/ms-agent-python/generative-ui/a2ui/fixed-schema) · [A2UI · Styling](https://docs.copilotkit.ai/ms-agent-python/generative-ui/a2ui/styling) ‡ · [A2UI · Advanced](https://docs.copilotkit.ai/ms-agent-python/generative-ui/a2ui/advanced) ‡
 
 **App Control** — [Frontend Tools](https://docs.copilotkit.ai/ms-agent-python/frontend-tools) · [WebMCP](https://docs.copilotkit.ai/ms-agent-python/webmcp) ‡ · [Governed Actions](https://docs.copilotkit.ai/ms-agent-python/human-in-the-loop/governed-actions) ‡
 

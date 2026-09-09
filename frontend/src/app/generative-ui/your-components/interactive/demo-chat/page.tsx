@@ -72,7 +72,7 @@ export default function Page() {
         agentId="my_agent"
         labels={{
           welcomeMessageText:
-            'Try "Run the command rm -rf /tmp/cache" — I will ask before doing anything.',
+            'Try "Deploy the app by running npm run deploy, but check with me first" — nothing runs until you click.',
         }}
       />
     </DemoFrame>

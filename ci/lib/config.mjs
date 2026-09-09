@@ -15,7 +15,6 @@ export const BACKEND_DIR = path.join(ROOT_DIR, 'backend');
 export const FRONTEND_DIR = path.join(ROOT_DIR, 'frontend');
 export const RECORDER_DIR = path.join(ROOT_DIR, 'autorecorder');
 export const VIDEOS_DIR = path.join(RECORDER_DIR, 'videos');
-export const AUDIO_DIR = path.join(RECORDER_DIR, 'audio');
 export const LOGS_DIR = path.join(VIDEOS_DIR, 'logs');
 
 export const isWindows = process.platform === 'win32';

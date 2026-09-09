@@ -36,6 +36,7 @@ import { type ActionContext, type PageActionHandler, type PageRecordConfig } fro
 import { runStandardAction } from '../core/actions';
 import { type Page } from 'playwright';
 
+import { runA2uiAction } from './a2ui.action';
 import { runAgUiAction } from './ag-ui.action';
 import { runReadablesAction } from './readables.action';
 import { runAuthAction } from './auth.action';
@@ -82,6 +83,7 @@ export const ACTION_MAP: Record<string, PageActionHandler> = {
   'threads-lifecycle': runThreadsLifecycleAction,
   'copilot-runtime': runRuntimeAction,
   'ag-ui': runAgUiAction,
+  'a2ui-fixed-schema': runA2uiAction,
 };
 
 export async function executePageAction(

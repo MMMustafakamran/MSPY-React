@@ -1,7 +1,7 @@
 """Serves the Microsoft Agent Framework agents over AG-UI.
 
 `add_agent_framework_fastapi_endpoint` mounts an agent at a path on a normal
-FastAPI app. The Quickstart mounts one agent at `/`; this harness mounts three,
+FastAPI app. The Quickstart mounts one agent at `/`; this harness mounts five,
 because the Shared State and State Rendering pages each define their own
 `state_schema` and cannot share one agent (see `agents.py`).
 
@@ -29,6 +29,7 @@ load_dotenv(_BACKEND_ENV)
 load_dotenv(_ROOT_ENV, override=False)
 
 from agents import (  # noqa: E402 - must follow load_dotenv
+    create_a2ui_agent,
     create_context_agent,
     create_main_agent,
     create_sample_agent,
@@ -69,7 +70,7 @@ app.add_middleware(
 # region auth-middleware
 REQUIRED_BEARER_TOKEN = os.getenv("AUTH_BEARER_TOKEN")
 
-AGENT_PATHS = {"/", "/sample_agent", "/search_agent", "/context_agent"}
+AGENT_PATHS = {"/", "/sample_agent", "/search_agent", "/context_agent", "/a2ui_agent"}
 
 
 @app.middleware("http")
@@ -137,6 +138,19 @@ add_agent_framework_fastapi_endpoint(
 # State Rendering.
 add_agent_framework_fastapi_endpoint(
     app=app, agent=create_search_agent(chat_client), path="/search_agent"
+)
+
+# Fixed Schema A2UI.
+#
+# Its own endpoint because `display_flight` must not be reachable from any other
+# page: the runtime enables the A2UI middleware for this agent alone
+# (`a2ui: { agents: ["a2ui_agent"] }` in the runtime route), and an agent that
+# carried the tool without the middleware would return the operations container
+# as plain JSON text into the chat.
+# [6] fixed schema a2ui: agent endpoint
+# [!code highlight]
+add_agent_framework_fastapi_endpoint(
+    app=app, agent=create_a2ui_agent(chat_client), path="/a2ui_agent"
 )
 
 if __name__ == "__main__":

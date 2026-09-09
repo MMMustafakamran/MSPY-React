@@ -112,6 +112,18 @@
       "age": 0,
       "date": "Fri, 04 Sep 2026 13:40:35 GMT"
     },
+    "/ms-agent-python/generative-ui/a2ui/fixed-schema": {
+      "file": "ms-agent-python__generative-ui__a2ui__fixed-schema.md",
+      "sha256": "e1249d014af7c7099cd219f412f24bc4136363cae0f4171a79f2d5f7915ac6ba",
+      "bytes": 4875,
+      "lines": 132,
+      "routes": [
+        "/generative-ui/a2ui/fixed-schema"
+      ],
+      "status": "ok",
+      "age": 0,
+      "date": "Wed, 09 Sep 2026 15:02:42 GMT"
+    },
     "/ms-agent-python/generative-ui/a2ui/styling": {
       "file": "ms-agent-python__generative-ui__a2ui__styling.md",
       "sha256": "379364f34aa1a4829026e2f654448d218c9b7fb283b1830a42bd834c64231c26",
@@ -379,7 +391,6 @@
       "https://docs.copilotkit.ai/ms-agent-python/generative-ui",
       "https://docs.copilotkit.ai/ms-agent-python/generative-ui/a2ui",
       "https://docs.copilotkit.ai/ms-agent-python/generative-ui/a2ui/dynamic-schema",
-      "https://docs.copilotkit.ai/ms-agent-python/generative-ui/a2ui/fixed-schema",
       "https://docs.copilotkit.ai/ms-agent-python/generative-ui/display",
       "https://docs.copilotkit.ai/ms-agent-python/generative-ui/hashbrown",
       "https://docs.copilotkit.ai/ms-agent-python/generative-ui/interactive",

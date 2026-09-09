@@ -179,6 +179,15 @@ export const NAV: NavGroup[] = [
         status: "working",
       },
       {
+        path: "/generative-ui/a2ui/fixed-schema",
+        hasDemo: true,
+        title: "A2UI · Fixed Schema",
+        docPath: "/ms-agent-python/generative-ui/a2ui/fixed-schema",
+        summary:
+          "A hand-authored component tree the agent never generates: display_flight ships only the data model.",
+        status: "working",
+      },
+      {
         path: "/generative-ui/a2ui/styling",
         title: "A2UI · Styling",
         docPath: "/ms-agent-python/generative-ui/a2ui/styling",
@@ -186,7 +195,7 @@ export const NAV: NavGroup[] = [
           "Theming A2UI surfaces through CSS custom properties scoped to the .a2ui-surface class.",
         status: "not-started",
         statusNote:
-          "Tracked for drift only — no demo yet. This repo maps none of the A2UI section, so there is no surface to style. DeepAgentspy-react implements the same page if a comparison is needed.",
+          "Tracked for drift only — no demo yet. Fixed Schema A2UI now gives the repo a surface, so this page has become implementable; the theming custom properties it documents are not wired up. DeepAgentspy-react implements the same page if a comparison is needed.",
       },
       {
         path: "/generative-ui/a2ui/advanced",
@@ -196,7 +205,7 @@ export const NAV: NavGroup[] = [
           "Replacing the built-in render_a2ui progress indicator and wiring frontend action handlers.",
         status: "not-started",
         statusNote:
-          "Tracked for drift only — no demo yet. It builds on Dynamic Schema A2UI, which this repo does not map. DeepAgentspy-react implements the same page.",
+          "Tracked for drift only — no demo yet. It builds on Dynamic Schema A2UI, which this repo does not map — only the fixed-schema half. DeepAgentspy-react implements the same page.",
       },
     ],
   },

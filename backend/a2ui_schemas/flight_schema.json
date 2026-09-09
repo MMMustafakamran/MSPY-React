@@ -1,0 +1,15 @@
+[
+  {
+    "id": "root",
+    "component": "FlightCard",
+    "origin": { "path": "/origin" },
+    "destination": { "path": "/destination" },
+    "airline": { "path": "/airline" },
+    "child": "fare"
+  },
+  {
+    "id": "fare",
+    "component": "PriceTag",
+    "amount": { "path": "/price" }
+  }
+]

@@ -31,7 +31,13 @@ const PAGES_CONFIG = path.join(RECORDER_DIR, 'config', 'pages.config.ts');
 export const PAGE_GROUPS = {
   getting_started: ['quickstart', 'prebuilt-components'],
   custom_look: ['slots', 'headless-ui', 'programmatic-control', 'inspector'],
-  generative_ui: ['display-only', 'interactive', 'tool-rendering', 'state-rendering'],
+  generative_ui: [
+    'display-only',
+    'interactive',
+    'tool-rendering',
+    'state-rendering',
+    'a2ui-fixed-schema',
+  ],
   app_control: [
     'frontend-tools',
     'in-app-agent-read',
