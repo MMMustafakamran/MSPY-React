@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "docsRoot": "https://docs.copilotkit.ai/ms-agent-python",
-  "syncedAt": "2026-09-04T07:58:36.669Z",
+  "syncedAt": "2026-09-09T07:58:40.659Z",
   "pages": {
     "/ms-agent-python": {
       "file": "ms-agent-python.md",
@@ -30,15 +30,15 @@
     },
     "/ms-agent-python/agent-app-context": {
       "file": "ms-agent-python__agent-app-context.md",
-      "sha256": "fcb9b4f9f0618e66ec5d2a9c93873050ed89202e6988f9edbafefceae1d9f90e",
-      "bytes": 10304,
-      "lines": 241,
+      "sha256": "1aab8594ada75a872248b97a15ee9a8921e8902a5193003a8cf4133d45d48712",
+      "bytes": 11090,
+      "lines": 259,
       "routes": [
         "/readables"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Fri, 04 Sep 2026 07:58:36 GMT"
+      "date": "Wed, 09 Sep 2026 07:58:40 GMT"
     },
     "/ms-agent-python/auth": {
       "file": "ms-agent-python__auth.md",
@@ -210,15 +210,15 @@
     },
     "/ms-agent-python/intelligence/quickstart": {
       "file": "ms-agent-python__intelligence__quickstart.md",
-      "sha256": "8eaa092e519b3e17fb9cc3a0cdf077b4390d4725b584277cd748a03e538be588",
-      "bytes": 7260,
-      "lines": 160,
+      "sha256": "eb863977d1e1813737f23ecdd40d4bde54a478a3f843aed0a25d8ac5863dd5aa",
+      "bytes": 7222,
+      "lines": 159,
       "routes": [
         "/intelligence/quickstart"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Fri, 04 Sep 2026 13:40:36 GMT"
+      "date": "Wed, 09 Sep 2026 07:58:40 GMT"
     },
     "/ms-agent-python/prebuilt-components": {
       "file": "ms-agent-python__prebuilt-components.md",
@@ -318,15 +318,15 @@
     },
     "/ms-agent-python/webmcp": {
       "file": "ms-agent-python__webmcp.md",
-      "sha256": "9d171223cb3ed04bc7cdf6e3451bee0526f5ad4e2005c24f0e601d9bbe0f181f",
-      "bytes": 7488,
-      "lines": 153,
+      "sha256": "72a287bd0eaffcefe156ca4fb1c449cadea65604bba604e513a9452104386858",
+      "bytes": 7491,
+      "lines": 165,
       "routes": [
         "/webmcp"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Fri, 04 Sep 2026 13:40:34 GMT"
+      "date": "Wed, 09 Sep 2026 07:58:40 GMT"
     }
   },
   "sitemap": {

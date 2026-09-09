@@ -2,6 +2,7 @@
 
 > Share app specific context with your agent.
 
+
 One of the most common use cases for CopilotKit is to register app state and context using `useAgentContext`.
 This way, you can notify CopilotKit of what is going in your app in real time.
 Some examples might be: the current user, the current page, etc.
@@ -15,6 +16,23 @@ This context can then be shared with your AG-UI server and agent logic.
   documentation](/integrations/langgraph/agent-app-context)
   to understand what this is and how to use it.
 </Callout>
+
+<Callout type="warn" title="Context values arrive as JSON strings">
+  The AG-UI protocol defines a context value as a string. Therefore
+  `useAgentContext` calls `JSON.stringify` on any `value` that is not already a
+  string, and your agent receives the JSON text instead of the object or the
+  array.
+
+  Parse the value before you read a field from it. Use `json.loads(item["value"])`
+  in Python, or `JSON.parse(item.value)` in TypeScript. If you skip the parse
+  step, an index such as `colleagues[0]` returns a single character, and a shape
+  check such as `isinstance(value, list)` can never pass.
+
+  Do not stringify the value again, because that produces double encoding. A
+  `value` that is already a string is sent unchanged, so no parse step is needed
+  for it.
+</Callout>
+
 
 <Steps>
     <Step>
