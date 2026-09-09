@@ -439,6 +439,28 @@ export const PAGES = definePages([
     prompt: 'Any rain expected in Tokyo this week?',
     waitAfterPromptMs: 4000,
   },
+  {
+    id: 'intelligence-quickstart',
+    name: 'Intelligence - Connect Intelligence in 5 minutes',
+    videoName: 'IntelligenceQuickstart',
+    docPath: 'intelligence/quickstart',
+    route: 'intelligence/quickstart',
+    // The doc's step 3. A plain `route.ts` with `mode: "single-route"` and one
+    // verb, where the page used to publish `[[...slug]]` and four.
+    ideFile: 'frontend/src/app/api/copilotkit-single/route.ts',
+    startLine: 1,
+    endLine: 38,
+    extraTabs: [
+      // Step 4: the matching provider flag.
+      {
+        filePath: 'frontend/src/components/single-endpoint-provider.tsx',
+        startLine: 26,
+        endLine: 48,
+      },
+    ],
+    prompt: 'What is the weather in Karachi?',
+    waitAfterPromptMs: 4000,
+  },
 
   // The scaffolded app, once per package manager — video 3 of each set.
   // `generated: true`: these files do not exist until the CLI pipeline has run,

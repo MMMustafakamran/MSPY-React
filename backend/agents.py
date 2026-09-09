@@ -91,7 +91,32 @@ def create_main_agent(chat_client: SupportsChatGetResponse) -> Agent:
 
 
 # region context-agent
-# [1] agent app context: build the system message
+# [1] agent app context: parse the forwarded value
+# [!code highlight]
+def parse_context_value(value: Any) -> Any:
+    """Undo the `JSON.stringify` that `useAgentContext` applies on the way out.
+
+    The AG-UI protocol types a context value as a string, so the hook
+    stringifies anything that is not already one and the agent receives JSON
+    text rather than the object or the array. The doc page spells this out as
+    of the 2026-09-09 sync: parse before reading a field, or `colleagues[0]`
+    yields a single character and `isinstance(value, list)` can never pass.
+
+    A value that was already a string is sent unchanged and has to survive
+    untouched, so a decode is only accepted when it produces a container.
+    `json.loads` succeeds on plain text like `123` or `true` that was never
+    encoded in the first place, and taking those results would corrupt them.
+    """
+    if not isinstance(value, str):
+        return value
+    try:
+        decoded = json.loads(value)
+    except (TypeError, ValueError):
+        return value
+    return decoded if isinstance(decoded, (dict, list)) else value
+
+
+# [2] agent app context: build the system message
 # [!code highlight]
 def build_context_system_message(context: Any) -> str | None:
     if not isinstance(context, list) or not context:
@@ -103,7 +128,7 @@ def build_context_system_message(context: Any) -> str | None:
             continue
 
         description = entry.get("description")
-        value = entry.get("value")
+        value = parse_context_value(entry.get("value"))
         if not isinstance(description, str) or not description or value is None:
             continue
 
@@ -117,7 +142,7 @@ def build_context_system_message(context: Any) -> str | None:
     return "\n".join(lines) if len(lines) > 1 else None
 
 
-# [2] agent app context: inject it per request
+# [3] agent app context: inject it per request
 # [!code highlight]
 class ContextAwareAgent(AgentFrameworkAgent):
     """Add app context to this request without mutating the shared agent."""
