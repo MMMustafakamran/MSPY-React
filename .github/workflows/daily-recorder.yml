@@ -51,11 +51,11 @@ on:
         type: boolean
         default: false
       group_app_control:
-        description: 'App Control — Frontend Tools, Shared State (read/write), Readables, Auth'
+        description: 'App Control — Frontend Tools, Shared State (read/write), Readables, Auth, Governed Actions'
         type: boolean
         default: false
       group_threads:
-        description: 'Rich Threads — Drawer, Headless, Lifecycle'
+        description: 'Rich Threads & Intelligence — Drawer, Headless, Lifecycle, Intelligence Quickstart'
         type: boolean
         default: false
       group_backend:

@@ -38,8 +38,9 @@ export const PAGE_GROUPS = {
     'in-app-agent-write',
     'readables',
     'auth',
+    'human-in-the-loop-governed-actions',
   ],
-  threads: ['threads-drawer', 'threads-headless', 'threads-lifecycle'],
+  threads: ['threads-drawer', 'threads-headless', 'threads-lifecycle', 'intelligence-quickstart'],
   backend: ['copilot-runtime', 'ag-ui'],
 };
 
