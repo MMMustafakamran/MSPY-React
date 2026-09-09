@@ -228,9 +228,10 @@ export const NAV: NavGroup[] = [
         docPath: "/ms-agent-python/human-in-the-loop/governed-actions",
         summary:
           "Gating a side-effecting agent action behind an approval card, via useInterrupt or useHumanInTheLoop.",
-        status: "not-started",
+        status: "working",
+        hasDemo: true,
         statusNote:
-          "Tracked for drift only — no demo in this repo yet. The identical page is implemented in Agno-react and Mastra-react; all five framework prefixes serve byte-identical content, so those findings apply here unchanged.",
+          "The tool-call variant. The published `z.record(z.unknown())` is a zod 3 signature and does not compile on this repo's zod 4, so it is translated. The `useInterrupt` variant needs a backend that pauses a run and attaches `interrupt.metadata.action`, which no agent here does.",
       },
     ],
   },
