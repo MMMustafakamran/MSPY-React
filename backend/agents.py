@@ -408,15 +408,11 @@ def create_a2ui_agent(chat_client: SupportsChatGetResponse) -> AgentFrameworkAge
     base_agent = Agent(
         name="a2ui_fixed_agent",
         instructions=(
-            "You help users find flights.
-
-"
+            "You help users find flights.\n\n"
             "When the user asks about a route, call `display_flight` EXACTLY ONCE, "
             "with origin, destination, airline and price. One call, one card — "
             "never offer several options, because every call draws over the same "
-            "surface and only the last one survives.
-
-"
+            "surface and only the last one survives.\n\n"
             "Invent plausible values for anything the user did not give you; this "
             "is a demo and there is no booking system behind it. After the call, "
             "reply with at most one short sentence — the card is the answer, and "
