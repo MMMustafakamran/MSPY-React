@@ -207,6 +207,15 @@ export const NAV: NavGroup[] = [
         statusNote:
           "Tracked for drift only — no demo yet. It builds on Dynamic Schema A2UI, which this repo does not map — only the fixed-schema half. DeepAgentspy-react implements the same page.",
       },
+      {
+        path: "/generative-ui/frontend-cards",
+        title: "Frontend Cards",
+        docPath: "/ms-agent-python/generative-ui/frontend-cards",
+        summary:
+          "Insert a card into the chat transcript from frontend code without an agent tool call.",
+        status: "not-started",
+        statusNote: "Tracked for drift only — no demo yet.",
+      },
     ],
   },
   {
@@ -241,6 +250,24 @@ export const NAV: NavGroup[] = [
         hasDemo: true,
         statusNote:
           "The tool-call variant. The published `z.record(z.unknown())` is a zod 3 signature and does not compile on this repo's zod 4, so it is translated. The `useInterrupt` variant needs a backend that pauses a run and attaches `interrupt.metadata.action`, which no agent here does.",
+      },
+      {
+        path: "/human-in-the-loop/interrupt-flow",
+        title: "Interrupt-based",
+        docPath: "/ms-agent-python/human-in-the-loop/interrupt-flow",
+        summary:
+          "Gate a backend tool behind an approval that the agent raises itself, rendered with useInterrupt.",
+        status: "not-started",
+        statusNote: "Tracked for drift only — no demo yet.",
+      },
+      {
+        path: "/human-in-the-loop/tool-based",
+        title: "Tool-based",
+        docPath: "/ms-agent-python/human-in-the-loop/tool-based",
+        summary:
+          "Gate an action behind a frontend tool that renders UI and waits for the user.",
+        status: "not-started",
+        statusNote: "Tracked for drift only — no demo yet.",
       },
     ],
   },
@@ -371,6 +398,24 @@ export const NAV: NavGroup[] = [
         statusNote:
           "Steps 3 and 4 are implemented against a third runtime mount at `/api/copilotkit-single`. Steps 1, 2 and 5 need a `CPK_INTELLIGENCE_API_KEY` from a hosted Intelligence project, which is an account-scoped resource this harness does not have.",
         hasDemo: true,
+      },
+      {
+        path: "/intelligence/memories",
+        title: "Memories & Recall",
+        docPath: "/ms-agent-python/intelligence/memories",
+        summary:
+          "How long-term memory works in CopilotKit Intelligence: user and project scope, activation, reading and writing memories.",
+        status: "not-started",
+        statusNote: "Tracked for drift only — no demo yet.",
+      },
+      {
+        path: "/learning",
+        title: "Learning",
+        docPath: "/ms-agent-python/learning",
+        summary:
+          "Turn real application use into evidence-backed Insights and reviewed, reusable Skills.",
+        status: "not-started",
+        statusNote: "Tracked for drift only — no demo yet.",
       },
     ],
   },

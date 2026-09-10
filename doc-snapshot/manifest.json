@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "docsRoot": "https://docs.copilotkit.ai/ms-agent-python",
-  "syncedAt": "2026-09-10T08:51:22.094Z",
+  "syncedAt": "2026-09-10T09:09:34.867808+00:00",
   "pages": {
     "/ms-agent-python": {
       "file": "ms-agent-python.md",
@@ -339,6 +339,66 @@
       "status": "ok",
       "age": 0,
       "date": "Wed, 09 Sep 2026 07:58:40 GMT"
+    },
+    "/ms-agent-python/generative-ui/frontend-cards": {
+      "file": "ms-agent-python__generative-ui__frontend-cards.md",
+      "sha256": "c6c17965ba4838e3070b381e4f8186420a7f2dc7b836ac29fe7101a1c262ebb1",
+      "bytes": 4422,
+      "lines": 139,
+      "routes": [
+        "/generative-ui/frontend-cards"
+      ],
+      "status": "ok",
+      "age": 0,
+      "date": "Thu, 10 Sep 2026 09:09:31 GMT"
+    },
+    "/ms-agent-python/human-in-the-loop/interrupt-flow": {
+      "file": "ms-agent-python__human-in-the-loop__interrupt-flow.md",
+      "sha256": "4637595e71b9d0bcaec1db45900ee997ff1d50daf736d7ac4bdcd4adf5176e40",
+      "bytes": 5914,
+      "lines": 146,
+      "routes": [
+        "/human-in-the-loop/interrupt-flow"
+      ],
+      "status": "ok",
+      "age": 0,
+      "date": "Thu, 10 Sep 2026 09:09:31 GMT"
+    },
+    "/ms-agent-python/human-in-the-loop/tool-based": {
+      "file": "ms-agent-python__human-in-the-loop__tool-based.md",
+      "sha256": "07bfb0832aa4ea873e5a648a4494584b443bd5ea66a8bce47a8b6d269921b404",
+      "bytes": 7522,
+      "lines": 165,
+      "routes": [
+        "/human-in-the-loop/tool-based"
+      ],
+      "status": "ok",
+      "age": 0,
+      "date": "Thu, 10 Sep 2026 09:09:31 GMT"
+    },
+    "/ms-agent-python/intelligence/memories": {
+      "file": "ms-agent-python__intelligence__memories.md",
+      "sha256": "bc87ba1e29d7eca514be0e77594f17752fd8bfbcab87c333d6d0b995869280ce",
+      "bytes": 11081,
+      "lines": 284,
+      "routes": [
+        "/intelligence/memories"
+      ],
+      "status": "ok",
+      "age": 0,
+      "date": "Thu, 10 Sep 2026 09:09:31 GMT"
+    },
+    "/ms-agent-python/learning": {
+      "file": "ms-agent-python__learning.md",
+      "sha256": "b6c1a8d72660fc25e49388a80ea68659c158e95b38472ec5f0cdf65f411760c9",
+      "bytes": 7865,
+      "lines": 138,
+      "routes": [
+        "/learning"
+      ],
+      "status": "ok",
+      "age": 0,
+      "date": "Thu, 10 Sep 2026 09:09:31 GMT"
     }
   },
   "sitemap": {
@@ -392,7 +452,6 @@
       "https://docs.copilotkit.ai/ms-agent-python/generative-ui/a2ui",
       "https://docs.copilotkit.ai/ms-agent-python/generative-ui/a2ui/dynamic-schema",
       "https://docs.copilotkit.ai/ms-agent-python/generative-ui/display",
-      "https://docs.copilotkit.ai/ms-agent-python/generative-ui/frontend-cards",
       "https://docs.copilotkit.ai/ms-agent-python/generative-ui/hashbrown",
       "https://docs.copilotkit.ai/ms-agent-python/generative-ui/interactive",
       "https://docs.copilotkit.ai/ms-agent-python/generative-ui/json-render",
@@ -404,18 +463,14 @@
       "https://docs.copilotkit.ai/ms-agent-python/headless",
       "https://docs.copilotkit.ai/ms-agent-python/human-in-the-loop",
       "https://docs.copilotkit.ai/ms-agent-python/human-in-the-loop/headless",
-      "https://docs.copilotkit.ai/ms-agent-python/human-in-the-loop/interrupt-flow",
-      "https://docs.copilotkit.ai/ms-agent-python/human-in-the-loop/tool-based",
       "https://docs.copilotkit.ai/ms-agent-python/human-in-the-loop/useInterrupt",
       "https://docs.copilotkit.ai/ms-agent-python/intelligence/connect-your-runtime",
       "https://docs.copilotkit.ai/ms-agent-python/intelligence/headless-ui",
       "https://docs.copilotkit.ai/ms-agent-python/intelligence/intelligence-platform",
       "https://docs.copilotkit.ai/ms-agent-python/intelligence/managed-intelligence-platform",
-      "https://docs.copilotkit.ai/ms-agent-python/intelligence/memories",
       "https://docs.copilotkit.ai/ms-agent-python/intelligence/overview",
       "https://docs.copilotkit.ai/ms-agent-python/intelligence/self-hosting",
       "https://docs.copilotkit.ai/ms-agent-python/intelligence/threads-explained",
-      "https://docs.copilotkit.ai/ms-agent-python/learning",
       "https://docs.copilotkit.ai/ms-agent-python/migrate/1.10.X",
       "https://docs.copilotkit.ai/ms-agent-python/migrate/1.8.2",
       "https://docs.copilotkit.ai/ms-agent-python/migrate/v2",
