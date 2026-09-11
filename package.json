@@ -15,6 +15,9 @@
     "drift": "node ci/check-doc-drift.mjs",
     "drift:sync": "node ci/check-doc-drift.mjs --update",
     "ci:pages": "node ci/list-pages.mjs",
+    "results:compare": "node ci/compare-results.mjs",
+    "results:seed": "node ci/compare-results.mjs --seed",
+    "results:accept": "node ci/compare-results.mjs --accept",
     "readme:status": "node ci/write-readme-status.mjs",
     "readme:status:check": "node ci/write-readme-status.mjs --check"
   }

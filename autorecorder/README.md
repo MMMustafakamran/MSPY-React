@@ -105,6 +105,22 @@ Handlers report through `ctx.warn` / `ctx.fail` (see `actions/index.ts`). A
 
 ---
 
+## When a take fails
+
+A failed take no longer ends on the broken page. Before the browser closes,
+the recorder opens the simulated terminal and prints what it saw: the
+diagnosed verdict, the browser console errors, and this page's slice of
+`videos/logs/backend.log` and `frontend.log` (from where they stood when the
+take began). Each section is windowed around the line most worth reading --
+a traceback, an `Error`, a 4xx/5xx -- and that line is painted red, so the
+clip itself shows the cause. The same text is written to
+`videos/logs/<page-id>.error.log`, which CI uploads with the run, so an agent
+can diagnose from the log without re-running anything locally.
+
+Passing takes are untouched: the terminal appears only on failure, which is
+what a person who hit an error would do. `core/failure-evidence.ts` holds
+the logic; the engine calls it from the `finally` of `recordPage`.
+
 ## Layout
 
 The split between what you edit and what you don't is the point of this folder.
@@ -397,6 +413,19 @@ rather than errors, and an unfiltered `npm run record` skips them with a note
 saying how to produce them. Naming one explicitly still records it, and still
 fails — which is the right answer to "record this specific thing that is
 missing".
+
+### On a runner: `.github/workflows/cli-recorder.yml`
+
+The guard below still stands for an ordinary CI job. The CLI workflow lifts it
+deliberately, one reason at a time: it restores the CLI's saved session from
+the `COPILOTKIT_CLI_SESSION` secret (so no browser opens), runs the driver
+under node-pty (so there is a terminal), is weekly and opt-in (so the account
+is spent knowingly), and restores the session in its own named step (so a
+scaffold that still stops at the sign-in prompt reads as "session rejected",
+not "CLI broken"). Cast reports are compared against
+`autorecorder/expected-results.json` under `cli:<flow>` keys, the same way
+pages are. The sign-up flows stay manual: they need a browser nobody has
+signed into. The workflow header says how to create and refresh the secret.
 
 ### Local only — enforced, not just documented
 

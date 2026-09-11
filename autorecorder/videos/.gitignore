@@ -12,3 +12,5 @@
 *.mp3
 !.gitignore
 RECORD_RESULTS.json
+RESULT_DIFF.json
+RESULT_DIFF.md

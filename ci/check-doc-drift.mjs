@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import readline from 'node:readline/promises';
 import { fileURLToPath } from 'node:url';
+import { checkPageCoverage, formatCoverageTable } from './check-page-coverage.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -272,6 +273,17 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   });
 
   const result = await checkAllDocDrift();
+
+  // Manifest -> route -> recorder coverage, printed in the same prepare-job
+  // output. Reported only: the drift exit code below is decided by drift
+  // alone, so a coverage gap never masks (or fakes) a doc change.
+  try {
+    console.log(formatCoverageTable(checkPageCoverage()));
+  } catch (err) {
+    console.log(`ℹ️  Page coverage not checked (${err.message}).`);
+  }
+  console.log('');
+
   if (result.sitemap.newUnmapped.length > 0) {
     console.log('🆕 [NEW UPSTREAM PAGES] Listed in the sitemap, tracked nowhere in this repo:');
     for (const u of result.sitemap.newUnmapped) console.log(` • ${u}`);
