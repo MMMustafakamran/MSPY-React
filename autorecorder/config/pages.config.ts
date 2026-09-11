@@ -23,6 +23,7 @@
  * working.
  */
 
+import { SELECTORS } from './selectors.config';
 import { definePages, type PageDefinition } from '../core/types';
 
 /**
@@ -266,6 +267,16 @@ export const PAGES = definePages([
     endLine: 55,
     prompt: 'Show me a weather card for Tokyo. It is 77 degrees and clear today.',
     waitAfterPromptMs: 4000,
+    demo: {
+      sendTimeoutMs: 12000,
+      render: {
+        selector: 'div:has-text("Tokyo"), div:has-text("77°F")',
+        last: true,
+        timeoutMs: 25000,
+        beatMs: 3500,
+      },
+      glideTo: [{ x: 960, y: 500, beatMs: 600 }],
+    },
   },
   {
     id: 'interactive',
@@ -291,6 +302,29 @@ export const PAGES = definePages([
     // its gate on every take.
     prompt: 'Deploy the app for me by running npm run deploy, but check with me before it runs.',
     waitAfterPromptMs: 4000,
+    demo: {
+      sendTimeoutMs: 12000,
+      render: {
+        selector: 'button:has-text("Approve")',
+        timeoutMs: 20000,
+        beatMs: 1500,
+        required:
+          '[Human in the Loop] The Approve button never rendered — the approval card did not appear, so the gate was never exercised.',
+      },
+      click: {
+        selector: 'button:has-text("Approve")',
+        missing: '[Human in the Loop] The Approve button vanished before it could be clicked.',
+      },
+      checks: [
+        {
+          selector: 'button:has-text("Approve")',
+          enabled: false,
+          severity: 'warn',
+          ok: '[Human in the Loop] Approval taken and a follow-up reply arrived.',
+          message: '[Human in the Loop] Approve is still clickable after the reply — the decision may not have reached the agent.',
+        },
+      ],
+    },
   },
   {
     id: 'tool-rendering',
@@ -303,6 +337,23 @@ export const PAGES = definePages([
     endLine: 63,
     prompt: 'Check the weather in Paris for me.',
     waitAfterPromptMs: 4000,
+    demo: {
+      sendTimeoutMs: 12000,
+      render: {
+        selector: 'p:has-text("weather API"), .copilotKitAssistantMessage',
+        timeoutMs: 20000,
+        beatMs: 2500,
+      },
+      checks: [
+        {
+          selector: 'text=Called the weather API for',
+          severity: 'warn',
+          ok: '[Tool Rendering] Custom renderer mounted ("Called the weather API for …").',
+          message:
+            '[Tool Rendering] "Called the weather API for" never appeared. The reply streamed, but the useRenderTool component did not mount — check that the tool name matches get_weather.',
+        },
+      ],
+    },
   },
   {
     id: 'state-rendering',
@@ -315,6 +366,24 @@ export const PAGES = definePages([
     endLine: 53,
     prompt: 'Look up the longest rivers in the world, then the highest waterfalls.',
     waitAfterPromptMs: 4000,
+    demo: {
+      sendTimeoutMs: 12000,
+      glideTo: [
+        { selector: 'div:has-text("Searches (rendered outside the chat)") + div, h2:has-text("Searches")', offset: { x: 120, y: 40 } },
+        'pre',
+      ],
+      checks: [
+        {
+          selector: 'text=No searches yet',
+          absent: true,
+          timeoutMs: 1000,
+          severity: 'warn',
+          ok: '[State Rendering] Searches panel populated from agent state.',
+          message:
+            '[State Rendering] Panel still reads "No searches yet" after the reply. agent.state.searches never populated — check update_searches and predict_state_config.',
+        },
+      ],
+    },
   },
   {
     id: 'frontend-tools',
@@ -327,6 +396,10 @@ export const PAGES = definePages([
     endLine: 33,
     prompt: 'Can you say hello to Sara for me?',
     waitAfterPromptMs: 4000,
+    demo: {
+      sendTimeoutMs: 12000,
+      alert: { missing: '[Frontend Tools] No browser alert fired -- the sayHello tool may not have run in the browser.' },
+    },
   },
   {
     id: 'in-app-agent-read',
@@ -339,6 +412,23 @@ export const PAGES = definePages([
     endLine: 55,
     prompt: 'Please switch the language to Spanish.',
     waitAfterPromptMs: 4000,
+    demo: {
+      sendTimeoutMs: 12000,
+      glideTo: [
+        { selector: 'strong:has-text("spanish"), strong:has-text("english"), h1:has-text("Your main content")', offset: { x: 100, y: 15 } },
+        'pre',
+      ],
+      checks: [
+        {
+          selector: 'strong',
+          contains: 'spanish',
+          severity: 'warn',
+          ok: '[Shared State Read] Language panel reads "spanish" — state reached the page.',
+          message:
+            '[Shared State Read] Language panel reads {text} after the reply. The agent may have answered in text without calling update_language.',
+        },
+      ],
+    },
   },
   {
     id: 'in-app-agent-write',
@@ -363,6 +453,21 @@ export const PAGES = definePages([
     endLine: 34,
     prompt: 'Who do I work with? Name them.',
     waitAfterPromptMs: 4000,
+    demo: {
+      sendTimeoutMs: 12000,
+      glideTo: [{ selector: 'ul, li:has-text("John Doe")', offset: { x: 120, y: 40 }, beatMs: 2000 }],
+      checks: [
+        {
+          selector: SELECTORS.assistantMessage,
+          last: true,
+          contains: ['John Doe', 'Jane Smith', 'Bob Wilson'],
+          severity: 'warn',
+          ok: '[Readables] Answer cites all 3 colleagues — the context reached the agent.',
+          message:
+            '[Readables] Answer cites only {found}/{total} of the shared colleagues. Check that the chat is bound to `context_agent` and not a plain agent.',
+        },
+      ],
+    },
   },
   {
     id: 'auth',
@@ -375,6 +480,17 @@ export const PAGES = definePages([
     endLine: 90,
     prompt: 'Quick ping: did this request come through authenticated?',
     waitAfterPromptMs: 4000,
+    demo: {
+      sendTimeoutMs: 12000,
+      before: [
+        {
+          selector:
+            'div[class*="border-emerald"], div[class*="border-amber"], div[class*="border-rose"], h2:has-text("Current configuration")',
+          offset: { x: 100, y: 40 },
+          beatMs: 2500,
+        },
+      ],
+    },
   },
   {
     id: 'threads-drawer',
@@ -450,6 +566,13 @@ export const PAGES = definePages([
     endLine: 102,
     prompt: 'Any rain expected in Tokyo this week?',
     waitAfterPromptMs: 4000,
+    demo: {
+      sendTimeoutMs: 8000,
+      glideTo: [
+        { x: 450, y: 300, beatMs: 1500 },
+        { x: 450, y: 550, beatMs: 1500 },
+      ],
+    },
   },
   {
     id: 'intelligence-quickstart',

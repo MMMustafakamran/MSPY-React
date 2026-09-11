@@ -578,10 +578,14 @@ jobs:
           if [ "${INPUT_USE_LOCKFILE:-false}" = "true" ]; then
             EXTRA_FLAGS="$EXTRA_FLAGS --use-lockfile"
           elif [ "${RESOLVED_HIT:-false}" = "true" ]; then
-            # Fresh lockfiles from stage 2, not the committed ones.
-            EXTRA_FLAGS="$EXTRA_FLAGS --use-lockfile"
-            echo "Using the trees stage 2 resolved this run (cache hit)."
-            echo "- Dependencies: installed from the lockfiles stage 2 resolved this run" >> "$GITHUB_STEP_SUMMARY"
+            # Stage 2 resolved the trees minutes ago and the cache restored
+            # them whole: node_modules, lockfiles, uv.lock. Installing again
+            # here re-did that work three times over and could even land a
+            # release that dropped in between, so one shard recorded on a
+            # version the report never pinned.
+            EXTRA_FLAGS="$EXTRA_FLAGS --use-lockfile --skip-install"
+            echo "Using the trees stage 2 resolved this run (cache hit); no install."
+            echo "- Dependencies: the trees stage 2 resolved this run, installed once" >> "$GITHUB_STEP_SUMMARY"
           else
             echo "No shared trees from stage 2; resolving locally."
           fi

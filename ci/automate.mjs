@@ -40,7 +40,6 @@ import {
   assertModelCredentials,
   assertPortsFree,
   assertThreadsLicenseFresh,
-  warmFrontendRoutes,
 } from './lib/preflight.mjs';
 import { generateReport } from './lib/report.mjs';
 import { writeVersionsFile } from './write-versions.mjs';
@@ -353,7 +352,6 @@ async function main() {
     reportData.health.frontend = frontendHealth.elapsedSec;
 
     // 6. Warm routes so the recorder's own preflight is not racing a cold build.
-    await warmFrontendRoutes();
 
     // 7. Record
     //
