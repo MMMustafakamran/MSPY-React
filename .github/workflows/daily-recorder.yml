@@ -24,17 +24,17 @@ name: Daily Doc Check, Version Watch and Demo Recording
 
 on:
   schedule:
-    # 05:27 UTC = 10:27 AM PKT (Asia/Karachi, UTC+5, no DST).
+    # 23:04 UTC = 4:04 AM PKT (Asia/Karachi, UTC+5, no DST).
     #
-    # Not 05:30, and emphatically not 06:00. GitHub's scheduler is best-effort
-    # and shared: on-the-hour and on-the-half-hour are the most contended slots
-    # on the platform, and runs queued there are routinely delayed by hours or
-    # dropped outright. This repo's own history shows the old '0 6 * * *' cron
-    # firing as late as 17:11 UTC, and on some days not at all. An odd minute
-    # is materially more likely to fire near time.
+    # The twelve repos run in four waves twenty minutes apart (23:04, 23:24,
+    # 23:44, 00:04 UTC) so they do not all land on the account's runner limit
+    # at the same minute -- when they did, the last workers queued for 38
+    # minutes. An odd minute rather than :00 or :30, which are the most
+    # contended slots on the platform.
     #
-    # This still cannot GUARANTEE 10:30 AM PKT -- no `schedule:` can. If exact
-    # timing ever matters, drive it externally via repository_dispatch.
+    # GitHub's scheduler is best-effort: this repo's history shows every cron
+    # firing three to six hours late. If exact timing ever matters, drive it
+    # externally via `gh workflow run`.
     - cron: '4 23 * * *'
   workflow_dispatch:
     inputs:
@@ -369,6 +369,61 @@ jobs:
             autorecorder/package-lock.json
             backend/uv.lock
 
+      # This repo has no ci/check-versions.mjs (the Angular siblings do), so there
+      # is no classification here of what is outdated-but-out-of-reach. What the
+      # re-resolve above proves is still the thing that matters most before
+      # recording: the documented install path works today, and these are the
+      # versions the demos are about to be recorded against.
+      - name: Report the versions this run resolved
+        run: |
+          set -euo pipefail
+          {
+            echo "## 2. Versions and setup"
+            echo
+            echo "Setup verified: a lockfile-free install of frontend/ and"
+            echo "autorecorder/ succeeded, so the documented install path works."
+            echo
+            echo "<details><summary>Resolved top-level versions</summary>"
+            echo
+            echo '```'
+            npm --prefix frontend ls --depth=0 2>&1 || true
+            echo
+            npm --prefix autorecorder ls --depth=0 2>&1 || true
+            echo '```'
+            echo
+            echo "</details>"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  checks:
+    name: 2a. Typecheck, tests, README
+    needs: [prepare, versions]
+    if: always() && needs.prepare.outputs.gated != 'true' && needs.versions.result == 'success'
+    # Reporting only. It used to sit inside stage 2, after the cache save, so
+    # every worker waited on a typecheck that decides nothing. Now it runs
+    # beside the workers on the trees stage 2 resolved.
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Restore the resolved trees from stage 2
+        uses: actions/cache/restore@v4
+        with:
+          key: resolved-deps-${{ github.run_id }}
+          fail-on-cache-miss: true
+          path: |
+            frontend/node_modules
+            frontend/package-lock.json
+            autorecorder/node_modules
+            autorecorder/package-lock.json
+            backend/uv.lock
+
       # The runtime route and the slots demo are the two files most likely to
       # break on a CopilotKit bump, and nothing else in the pipeline compiles
       # them: `next dev` serves a page with type errors. Reported, not gating --
@@ -414,30 +469,6 @@ jobs:
             echo "- README status table: **stale** -- run \`npm run readme:status\` and commit" >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      # This repo has no ci/check-versions.mjs (the Angular siblings do), so there
-      # is no classification here of what is outdated-but-out-of-reach. What the
-      # re-resolve above proves is still the thing that matters most before
-      # recording: the documented install path works today, and these are the
-      # versions the demos are about to be recorded against.
-      - name: Report the versions this run resolved
-        run: |
-          set -euo pipefail
-          {
-            echo "## 2. Versions and setup"
-            echo
-            echo "Setup verified: a lockfile-free install of frontend/ and"
-            echo "autorecorder/ succeeded, so the documented install path works."
-            echo
-            echo "<details><summary>Resolved top-level versions</summary>"
-            echo
-            echo '```'
-            npm --prefix frontend ls --depth=0 2>&1 || true
-            echo
-            npm --prefix autorecorder ls --depth=0 2>&1 || true
-            echo '```'
-            echo
-            echo "</details>"
-          } >> "$GITHUB_STEP_SUMMARY"
 
   record-workers:
     name: 3. Worker ${{ matrix.shard }}/3
@@ -454,6 +485,9 @@ jobs:
         shard: [1, 2, 3]
 
     env:
+      # Reading and thinking pauses at 85% -- typing, mouse and scrolling are
+      # not scaled. See autorecorder/core/overlays/human.ts (PACE).
+      AUTORECORD_PACE: '0.85'
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_CHAT_MODEL_ID: ${{ vars.OPENAI_CHAT_MODEL_ID || 'gpt-4o-mini' }}
       AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
@@ -504,10 +538,22 @@ jobs:
             autorecorder/package-lock.json
             backend/uv.lock
 
+      # The Chromium build is keyed on the installed playwright-core version,
+      # so it downloads once per Playwright release rather than once per shard
+      # per day. The runner image already ships the system libraries, so on a
+      # hit nothing is installed at all.
+      - name: Cache the Playwright browser
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-${{ hashFiles('autorecorder/node_modules/playwright-core/package.json') }}
+
       - name: Install Playwright & System Chromium Dependencies
+        if: steps.pw-cache.outputs.cache-hit != 'true'
         run: |
           cd autorecorder
-          npm install
+          [ -d node_modules/playwright ] || npm install
           npx playwright install --with-deps chromium
 
       - name: Record demos (shard ${{ matrix.shard }}/3)

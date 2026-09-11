@@ -1,5 +1,5 @@
 import { type Page } from 'playwright';
-import { humanClick, humanGlide, sleep } from '../core/overlays/cursor';
+import { beat, humanClick, humanGlide, sleep } from '../core/overlays/cursor';
 import { type PageActionHandler, type PageRecordConfig } from '../core/types';
 import { promptsFor, sendPrompt, waitForAgentResponseCompletion } from '../core/actions';
 
@@ -76,13 +76,13 @@ export const runThreadsDrawerAction: PageActionHandler = async (
   if (box) {
     await humanGlide(page, box.x + box.width / 2, box.y + box.height / 2, 22);
     await humanClick(page);
-    await sleep(3500);
+    await beat(3500);
   }
 
   // 4/4: the customized drawer — renderRow, limit, and the label overrides.
   console.log(`   [ThreadsDrawer] 4/4: Switching to the customized drawer...`);
   await glideClick(page, 'button:has-text("Customized")', 'Customized tab');
-  await sleep(2500);
+  await beat(2500);
   await dwellOn(page, DRAWER_ROW, 2500);
 };
 
@@ -110,9 +110,9 @@ export const runThreadsHeadlessAction: PageActionHandler = async (
   // rather than archiving anything, so a recording never mutates the list.
   console.log(`   [ThreadsHeadless] 3/4: Toggling the archived filter...`);
   if (await glideClick(page, 'input[type="checkbox"]', 'Archived toggle')) {
-    await sleep(2200);
+    await beat(2200);
     await glideClick(page, 'input[type="checkbox"]', 'Archived toggle');
-    await sleep(1200);
+    await beat(1200);
   }
 
   // 4/4: switching threads — here it is our own useState driving `threadId`.
@@ -123,7 +123,7 @@ export const runThreadsHeadlessAction: PageActionHandler = async (
   if (box) {
     await humanGlide(page, box.x + box.width / 2, box.y + box.height / 2, 22);
     await humanClick(page);
-    await sleep(4000);
+    await beat(4000);
   }
 };
 
@@ -148,7 +148,7 @@ export const runThreadsLifecycleAction: PageActionHandler = async (
   // 3/4: New chat mints a fresh non-explicit id and clears the view.
   console.log(`   [ThreadsLifecycle] 3/4: Starting a new chat...`);
   await glideClick(page, 'button:has-text("New chat")', 'New chat button');
-  await sleep(3000);
+  await beat(3000);
 
   // 4/4: re-opening sets it explicitly, which is what triggers replay.
   console.log(`   [ThreadsLifecycle] 4/4: Re-opening a known conversation...`);
@@ -156,5 +156,5 @@ export const runThreadsLifecycleAction: PageActionHandler = async (
     console.log(`   [ThreadsLifecycle] No known conversations listed.`);
   });
   await glideClick(page, KNOWN_THREAD, 'known conversation');
-  await sleep(4500);
+  await beat(4500);
 };

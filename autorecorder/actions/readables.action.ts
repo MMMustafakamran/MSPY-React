@@ -1,5 +1,5 @@
 import { type Page } from 'playwright';
-import { humanGlide, sleep } from '../core/overlays/cursor';
+import { beat, humanGlide, sleep } from '../core/overlays/cursor';
 import { type PageActionHandler, type PageRecordConfig } from '../core/types';
 import { sendPrompt, waitForAgentResponseCompletion } from '../core/actions';
 import { SELECTORS } from '../config/selectors.config';
@@ -38,14 +38,14 @@ export const runReadablesAction: PageActionHandler = async (
 
   // Glide the cursor over the shared context list on the left, so the clip
   // shows the data the answer has to come from before the answer arrives.
-  await sleep(1500);
+  await beat(1500);
   const contextList = page.locator('ul, li:has-text("John Doe")').first();
   if (await contextList.isVisible({ timeout: 4000 }).catch(() => false)) {
     const clBox = await contextList.boundingBox();
     if (clBox) {
       console.log(`   🎯 Highlighted shared context list at (${Math.round(clBox.x)}, ${Math.round(clBox.y)})`);
       await humanGlide(page, clBox.x + 120, clBox.y + 40, 22);
-      await sleep(2000);
+      await beat(2000);
     }
   }
 

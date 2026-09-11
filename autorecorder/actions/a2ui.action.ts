@@ -1,5 +1,5 @@
 import { type Page } from 'playwright';
-import { humanGlide, sleep } from '../core/overlays/cursor';
+import { beat, humanGlide, sleep } from '../core/overlays/cursor';
 import { type PageActionHandler, type PageRecordConfig } from '../core/types';
 import { sendPrompt, waitForAgentResponseCompletion } from '../core/actions';
 
@@ -52,7 +52,7 @@ export const runA2uiAction: PageActionHandler = async (
       );
       await humanGlide(page, box.x + box.width / 2, box.y + box.height / 2, 22);
     }
-    await sleep(2000);
+    await beat(2000);
   }
 
   await waitForAgentResponseCompletion(page, config.waitAfterPromptMs ?? 6000, msgCount).catch(

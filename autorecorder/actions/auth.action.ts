@@ -1,5 +1,5 @@
 import { type Page } from 'playwright';
-import { humanGlide, sleep } from '../core/overlays/cursor';
+import { beat, humanGlide, sleep } from '../core/overlays/cursor';
 import { type PageActionHandler, type PageRecordConfig } from '../core/types';
 import { sendPrompt, waitForAgentResponseCompletion } from '../core/actions';
 
@@ -8,7 +8,7 @@ export const runAuthAction: PageActionHandler = async (
   config: PageRecordConfig,
 ) => {
   console.log(`   [Authentication] Highlighting auth configuration panel...`);
-  await sleep(1500);
+  await beat(1500);
 
   // Glide cursor over the auth verdict card on the left
   const verdictCard = page
@@ -23,7 +23,7 @@ export const runAuthAction: PageActionHandler = async (
         `   🎯 Detected Auth configuration card at (${Math.round(vcBox.x)}, ${Math.round(vcBox.y)})`,
       );
       await humanGlide(page, vcBox.x + 100, vcBox.y + 40, 22);
-      await sleep(2500);
+      await beat(2500);
     }
   }
 

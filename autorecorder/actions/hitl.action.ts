@@ -1,5 +1,5 @@
 import { type Page } from 'playwright';
-import { humanClick, humanGlide, sleep } from '../core/overlays/cursor';
+import { beat, humanClick, humanGlide, sleep } from '../core/overlays/cursor';
 import { type PageActionHandler, type PageRecordConfig } from '../core/types';
 import { getAssistantMessageCount, sendPrompt, waitForAgentResponseCompletion } from '../core/actions';
 
@@ -27,7 +27,7 @@ export const runHitlAction: PageActionHandler = async (
     .waitFor({ state: 'visible', timeout: 20000 })
     .then(() => true)
     .catch(() => false);
-  await sleep(1500);
+  await beat(1500);
 
   if (!cardRendered) {
     ctx.fail(

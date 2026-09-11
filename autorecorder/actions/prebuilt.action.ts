@@ -1,5 +1,5 @@
 import { type Page } from 'playwright';
-import { humanClick, humanGlide, sleep } from '../core/overlays/cursor';
+import { beat, humanClick, humanGlide, sleep } from '../core/overlays/cursor';
 import { type PageActionHandler, type PageRecordConfig } from '../core/types';
 import { promptsFor, sendPrompt, waitForAgentResponseCompletion } from '../core/actions';
 
@@ -21,7 +21,7 @@ export const runPrebuiltAction: PageActionHandler = async (
     await humanGlide(page, sBox.x + sBox.width / 2, sBox.y + sBox.height / 2, 20);
     await humanClick(page);
   }
-  await sleep(1000);
+  await beat(1000);
 
   // Focus the sidebar input if visible
   const sidebarInput = page
@@ -36,7 +36,7 @@ export const runPrebuiltAction: PageActionHandler = async (
   }
   await humanGlide(page, 1650, 450, 25);
   console.log(`   Docked CopilotSidebar showcase...`);
-  await sleep(1500);
+  await beat(1500);
 
   // 3/3: CopilotPopup tab
   console.log(`   [Prebuilt] 3/3: Switching to CopilotPopup tab...`);
@@ -46,7 +46,7 @@ export const runPrebuiltAction: PageActionHandler = async (
     await humanGlide(page, pBox.x + pBox.width / 2, pBox.y + pBox.height / 2, 20);
     await humanClick(page);
   }
-  await sleep(1000);
+  await beat(1000);
 
   // Click floating launcher in bottom corner if present
   const popupLauncher = page
@@ -57,9 +57,9 @@ export const runPrebuiltAction: PageActionHandler = async (
     if (plBox) {
       await humanGlide(page, plBox.x + plBox.width / 2, plBox.y + plBox.height / 2, 20);
       await humanClick(page);
-      await sleep(1500);
+      await beat(1500);
     }
   }
   await humanGlide(page, 960, 540, 20);
-  await sleep(1500);
+  await beat(1500);
 };

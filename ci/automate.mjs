@@ -208,22 +208,22 @@ function tailLog(logPath, lines = 25) {
 
 async function waitForHealth(url, name, logPath, timeoutMs = 45000) {
   const start = Date.now();
-  process.stdout.write(`⏳ Waiting for ${name} (${url})... `);
+  // Whole lines, not a dotted progress line: several of these run at once.
+  console.log(`⏳ Waiting for ${name} (${url})...`);
   while (Date.now() - start < timeoutMs) {
     try {
       const res = await fetch(url, { signal: AbortSignal.timeout(2000) });
       if (res.ok || res.status < 500) {
         const elapsed = ((Date.now() - start) / 1000).toFixed(1);
-        process.stdout.write(`✅ READY (${elapsed}s)!\n`);
+        console.log(`✅ ${name} READY (${elapsed}s)!`);
         return { ok: true, elapsedSec: Number(elapsed) };
       }
     } catch {
       // keep polling
     }
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    process.stdout.write('.');
   }
-  process.stdout.write('❌ TIMEOUT\n');
+  console.log(`❌ ${name} TIMEOUT`);
   console.error(`\n──── last lines of ${path.basename(logPath)} ────`);
   console.error(tailLog(logPath));
   console.error('────────────────────────────────────────────\n');
@@ -342,13 +342,15 @@ async function main() {
       frontendLog = frontend.logPath;
     }
 
-    // 5. Health
-    reportData.health.backend = (
-      await waitForHealth(BACKEND_HEALTH_URL, 'Backend Agent', backendLog, 45000)
-    ).elapsedSec;
-    reportData.health.frontend = (
-      await waitForHealth(FRONTEND_URL, 'Frontend Next.js App', frontendLog, 60000)
-    ).elapsedSec;
+    // 5. Health -- both servers boot at once, so both are waited on at once.
+    // Serially this was the backend's 5s plus the frontend's 12s; together it
+    // is whichever is slower.
+    const [backendHealth, frontendHealth] = await Promise.all([
+      waitForHealth(BACKEND_HEALTH_URL, 'Backend Agent', backendLog, 45000),
+      waitForHealth(FRONTEND_URL, 'Frontend Next.js App', frontendLog, 60000),
+    ]);
+    reportData.health.backend = backendHealth.elapsedSec;
+    reportData.health.frontend = frontendHealth.elapsedSec;
 
     // 6. Warm routes so the recorder's own preflight is not racing a cold build.
     await warmFrontendRoutes();

@@ -1,5 +1,5 @@
 import { type Page } from 'playwright';
-import { humanClick, humanGlide, sleep } from '../core/overlays/cursor';
+import { beat, humanClick, humanGlide, sleep } from '../core/overlays/cursor';
 import { type PageActionHandler, type PageRecordConfig } from '../core/types';
 import { promptsFor, sendPrompt, waitForAgentResponseCompletion } from '../core/actions';
 
@@ -23,7 +23,7 @@ export const runRuntimeAction: PageActionHandler = async (
     if (sBox) {
       await humanGlide(page, sBox.x + sBox.width / 2, sBox.y + sBox.height / 2, 20);
       await humanClick(page);
-      await sleep(1000);
+      await beat(1000);
     }
   }
 
@@ -40,10 +40,10 @@ export const runRuntimeAction: PageActionHandler = async (
     if (stBox) {
       await humanGlide(page, stBox.x + stBox.width / 2, stBox.y + stBox.height / 2, 20);
       await humanClick(page);
-      await sleep(1000);
+      await beat(1000);
     }
   }
 
   await humanGlide(page, 960, 500, 25);
-  await sleep(1500);
+  await beat(1500);
 };

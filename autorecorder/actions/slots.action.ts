@@ -1,5 +1,5 @@
 import { type Page } from 'playwright';
-import { humanClick, humanGlide, sleep } from '../core/overlays/cursor';
+import { beat, humanClick, humanGlide, sleep } from '../core/overlays/cursor';
 import { type PageActionHandler, type PageRecordConfig } from '../core/types';
 import { promptsFor, sendPrompt, waitForAgentResponseCompletion } from '../core/actions';
 
@@ -38,7 +38,7 @@ export const runSlotsAction: PageActionHandler = async (
         await humanGlide(page, tBox.x + tBox.width / 2, tBox.y + tBox.height / 2, 20);
         await humanClick(page);
       }
-      await sleep(1000);
+      await beat(1000);
     }
 
     const prompt = prompts[level] ?? prompts[prompts.length - 1];

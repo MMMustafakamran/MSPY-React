@@ -47,7 +47,7 @@ npm run record            # all pages, in order
 | `--pages=<id,id>` | Exactly these pages (`--only=` is an alias) |
 | `--filter=<query>` | Record every page whose id or name contains the query |
 | `--limit=<n>` | First *n* of the selection (`--first=`, `--count=`) |
-| `--shard=<k>/<n>` | Slice *k* of *n*, for matrix workers |
+| `--shard=<k>/<n>` | Every *n*th page starting at *k*, for matrix workers (dealt round-robin so the long pages spread out) |
 | `--force` | Record even if the pre-flight health check fails |
 | `--allow-ci` | On a runner, still record pages that boot their own dev server |
 
@@ -210,7 +210,9 @@ last night's, which keeps two recordings of the same page comparable.
   starts. Jittered keystrokes, a beat after punctuation, the odd pause.
 - **Scrolling** is in bursts: a few wheel notches, a reading pause, a few more,
   sometimes a nudge back up.
-- **Pauses** vary by about a quarter around their nominal length.
+- **Pauses** vary by about a quarter around their nominal length. They are
+  the only thing `AUTORECORD_PACE` scales (CI sets `0.85`): a reading or
+  thinking pause gets shorter, the typing, the mouse and the scrolling do not.
 - **The cursor** overshoots slightly on long travel and settles, hovers a
   variable moment before a click, drifts while a reply streams instead of
   freezing, and starts each take somewhere plausible rather than dead centre.
@@ -236,6 +238,13 @@ Two details worth knowing, because both were bugs once:
 - Playwright starts recording when the page is created, so the first navigation
   is dead footage. The doc URL is warmed in a throwaway page first, which cuts
   it roughly in half; removing the rest would need an ffmpeg trim in post.
+
+- Before the first take, every demo route in the selection is fetched at once
+  (`core/prewarm.ts`) so the dev server's first compile happens off camera. One
+  Chromium serves the whole run, with a fresh context per take, so the clips are
+  unchanged and the five-second launch is paid once. And a take whose console
+  already says the agent run failed stops waiting for a reply immediately
+  instead of sitting out the full window.
 
 ---
 

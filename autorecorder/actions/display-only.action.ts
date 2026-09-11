@@ -1,5 +1,5 @@
 import { type Page } from 'playwright';
-import { humanGlide, sleep } from '../core/overlays/cursor';
+import { beat, humanGlide, sleep } from '../core/overlays/cursor';
 import { type PageActionHandler, type PageRecordConfig } from '../core/types';
 import { sendPrompt } from '../core/actions';
 
@@ -13,7 +13,7 @@ export const runDisplayOnlyAction: PageActionHandler = async (
   console.log(`   Waiting for generative WeatherCard to render inline in chat...`);
   const weatherCard = page.locator('div:has-text("Tokyo"), div:has-text("77°F")').last();
   await weatherCard.waitFor({ state: 'visible', timeout: 25000 }).catch(() => {});
-  await sleep(1500);
+  await beat(1500);
 
   // Look for rendered WeatherCard and highlight
   if (await weatherCard.isVisible({ timeout: 5000 }).catch(() => false)) {
@@ -21,7 +21,7 @@ export const runDisplayOnlyAction: PageActionHandler = async (
     if (wcBox) {
       console.log(`   🎯 Detected rendered WeatherCard at (${Math.round(wcBox.x)}, ${Math.round(wcBox.y)})`);
       await humanGlide(page, wcBox.x + wcBox.width / 2, wcBox.y + wcBox.height / 2, 22);
-      await sleep(3500);
+      await beat(3500);
     }
   }
 
