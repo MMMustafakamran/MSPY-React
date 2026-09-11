@@ -87,11 +87,12 @@
     },
     "intelligence-quickstart": {
       "status": "fail",
-      "reason": "Not in Tested-Report; CI 2026-09-11 shard 3: agent never answers, console shows Failed to construct URL (relative runtimeUrl + useSingleEndpoint). Review and confirm.",
+      "reason": "PROVISIONAL: recorded 2026-09-11 while the OpenAI account had no credits (agent silent everywhere); re-verify after topping up | Not in Tested-Report; CI 2026-09-11 shard 3: agent never answers, console shows Failed to construct URL (relative runtimeUrl + useSingleEndpoint). Review and confirm. | accepted from run on 2026-09-11 (notes-changed)",
       "errorClass": "Agent Silent",
       "message": "Agent never produced a response within <n> -- no assistant message ever received content. Check the backend and the browser console output above.",
       "notes": [
-        "Browser console: 3 distinct error(s), first: Error: REST run request failed: Failed to construct 'UR"
+        "console Agent execution failed: Error: REST run request failed: Failed to construct 'URL",
+        "console Error: REST run request failed: Failed to construct 'URL': Invalid URL at <url> "
       ]
     },
     "interactive": {
