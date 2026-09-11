@@ -1,9 +1,10 @@
 "use client";
 
 import { CopilotChat } from "@copilotkit/react-core/v2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { DemoFrame } from "@/components/demo-frame";
+import { IntelligenceStatus } from "@/components/intelligence-status";
 import { SingleEndpointProvider } from "@/components/single-endpoint-provider";
 
 /**
@@ -41,6 +42,16 @@ function ProbePanel() {
   const [results, setResults] = useState<Record<string, Result>>({});
   const [busy, setBusy] = useState(false);
 
+  // Runs itself on mount. It used to wait for a click, which meant the one
+  // thing on this page that proves anything about the endpoint was absent from
+  // every recording — the recorder types a prompt and never presses buttons it
+  // was not told about. A panel whose evidence depends on a human is not
+  // evidence in a clip.
+  useEffect(() => {
+    void runProbes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   async function runProbes() {
     setBusy(true);
     const next: Record<string, Result> = {};
@@ -72,7 +83,7 @@ function ProbePanel() {
           disabled={busy}
           className="rounded-md border border-[var(--accent)] px-3 py-1.5 text-sm text-[var(--accent)] disabled:opacity-50"
         >
-          {busy ? "Probing…" : "Probe the envelope methods"}
+          {busy ? "Probing…" : "Re-run probe"}
         </button>
         <p className="text-xs text-slate-500">
           POSTs <code>{'{ method, params, body }'}</code> to{" "}
@@ -125,16 +136,18 @@ export default function Page() {
       parentPath="/intelligence/quickstart"
       subtitle="single-route transport · /api/copilotkit-single"
     >
-      <SingleEndpointProvider>
-        <div className="flex h-full flex-col">
-          <ProbePanel />
+      <div className="flex h-full flex-col">
+        {/* Step 5, read back through the multi-route mount on the same key. */}
+        <IntelligenceStatus agentId="my_agent" />
+        <ProbePanel />
+        <SingleEndpointProvider>
           <div className="min-h-0 flex-1">
             {/* [3] intelligence quickstart: chat over the single endpoint */}
             {/* [!code highlight] */}
             <CopilotChat agentId="my_agent" />
           </div>
-        </div>
-      </SingleEndpointProvider>
+        </SingleEndpointProvider>
+      </div>
     </DemoFrame>
   );
 }

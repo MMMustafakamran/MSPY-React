@@ -469,6 +469,13 @@ export const PAGES = definePages([
         startLine: 26,
         endLine: 48,
       },
+      // Step 5: the read-back. The take's verdict is this component's count
+      // growing by one, not the chat producing a reply.
+      {
+        filePath: 'frontend/src/components/intelligence-status.tsx',
+        startLine: 62,
+        endLine: 84,
+      },
     ],
     prompt: 'What is the weather in Karachi?',
     // The only page in this suite whose runtime route is never touched by any
@@ -500,9 +507,16 @@ export const PAGES = definePages([
     ],
     prompt:
       'Please send an invoice reminder to acme@example.com, but check with me before it goes out.',
+    // Two turns, because the card has two answers and only one of them was
+    // ever filmed. The first request is harmless and gets approved; the second
+    // is destructive and gets rejected, which is the half that shows the
+    // policy actually stopping something.
+    prompts: [
+      'Please send an invoice reminder to acme@example.com, but check with me before it goes out.',
+      'Now permanently delete the acme@example.com customer record, but check with me before it goes through.',
+    ],
     waitAfterPromptMs: 6000,
   },
-
   {
     // Appended rather than filed under Generative UI, where the doc nav puts
     // it. Filenames carry the position in this array, so slotting it at index 8
