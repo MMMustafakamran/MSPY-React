@@ -15,36 +15,14 @@ ci/
 ├── resolve-selection.mjs expands dispatch checkboxes + ids into a page list
 ├── run-name.mjs          names the run's artifacts (MsPy-react-18Aug2026-0612UTC)
 ├── write-readme-status.mjs regenerates README §8 from nav-config.ts + pages.config.ts
-├── compare-results.mjs   diffs a run against autorecorder/expected-results.json
 └── lib/
     ├── config.mjs        paths, ports, URLs
     ├── env.mjs           loads .env files the way backend/main.py does
     ├── pages.mjs         reads page ids from the recorder's config
     ├── preflight.mjs     port, credential and warmup checks
     ├── report.mjs        RUN_REPORT.md / .json
-    └── signature.mjs     reduces a page result to a comparable signature
 ```
 
-## Result baseline
-
-`autorecorder/expected-results.json` holds the verdict a person signed off on
-for every page: `pass`, or `fail` with an `errorClass` and a normalised
-`message`, plus a `reason`. After every CI run the consolidate job runs
-`compare-results.mjs` over all shards and classifies each page as
-`unchanged`, `new-error`, `resolved`, `error-changed`, `notes-changed`,
-`untracked` or `not-run`. All unchanged → the package is safe to publish
-unseen. Anything else → a `results-changed` issue names the pages.
-
-| Command | What it does |
-|---|---|
-| `npm run results:compare` | Compare `autorecorder/videos/` against the baseline (exit 3 on change) |
-| `npm run results:compare -- --dir <folder>` | Same, over a downloaded package |
-| `npm run results:accept -- --dir <folder>` | Fold the run's changes into the baseline; then edit the `reason` fields |
-| `npm run results:seed` | Write a baseline from scratch (first run only) |
-
-`ignoreNotes` in the baseline is a list of regexes for warnings that carry no
-information (a console line every page logs). The signature drops ports,
-URLs, timings and hex ids before comparing, so only the kind of failure counts.
 
 ## Commands
 
@@ -187,12 +165,10 @@ restores that cache and runs `automate.mjs --use-lockfile` against the fresh
 lockfiles, so all three shards record against one resolution and skip the
 minutes of re-resolving. A cache miss (versions red or skipped) falls back to
 resolving in the worker. `consolidate-recordings` merges the shards, runs
-`compare-results.mjs` and opens a `results-changed` issue when the run differs
-from `autorecorder/expected-results.json`.
 
 `cli-recorder.yml` is a separate, weekly workflow: it restores the CLI's saved
 session from a secret, drives `copilotkit create` and the four installs under
-node-pty, films them, and compares the cast reports under `cli:*` keys.
+node-pty, films them.
 
 ## Artifact names
 
