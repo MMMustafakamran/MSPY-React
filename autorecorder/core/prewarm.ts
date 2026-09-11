@@ -18,7 +18,10 @@ export async function prewarmDemoRoutes(
   pages: PageRecordConfig[],
   { timeoutMs = 120_000, log = console.log }: { timeoutMs?: number; log?: (s: string) => void } = {},
 ): Promise<void> {
-  const urls = [...new Set(pages.filter((p) => !p.devServer && p.demoUrl).map((p) => p.demoUrl))];
+  // `devServer` exists only on the recorders that film the CLI; elsewhere it is
+  // simply absent and every page qualifies.
+  const bootsItself = (p: PageRecordConfig): boolean => Boolean((p as { devServer?: unknown }).devServer);
+  const urls = [...new Set(pages.filter((p) => !bootsItself(p) && p.demoUrl).map((p) => p.demoUrl))];
   if (urls.length === 0) return;
 
   log(`\n🔥 Pre-warming ${urls.length} demo route(s) so no take opens on a cold compile...`);
