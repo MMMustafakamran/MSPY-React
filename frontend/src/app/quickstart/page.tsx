@@ -94,8 +94,8 @@ export default function Page() {
 
       <Callout tone="warn" title="Model id in the docs">
         The Quickstart&apos;s env block sets{" "}
-        <code>OPENAI_CHAT_MODEL_ID=gpt-5.6-luna</code> while the Python code
-        directly beneath it defaults to <code>gpt-5.6-luna</code>. This repo keeps
+        <code>OPENAI_CHAT_MODEL_ID=gpt-5.4-mini</code> while the Python code
+        directly beneath it defaults to <code>gpt-5.4-mini</code>. This repo keeps
         the code&apos;s default and lets <code>OPENAI_CHAT_MODEL_ID</code>{" "}
         override it.
       </Callout>
