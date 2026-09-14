@@ -89,26 +89,28 @@ export const runThreadsDrawerAction: PageActionHandler = async (
 export const runThreadsHeadlessAction: PageActionHandler = async (
   page: Page,
   config: PageRecordConfig,
+  _rootPath,
+  ctx,
 ) => {
   // 1/4: let the sidebar finish loading BEFORE typing. `useThreads` starts in
   // isLoading, and this page renders a narrower placeholder until it resolves;
   // typing during that window measures the composer at coordinates it is about
   // to move away from, and the click lands beside the textarea.
-  console.log(`   [ThreadsHeadless] 1/4: Waiting for the thread list to settle...`);
+  console.log(`   [ThreadsHeadless] 1/5: Waiting for the thread list to settle...`);
   await page.locator(HEADLESS_ROW).first().waitFor({ timeout: 25000 }).catch(() => {
     console.log(`   [ThreadsHeadless] No rows rendered — check the runtime is Intelligence-backed.`);
   });
   await dwellOn(page, HEADLESS_ROW, 1800);
 
   // 2/4: a conversation of our own, on top of whatever was already there.
-  console.log(`   [ThreadsHeadless] 2/4: Sending a prompt...`);
+  console.log(`   [ThreadsHeadless] 2/5: Sending a prompt...`);
   const msgCount = await sendPrompt(page, promptsFor(config)[0], { timeoutMs: 12000 });
   await waitForAgentResponseCompletion(page, config.waitAfterPromptMs ?? 4000, msgCount);
   await dwellOn(page, HEADLESS_ROW, 1500);
 
   // 3/4: archived threads are hidden until asked for. Ticked and unticked
   // rather than archiving anything, so a recording never mutates the list.
-  console.log(`   [ThreadsHeadless] 3/4: Toggling the archived filter...`);
+  console.log(`   [ThreadsHeadless] 3/5: Toggling the archived filter...`);
   if (await glideClick(page, 'input[type="checkbox"]', 'Archived toggle')) {
     await beat(2200);
     await glideClick(page, 'input[type="checkbox"]', 'Archived toggle');
@@ -116,7 +118,7 @@ export const runThreadsHeadlessAction: PageActionHandler = async (
   }
 
   // 4/4: switching threads — here it is our own useState driving `threadId`.
-  console.log(`   [ThreadsHeadless] 4/4: Switching to an earlier conversation...`);
+  console.log(`   [ThreadsHeadless] 4/5: Switching to an earlier conversation...`);
   const rows = page.locator(HEADLESS_ROW);
   const index = (await rows.count()) > 1 ? 1 : 0;
   const box = await rows.nth(index).locator('button').first().boundingBox().catch(() => null);
@@ -124,6 +126,24 @@ export const runThreadsHeadlessAction: PageActionHandler = async (
     await humanGlide(page, box.x + box.width / 2, box.y + box.height / 2, 22);
     await humanClick(page);
     await beat(4000);
+  }
+  // The section the page added under the four steps -- one agent per thread.
+  // Two `useAgent({ agentId, runtimeAgentId, threadId })` hooks mount here,
+  // each pinned to its own thread; a panel that never paints means the private
+  // proxied agent did not register, which is the claim being tested.
+  console.log(`   [ThreadsHeadless] Resting on the per-thread agents...`);
+  const perThread = page.locator('[data-testid="per-thread-agents"]');
+  if (await perThread.first().isVisible({ timeout: 8000 }).catch(() => false)) {
+    await dwellOn(page, '[data-testid="per-thread-agents"]', 2500);
+    const ready = await page
+      .locator('[data-testid="thread-agent-run"]')
+      .first()
+      .isEnabled({ timeout: 4000 })
+      .catch(() => false);
+    if (ready) console.log(`   ✅ Thread-scoped agent is ready; runAgent() addresses its own thread.`);
+    else ctx.warn('The thread-scoped agent never became ready (isReady stayed false), so runAgent() could not address its thread.');
+  } else {
+    ctx.fail('The per-thread agent panel never rendered -- useAgent({ agentId, runtimeAgentId, threadId }) did not mount.');
   }
 };
 
