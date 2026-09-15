@@ -123,6 +123,8 @@ If it requires a CopilotKit CLI session check, you have permission to run it. Ne
 
 ## Use published Skills
 
+[Automatic learned skill delivery](/ms-agent-python/intelligence/learned-skills) keeps published skills available through a framework-native adapter. Use the CLI workflow below for manual loading or offline inspection.
+
 From a directory connected to the same Intelligence project, download the container's published Skills:
 
 ```bash title="Terminal"
