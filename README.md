@@ -169,7 +169,7 @@ Then edit `backend/.env`:
 | `AUTH_BEARER_TOKEN`                 | `backend/.env`        | Enables the bearer-token middleware. Unset by default.                                     |
 | `MS_AGENT_URL`                      | `frontend/.env.local` | Where the runtime finds the agent. Defaults to `http://localhost:8000`.                    |
 | `NEXT_PUBLIC_AUTH_BEARER_TOKEN`     | `frontend/.env.local` | The token the provider forwards. Must match the backend's.                                 |
-| `COPILOTKIT_LICENSE_TOKEN`          | `frontend/.env.local` | `/threads` only. Signed license, verified offline — no login, no network call.              |
+| `COPILOTKIT_LICENSE_TOKEN`          | `frontend/.env.local` | `/threads`, self-hosted/OSS only. Signed license, verified offline. Not issued for managed projects. |
 | `CPK_INTELLIGENCE_API_KEY`          | `frontend/.env.local` | `/threads` only. Project key for the managed thread store. `INTELLIGENCE_API_KEY` still read. |
 | `INTELLIGENCE_API_URL`              | `frontend/.env.local` | `/threads` only. Managed Intelligence REST endpoint.                                        |
 | `INTELLIGENCE_GATEWAY_WS_URL`       | `frontend/.env.local` | `/threads` only. Managed realtime endpoint — a different host from the REST one.             |
@@ -177,7 +177,9 @@ Then edit `backend/.env`:
 > Next.js does not read the repo-root `.env`. Frontend variables belong in `frontend/.env.local`. In practice you only need `OPENAI_API_KEY`.
 
 
-The four `/threads` variables are the only credentials in this repo that are not optional for the feature they serve — thread storage lives in CopilotKit's managed Intelligence platform, not in the agent or the runtime. `npx copilotkit@latest init` mints all four; this repo's values were copied from the project it scaffolded under `1-cli-testing/`. Leave them unset and `/threads` degrades rather than breaking: the read-only thread routes still answer from the runtime's in-memory fallback, mutations return 422, and the prebuilt drawer renders locked.
+The `/threads` variables are the only credentials in this repo that are not optional for the feature they serve — thread storage lives in CopilotKit's managed Intelligence platform, not in the agent or the runtime. `npx copilotkit@latest init` mints them; this repo's values were copied from the project it scaffolded under `1-cli-testing/`. Leave them unset and `/threads` degrades rather than breaking: the read-only thread routes still answer from the runtime's in-memory fallback, mutations return 422, and the prebuilt drawer renders locked.
+
+As of the 2026-09-15 sync the drawer page splits these by deployment: `CPK_INTELLIGENCE_API_KEY` is the credential for a managed project, and `COPILOTKIT_LICENSE_TOKEN` is for self-hosted or offline licensing only — managed setup does not issue one, and it does not substitute for the project key. The runtime gate here follows that split: the project key alone wires Intelligence, and the license token is passed only when set.
 
 **Default ports:** frontend **3000**, backend **8000**.
 

@@ -23,7 +23,15 @@ import type { ReactNode } from "react";
 
 const RUNTIME_URL = "/api/copilotkit";
 
-const LICENSE_KEY = process.env.NEXT_PUBLIC_COPILOTKIT_LICENSE_KEY;
+// No `publicLicenseKey`. As of the 2026-09-15 sync the Threads Drawer page
+// publishes the provider with `runtimeUrl` alone and states the drawer resolves
+// its entitlement through the Runtime, so the credential is server-side
+// configuration rather than a prop here. See `lib/intelligence-runtime.ts`.
+//
+// Note the docs disagree with themselves: /ms-agent-python/inspector still
+// publishes `publicLicenseKey={process.env.NEXT_PUBLIC_COPILOTKIT_LICENSE_KEY}`
+// on the provider. Following the newer page so the server-side claim is the one
+// actually under test.
 const AUTH_TOKEN = process.env.NEXT_PUBLIC_AUTH_BEARER_TOKEN;
 
 export function Providers({ children }: { children: ReactNode }) {
@@ -32,7 +40,6 @@ export function Providers({ children }: { children: ReactNode }) {
     // [!code highlight]
     <CopilotKitProvider
       runtimeUrl={RUNTIME_URL}
-      {...(LICENSE_KEY ? { publicLicenseKey: LICENSE_KEY } : {})}
       {...(AUTH_TOKEN
         ? { headers: { Authorization: `Bearer ${AUTH_TOKEN}` } }
         : {})}

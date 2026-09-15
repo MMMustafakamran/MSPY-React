@@ -54,10 +54,18 @@ const INTELLIGENCE_KEY = firstSet(
 );
 const LICENSE_TOKEN = firstSet(process.env.COPILOTKIT_LICENSE_TOKEN);
 
-/** True when both credentials are present, so Intelligence is actually wired. */
-export const INTELLIGENCE_CONFIGURED = Boolean(
-  INTELLIGENCE_KEY && LICENSE_TOKEN,
-);
+/**
+ * True when Intelligence is actually wired.
+ *
+ * Keyed on the project API key alone as of the 2026-09-15 sync: the Threads
+ * Drawer page now states managed project setup does **not** issue
+ * `COPILOTKIT_LICENSE_TOKEN`, and that the token is only for offline or
+ * self-hosted licensing rather than a replacement for the managed key. The old
+ * `KEY && TOKEN` gate dropped a correctly-configured managed project to the
+ * in-memory runner, which is precisely the locked drawer the page says should
+ * not happen.
+ */
+export const INTELLIGENCE_CONFIGURED = Boolean(INTELLIGENCE_KEY);
 
 const mainAgent = () => new HttpAgent({ url: `${AGENT_URL}/` });
 
@@ -78,7 +86,7 @@ export function createIntelligenceRuntime(): CopilotRuntime {
     // routes off the in-memory runner's local-dev fallback (list, messages,
     // events, state). Rename/archive/delete and realtime sync return 422, and
     // `/info` omits `licenseStatus`, which leaves the prebuilt drawer locked.
-    ...(INTELLIGENCE_KEY && LICENSE_TOKEN
+    ...(INTELLIGENCE_KEY
       ? {
           intelligence: new CopilotKitIntelligence({
             apiKey: INTELLIGENCE_KEY,
@@ -114,7 +122,11 @@ export function createIntelligenceRuntime(): CopilotRuntime {
               request.headers.get("x-copilotkit-user-id") ?? "demo-user";
             return { id, name: id === "demo-user" ? "Demo User" : id };
           },
-          licenseToken: LICENSE_TOKEN,
+          // Self-hosted / OSS licensing only. The page documents the option as
+          // winning over `COPILOTKIT_LICENSE_TOKEN` when both are set; here the
+          // option *is* the env var, and it is omitted when unset so a managed
+          // project is not handed an empty credential.
+          ...(LICENSE_TOKEN ? { licenseToken: LICENSE_TOKEN } : {}),
         }
       : { runner: new InMemoryAgentRunner() }),
   });
