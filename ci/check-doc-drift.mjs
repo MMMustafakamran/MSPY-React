@@ -3,6 +3,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import readline from 'node:readline/promises';
 import { fileURLToPath } from 'node:url';
+
+import { mergeChangelog, renderRun } from './lib/changelog.mjs';
+import { checkLinkedPageGaps } from './lib/linked-pages.mjs';
 import { checkPageCoverage, formatCoverageTable } from './check-page-coverage.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -10,6 +13,7 @@ const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.resolve(__dirname, '..');
 const MANIFEST_PATH = path.join(ROOT_DIR, 'doc-snapshot', 'manifest.json');
 const PAGES_DIR = path.join(ROOT_DIR, 'doc-snapshot', 'pages');
+const CHANGELOG_PATH = path.join(ROOT_DIR, 'doc-snapshot', 'CHANGELOG.md');
 
 const CONCURRENCY = 6;
 const TIMEOUT_MS = 10000;
@@ -106,6 +110,9 @@ async function checkPage(docPath, pageMeta) {
       file: pageMeta.file,
       drifted: true,
       severity,
+      // Kept so the changelog can show what moved. The snapshot is overwritten
+      // moments later, so this is the only surviving copy of the old text.
+      oldText: oldContent,
       oldHash: pageMeta.sha256.slice(0, 8),
       newHash: fetchedHash.slice(0, 8),
       fullHash: fetchedHash,
@@ -150,6 +157,32 @@ export async function applyDocUpdates(driftedPages) {
   await fs.writeFile(MANIFEST_PATH, JSON.stringify(manifest, null, 2) + '\n', 'utf8');
   console.log(`\n💾 Successfully updated ${updatedCount} markdown file(s) and saved doc-snapshot/manifest.json.`);
   return updatedCount;
+}
+
+/**
+ * Record the run in doc-snapshot/CHANGELOG.md.
+ *
+ * Written *after* the snapshot, and from the drifted pages rather than by
+ * re-reading it, because applying the update destroys the evidence: the next
+ * run compares clean and would have nothing to say. `/doc-sync` has always done
+ * this; the CLI did not, so every `npm run drift:sync` synced past a change
+ * without leaving a record of it.
+ */
+async function writeChangelogEntry({ driftedPages, newPages, manifest }) {
+  const ranAt = new Date().toISOString();
+  const entry = renderRun({ ranAt, pages: driftedPages, newPages, manifest });
+  if (!entry) return false;
+
+  let existing = '';
+  try {
+    existing = await fs.readFile(CHANGELOG_PATH, 'utf8');
+  } catch {
+    // First change in a fresh clone creates the file.
+  }
+
+  await fs.writeFile(CHANGELOG_PATH, mergeChangelog(existing, ranAt.slice(0, 10), entry), 'utf8');
+  console.log(`📝 Recorded this sync in doc-snapshot/CHANGELOG.md.`);
+  return true;
 }
 
 /**
@@ -245,12 +278,30 @@ export async function checkAllDocDrift() {
     for (const u of sitemap.missingFromSitemap) console.log(`   · not in sitemap: ${u}`);
   }
 
+  // The sitemap is not a complete index of every section (see ci/lib/linked-pages.mjs),
+  // so the snapshots are read as a second, independent source of page names.
+  const linked = await checkLinkedPageGaps(manifest, PAGES_DIR);
+  if (linked.error) {
+    console.log(`ℹ️  Snapshot link scan failed (${linked.error}); linked-page gaps NOT checked this run.`);
+  } else {
+    console.log(
+      `🔗 Snapshot links: ${linked.scanned} page(s) scanned, ${linked.candidates} in-section link target(s) ` +
+        `tracked nowhere — ${linked.untracked.length} live, ${linked.broken.length} dead.`,
+    );
+  }
+
+  // One list, so a page found by either source is reported once. The sitemap
+  // misses whole sections; the link scan misses anything nothing links to.
+  const newPages = [...new Set([...(sitemap.newUnmapped ?? []), ...(linked.untracked ?? [])])].sort();
+
   return {
     total: entries.length,
     checked: results.length,
-    drifted: driftedPages.length > 0 || sitemap.newUnmapped.length > 0,
+    drifted: driftedPages.length > 0 || newPages.length > 0,
     driftedPages,
     sitemap,
+    linked,
+    newPages,
     errors,
   };
 }
@@ -284,11 +335,21 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   }
   console.log('');
 
-  if (result.sitemap.newUnmapped.length > 0) {
-    console.log('🆕 [NEW UPSTREAM PAGES] Listed in the sitemap, tracked nowhere in this repo:');
-    for (const u of result.sitemap.newUnmapped) console.log(` • ${u}`);
+  if (result.newPages.length > 0) {
+    const fromSitemap = new Set(result.sitemap.newUnmapped ?? []);
+    console.log('🆕 [NEW UPSTREAM PAGES] Live upstream, tracked nowhere in this repo:');
+    for (const u of result.newPages) {
+      // Saying which source found it matters: a page only the link scan sees is
+      // also evidence that this section is missing from the sitemap.
+      console.log(` • ${u}  ${fromSitemap.has(u) ? '(sitemap)' : '(linked from a tracked page)'}`);
+    }
     console.log('   Snapshot them from http://localhost:3000/doc-sync, or add them to\n' +
       '   sitemap.knownUnmapped in doc-snapshot/manifest.json to acknowledge them.\n');
+  }
+  if (result.linked?.broken?.length > 0) {
+    console.log('🔗 [DEAD LINKS IN TRACKED PAGES] In-section links whose markdown endpoint 404s:');
+    for (const b of result.linked.broken) console.log(` • ${b.docPath}`);
+    console.log('   These are upstream defects, not repo gaps — they belong in the QA report.\n');
   }
   const gone = result.driftedPages.filter((p) => p.status === '404' &&
     result.sitemap.missingFromSitemap?.includes(`https://docs.copilotkit.ai${p.docPath}`));
@@ -309,8 +370,11 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     }
     console.log('───────────────────────────────────────────────────────────────────────────');
 
+    const manifest = JSON.parse(await fs.readFile(MANIFEST_PATH, 'utf8'));
+
     if (autoUpdate) {
       console.log('\n🔄 Applying changes to local markdown snapshot files (--update flag)...');
+      await writeChangelogEntry({ driftedPages: result.driftedPages, newPages: result.newPages, manifest });
       await applyDocUpdates(result.driftedPages);
       console.log('✨ Local markdown files are now in sync with live docs.');
       process.exit(0);
@@ -322,7 +386,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 
         if (answer.trim().toLowerCase() === 'y' || answer.trim().toLowerCase() === 'yes') {
           console.log('\n🔄 Applying changes to local markdown files...');
-          await applyDocUpdates(result.driftedPages);
+          await writeChangelogEntry({ driftedPages: result.driftedPages, newPages: result.newPages, manifest });
+      await applyDocUpdates(result.driftedPages);
           console.log('✨ Local markdown files are now in sync with live docs.');
           process.exit(0);
         }
@@ -333,7 +398,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     }
   }
   if (result.driftedPages.length === 0) {
-    if (result.sitemap.newUnmapped.length > 0) process.exit(2);
+    // A sync cannot clear this: nothing was snapshotted, so there is no entry to
+    // write and the gate stays shut until the page is tracked or acknowledged.
+    if (result.newPages.length > 0) process.exit(2);
     console.log(`✅ [NO DOC DRIFT] All ${result.total} documentation pages match the local snapshot.`);
     if (result.errors.length > 0) {
       console.log(`ℹ️  Note: ${result.errors.length} page(s) could not be fetched due to network timeout.`);
