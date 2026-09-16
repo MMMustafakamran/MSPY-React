@@ -596,6 +596,31 @@ export const PAGES = definePages([
     },
   },
   {
+    id: 'intelligence-learned-skills',
+    name: 'Intelligence - Automatic learned skill delivery',
+    videoName: 'LearnedSkills',
+    docPath: 'intelligence/learned-skills',
+    route: 'intelligence/learned-skills',
+    // There is no adapter to show, so the IDE tab is the demo itself: the two
+    // tool names the page reserves, listed as absent rather than registered.
+    ideFile: 'frontend/src/app/intelligence/learned-skills/demo-chat/page.tsx',
+    startLine: 7,
+    endLine: 28,
+    prompt: 'List the skills you can load, then load the refund-policy skill and follow it.',
+    waitAfterPromptMs: 3000,
+    knownIssue: {
+      area: "Microsoft Agent Framework - Intelligence - Automatic learned skill delivery",
+      problem:
+        "The page is published in the Python section but its only Microsoft Agent Framework adapter is `CopilotKit.Intelligence.AgentFramework`, a C# package targeting net9.0, with a C# worked example. There is no Python path for this framework anywhere on the page. The base client the page says Python uses, `copilotkit-intelligence-runtime`, is not on PyPI (404 as of 2026-09-16), and neither are the two Python adapters it lists, `copilotkit-intelligence-langgraph` and `copilotkit-intelligence-adk`. The TypeScript siblings @copilotkit/intelligence-langgraph and -mastra are published at 1.71.2 (2026-09-14), so the gap is Python-side rather than the whole feature being unreleased.",
+      impact:
+        "Nothing on the page can be followed from this backend. The two tools it reserves, `copilotkit_load_skill` and `copilotkit_read_skill_file`, are never registered, so the agent answers from its own instructions and the failure looks like an ordinary reply rather than a missing integration.",
+      likelyCause:
+        "The page's own closing section says \"The server migration and v1 delivery endpoint must deploy before adapters rely on them\", i.e. the feature may not be live yet -- but that is a deployment note at the bottom, not a prerequisite at the top, and nothing earlier is marked unavailable. The same page is published byte-identically under /agno, /ms-agent-python and /deepagents; of those three, Agno has no adapter row, Microsoft Agent Framework has only a .NET 9 one, and the LangGraph Python one 404s.",
+      expectsNoResponse: false,
+      note: "learned-skills - published under /ms-agent-python but the adapter is .NET\n\nthe only MS Agent Framework row is CopilotKit.Intelligence.AgentFramework\ntargets net9.0, worked example is C#. this repo is python\n\nthe generic python client it names doesnt exist either:\ncopilotkit-intelligence-runtime -> 404 on pypi\n\nTS ones are real (1.71.2, 14 Sep) so its the python side thats missing\n\nso the two tools never get registered, agent just answers normally",
+    },
+  },
+  {
     id: 'intelligence-quickstart',
     name: 'Intelligence - Connect Intelligence in 5 minutes',
     videoName: 'IntelligenceQuickstart',

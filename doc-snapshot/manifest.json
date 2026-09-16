@@ -399,6 +399,18 @@
       "status": "ok",
       "age": 0,
       "date": "Tue, 15 Sep 2026 09:10:18 GMT"
+    },
+    "/ms-agent-python/intelligence/learned-skills": {
+      "file": "ms-agent-python__intelligence__learned-skills.md",
+      "sha256": "bd49a7819ce87e32b903760f3af844c4ca7be3ff8c0ca7d0cd827e12234e95a3",
+      "bytes": 13618,
+      "lines": 223,
+      "routes": [
+        "/intelligence/learned-skills"
+      ],
+      "status": "ok",
+      "age": 0,
+      "date": "Wed, 16 Sep 2026 07:23:16 GMT"
     }
   },
   "sitemap": {
