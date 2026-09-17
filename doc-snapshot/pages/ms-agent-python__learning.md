@@ -25,28 +25,25 @@ Learning starts with a container, which groups Threads from the same kind of wor
 
 When a pattern can be reused, Learning proposes a Skill. You review the supporting Threads and decide whether to publish it. A published Skill is a versioned set of instructions that you load into your agent; Learning does not change the model itself.
 
-## Set up Learning
+## Start with your coding agent
 
-When you are done, your Runtime will send selected Threads to a Learning container, ready to be analyzed and turned into reviewed Skills.
+Copy this prompt into your coding agent to inspect your existing app and configure Automatic Learning for one focused workflow. Prefer to work through the setup yourself? Follow the manual steps below.
 
-<Steps>
-  <Step>
-    ### Optional: Set it up with your coding agent
-
-    Copy this prompt into your coding agent to inspect your existing app and configure Automatic Learning for one focused workflow. Prefer to work through the setup yourself? Skip this step and continue below.
-
-    #### Copy this prompt into your coding agent
+#### Copy this prompt into your coding agent
 
 ```text
 Help me set this up in my CopilotKit app. Run this command and follow the instructions:
 
 npx --yes copilotkit@latest onboard start --intent add-learning
 
-If it requires a CopilotKit CLI session check, you have permission to run it. Never reveal credentials or send optional diagnostic feedback reports.
+If it requires a CopilotKit CLI session check, you have permission to run it. Never reveal credentials.
 ```
 
-  </Step>
+## Set up Learning manually
 
+When you are done, your Runtime will send selected Threads to a Learning container, ready to be analyzed and turned into reviewed Skills.
+
+<Steps>
   <Step>
     ### Connect CopilotKit Intelligence
 

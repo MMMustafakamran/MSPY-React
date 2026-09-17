@@ -18,7 +18,7 @@ Help me set this up in my CopilotKit app. Run this command and follow the instru
 
 npx --yes copilotkit@latest onboard start --intent add-rich-threads
 
-If it requires a CopilotKit CLI session check, you have permission to run it. Never reveal credentials or send optional diagnostic feedback reports.
+If it requires a CopilotKit CLI session check, you have permission to run it. Never reveal credentials.
 ```
 
 ## Set it up manually

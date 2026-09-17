@@ -4,11 +4,6 @@
 
 
 
-<IntelligenceOnboardingPrompt
-  feature="threads"
-  surface="docs_threads_overview"
-/>
-
 <div
   aria-label="A support workspace using Threads Drawer to move between customer conversations while CopilotChat renders the selected case details."
   className="shell-docs-radius-surface relative mb-4 overflow-hidden border border-[var(--border)] bg-[var(--bg-surface)] shadow-[0px_16px_24px_-8px_rgba(1,5,7,0.12)] ring-1 ring-inset ring-white/70 dark:shadow-[0px_16px_32px_-10px_rgba(0,0,0,0.45)] dark:ring-white/10"
@@ -29,65 +24,62 @@
 </Callout>
 
 
-## Get started
+## Start with your coding agent
 
-Create a new CopilotKit app connected to cloud-hosted CopilotKit Intelligence. Your application and CopilotKit Runtime run locally while CopilotKit Intelligence stores and synchronizes Rich Threads.
+Copy this prompt into your coding agent to inspect your existing CopilotKit app and configure Rich Threads with CopilotKit Intelligence. Prefer to work through the setup yourself? Follow the manual steps below.
 
-<Accordions>
-<Accordion title="Build and verify this with a coding agent">
-
-<DocsTrackedCopy surface="docs_threads_agent_prompt">
+### Copy this prompt into your coding agent
 
 ```text
-Set up and verify a CopilotKit Rich Threads application with cloud-hosted
-CopilotKit Intelligence.
+Help me set this up in my CopilotKit app. Run this command and follow the instructions:
 
-First inspect this repository and follow its agent instructions. If this is not
-already a CLI-created CopilotKit Threads starter, run
-`npx copilotkit@latest init` and ask me to complete the interactive browser
-sign-in and CopilotKit Intelligence project selection when needed. Use the
-scaffolded local application and CopilotKit Runtime configuration.
+npx --yes copilotkit@latest onboard start --intent add-rich-threads
 
-Keep the Threads Drawer that comes with the starter. Do not rebuild it or invent
-manual CopilotKit Intelligence environment configuration. Do not set up a local
-Intelligence service.
-
-Start the application and Runtime using the generated instructions. Create a
-conversation through the included Threads Drawer, reload or reopen it, and
-verify that the complete conversation returns. If browser interaction requires
-me, give me the exact step and continue after I confirm it.
-
-Finish by reporting the files changed, commands run, and the persistence check
-you completed. Stop and explain the blocker if the cloud-hosted setup cannot be
-completed; do not substitute an undocumented setup.
+If it requires a CopilotKit CLI session check, you have permission to run it. Never reveal credentials.
 ```
 
-</DocsTrackedCopy>
+## Set up Rich Threads manually
 
-</Accordion>
-</Accordions>
+Create a new CopilotKit app connected to cloud-hosted CopilotKit Intelligence. Your application and CopilotKit Runtime run locally while CopilotKit Intelligence stores and synchronizes Rich Threads. If you already have a working app, follow the [Intelligence quickstart](/ms-agent-python/intelligence/quickstart#set-it-up-manually) to connect it instead.
 
-Or follow the steps yourself:
+<Steps>
+  <Step>
+    ### Create your app
 
-1. Run the interactive starter command:
+    Run the interactive starter command:
 
-   <DocsTrackedCopy surface="docs_threads_managed_setup">
+    <DocsTrackedCopy surface="docs_threads_managed_setup">
 
-   ```bash title="Terminal"
-   npx copilotkit@latest init
-   ```
+    ```bash title="Terminal"
+    npx copilotkit@latest init
+    ```
 
-   </DocsTrackedCopy>
+    </DocsTrackedCopy>
+  </Step>
 
-2. Complete browser sign-in, then create or select a CopilotKit Intelligence project when the CLI asks.
-3. Start the generated application and Runtime with the command printed by the CLI. For the standard npm setup:
+  <Step>
+    ### Connect CopilotKit Intelligence
 
-   ```bash title="Terminal"
-   cd <project-directory>
-   npm run dev
-   ```
+    Complete browser sign-in, then create or select a CopilotKit Intelligence project when the CLI asks.
+  </Step>
 
-4. Use the included Threads Drawer to create a conversation. Reload the page or reopen the conversation and confirm that its complete history returns.
+  <Step>
+    ### Start your app and Runtime
+
+    Start the generated application and Runtime with the command printed by the CLI. For the standard npm setup:
+
+    ```bash title="Terminal"
+    cd <project-directory>
+    npm run dev
+    ```
+  </Step>
+
+  <Step>
+    ### Verify your first Rich Thread
+
+    Use the included Threads Drawer to create a conversation. Reload the page or reopen the conversation and confirm that its complete history returns.
+  </Step>
+</Steps>
 
 Threads-capable CLI starters already include [Threads Drawer](/ms-agent-python/prebuilt-components/copilot-threads-drawer). Use its guide when you are ready to customize the drawer. Choose [Headless Threads](/ms-agent-python/headless-threads) later if your product needs a fully custom thread UI.
 

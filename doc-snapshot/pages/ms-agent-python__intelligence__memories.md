@@ -1,11 +1,7 @@
 # Memories & Recall
 
-> How long-term memory works in CopilotKit Intelligence: what a memory is, the three kinds, user and project scope, how activation is entitled, and how to read and write memories from React, Angular, REST, or MCP.
+> Give your agents long-term memory across conversations.
 
-<IntelligenceOnboardingPrompt
-  feature="learning"
-  surface="docs_learn_memories"
-/>
 
 Threads remember a conversation. Memories remember a person. This page explains
 what a memory is, how recall selects them, and what has to be true of your
@@ -85,6 +81,40 @@ any `sourceThreadIds` you want to keep.
 Removing a memory retires it rather than erasing it. Retired memories are
 excluded from recall and from the default list, and can be surfaced again by
 asking for invalidated rows explicitly.
+
+## Start with your coding agent
+
+Copy this prompt into your coding agent to inspect your existing CopilotKit app and configure long-term memory for your users. Prefer to work through the setup yourself? Follow the manual steps below.
+
+### Copy this prompt into your coding agent
+
+```text
+Help me set up long-term Memories & Recall in my existing CopilotKit app. Read https://docs.copilotkit.ai/intelligence/memories and follow its setup instructions. Inspect my app and deployment, confirm memory entitlement and the required configuration, then implement and verify saving and recalling a memory for the signed-in user. Never reveal credentials.
+```
+
+## Set up Memory manually
+
+When you are done, your app will be able to save a memory for a signed-in user and recall it in a later conversation.
+
+<Steps>
+  <Step>
+    ### Connect CopilotKit Intelligence
+
+    Complete the [Intelligence quickstart](/ms-agent-python/intelligence/quickstart#set-it-up-manually) to connect your existing app and configure server-side user identity.
+  </Step>
+
+  <Step>
+    ### Confirm memory access
+
+    Check your deployment's memory entitlement and embedding configuration using [Activating memory](#activating-memory) below. Managed deployments require no embedder configuration on your side; self-hosted deployments need both a memory-enabled license and a configured embedder.
+  </Step>
+
+  <Step>
+    ### Save and recall a memory
+
+    Choose the appropriate [reading and writing interface](#reading-and-writing-memories) for your app. Save a memory for the signed-in user, then recall it with a related query in a new conversation. Confirm the saved memory is returned.
+  </Step>
+</Steps>
 
 ## Activating memory
 

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "docsRoot": "https://docs.copilotkit.ai/ms-agent-python",
-  "syncedAt": "2026-09-16T06:10:43.332Z",
+  "syncedAt": "2026-09-17T07:24:54.971Z",
   "pages": {
     "/ms-agent-python": {
       "file": "ms-agent-python.md",
@@ -222,15 +222,15 @@
     },
     "/ms-agent-python/intelligence/quickstart": {
       "file": "ms-agent-python__intelligence__quickstart.md",
-      "sha256": "b543235d4a6cba94cf5e6a2914ab8b9445255913b548eb0017d0b9d445ef7fd0",
-      "bytes": 6025,
+      "sha256": "1ee917aa2349850a93d81eb2f35057b25b529bf1982f36ba3b819e3c87df5eb3",
+      "bytes": 5980,
       "lines": 157,
       "routes": [
         "/intelligence/quickstart"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Mon, 14 Sep 2026 07:09:46 GMT"
+      "date": "Thu, 17 Sep 2026 07:24:54 GMT"
     },
     "/ms-agent-python/prebuilt-components": {
       "file": "ms-agent-python__prebuilt-components.md",
@@ -270,15 +270,15 @@
     },
     "/ms-agent-python/quickstart": {
       "file": "ms-agent-python__quickstart.md",
-      "sha256": "e78d5538bda61d31a1b9ba23f26b0c3fe2697753638f13f0476831701e9e0808",
-      "bytes": 23139,
-      "lines": 576,
+      "sha256": "f9e92c686631cea6647c7b1ebe0739540ceb33484e225b367dfe03215a78010b",
+      "bytes": 23387,
+      "lines": 577,
       "routes": [
         "/quickstart"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 16 Sep 2026 06:10:43 GMT"
+      "date": "Thu, 17 Sep 2026 07:24:54 GMT"
     },
     "/ms-agent-python/shared-state/in-app-agent-read": {
       "file": "ms-agent-python__shared-state__in-app-agent-read.md",
@@ -306,15 +306,15 @@
     },
     "/ms-agent-python/threads": {
       "file": "ms-agent-python__threads.md",
-      "sha256": "4edfb6f1c23fe18eb212563e79a1e60e6897186a2b3de40e9d62589b04ce8076",
-      "bytes": 11998,
-      "lines": 211,
+      "sha256": "a446497750bf6fc615a66646ec5dd0db73fcd93dedac5ce4bf3096a571cc3515",
+      "bytes": 11533,
+      "lines": 203,
       "routes": [
         "/threads"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Fri, 04 Sep 2026 07:58:36 GMT"
+      "date": "Thu, 17 Sep 2026 07:24:54 GMT"
     },
     "/ms-agent-python/threads-lifecycle": {
       "file": "ms-agent-python__threads-lifecycle.md",
@@ -330,15 +330,15 @@
     },
     "/ms-agent-python/webmcp": {
       "file": "ms-agent-python__webmcp.md",
-      "sha256": "72a287bd0eaffcefe156ca4fb1c449cadea65604bba604e513a9452104386858",
-      "bytes": 7491,
+      "sha256": "84883e8a535c51bf32c2c56518572e5cc38553b9236fc4416aa85a914b483349",
+      "bytes": 7494,
       "lines": 165,
       "routes": [
         "/webmcp"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 09 Sep 2026 07:58:40 GMT"
+      "date": "Thu, 17 Sep 2026 07:24:54 GMT"
     },
     "/ms-agent-python/generative-ui/frontend-cards": {
       "file": "ms-agent-python__generative-ui__frontend-cards.md",
@@ -378,27 +378,27 @@
     },
     "/ms-agent-python/intelligence/memories": {
       "file": "ms-agent-python__intelligence__memories.md",
-      "sha256": "bc87ba1e29d7eca514be0e77594f17752fd8bfbcab87c333d6d0b995869280ce",
-      "bytes": 11081,
-      "lines": 284,
+      "sha256": "9315f7ed3ca21e51140fd05ea1786c0ab2e275ddb1bcf2f72ec0373adcf91411",
+      "bytes": 12515,
+      "lines": 314,
       "routes": [
         "/intelligence/memories"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Thu, 10 Sep 2026 09:09:31 GMT"
+      "date": "Thu, 17 Sep 2026 07:24:54 GMT"
     },
     "/ms-agent-python/learning": {
       "file": "ms-agent-python__learning.md",
-      "sha256": "170ceed0e1bc86ccd215324245b8620a49655ac82d1cf9cdd3bb075050308d89",
-      "bytes": 7321,
-      "lines": 154,
+      "sha256": "9ccfc3199f2334106d8ceebb62d07027f528d75e0f57dd69e1a9aab03d112bc3",
+      "bytes": 7234,
+      "lines": 151,
       "routes": [
         "/learning"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Tue, 15 Sep 2026 09:10:18 GMT"
+      "date": "Thu, 17 Sep 2026 07:24:54 GMT"
     },
     "/ms-agent-python/intelligence/learned-skills": {
       "file": "ms-agent-python__intelligence__learned-skills.md",

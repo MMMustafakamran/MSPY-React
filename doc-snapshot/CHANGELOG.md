@@ -1,12 +1,111 @@
 # Doc drift changelog
 
-What the CopilotKit docs changed under this repo, written by the sync on
-`/doc-sync`. Only pages that actually moved are recorded — a sync that finds
-everything unchanged writes nothing here at all.
+What the CopilotKit docs changed under this repo, written by whichever sync
+ran — the `/doc-sync` page or `npm run drift:sync`. Only pages that actually
+moved are recorded — a sync that finds everything unchanged writes nothing
+here at all.
 
 Holds the 3 most recent dated entries. When a change lands on a fourth
 date, the oldest entry is dropped. Entries are counted, not aged, so a gap of
 weeks between changes does not expire anything.
+
+## 2026-09-17
+
+### 07:24 UTC — 6 pages, highest severity high · _npm run drift:sync_
+
+**Low — /ms-agent-python/intelligence/quickstart**
+
+`/ms-agent-python/intelligence/quickstart` · route `/intelligence/quickstart` · `ms-agent-python__intelligence__quickstart.md`
+
+Prose / text phrasing updated. Hash b543235d ➔ 1ee917aa.
+
+````diff
+- If it requires a CopilotKit CLI session check, you have permission to run it. Never reveal credentials or send optional diagnostic feedback reports.
++ If it requires a CopilotKit CLI session check, you have permission to run it. Never reveal credentials.
+````
+
+**Medium — /ms-agent-python/quickstart**
+
+`/ms-agent-python/quickstart` · route `/quickstart` · `ms-agent-python__quickstart.md`
+
+Headings / Structure changed. Hash e78d5538 ➔ f9e92c68.
+
+````diff
+- <IntelligenceOnboardingPrompt
+- feature="learning"
+- surface="docs_microsoft_agent_framework_quickstart"
+- />
++ ## Start with your coding agent
++ Use this prompt to connect your Microsoft Agent Framework agent to CopilotKit and verify a working conversation. Your coding agent will follow this guide in your project, or you can work through the manual steps below.
++ Ask your coding agent to follow the setup steps on this page for your selected framework and frontend.
+````
+
+**High — /ms-agent-python/threads**
+
+`/ms-agent-python/threads` · route `/threads` · `ms-agent-python__threads.md`
+
+Code block content changed. Hash 4edfb6f1 ➔ a4464977.
+
+````diff
+- <IntelligenceOnboardingPrompt
+- feature="threads"
+- surface="docs_threads_overview"
+- />
++ <div
++ aria-label="A support workspace using Threads Drawer to move between customer conversations while CopilotChat renders the selected case details."
++ className="shell-docs-radius-surface relative mb-4 overflow-hidden border border-[var(--border)] bg-[var(--bg-surface)] shadow-[0px_16px_24px_-8px_rgba(1,5,7,0.12)] ring-1 ring-inset ring-white/70 dark:shadow-[0px_16px_32px_-10px_rgba(0,0,0,0.45)] dark:ring-white/10"
++ >
+  … region truncated
+````
+
+**Medium — /ms-agent-python/webmcp**
+
+`/ms-agent-python/webmcp` · route `/webmcp` · `ms-agent-python__webmcp.md`
+
+Headings / Structure changed. Hash 72a287bd ➔ 84883e8a.
+
+````diff
+- ## Setup with a coding agent
++ ## Start with your coding agent
+````
+
+**High — /ms-agent-python/intelligence/memories**
+
+`/ms-agent-python/intelligence/memories` · route `/intelligence/memories` · `ms-agent-python__intelligence__memories.md`
+
+Code fence count changed. Hash bc87ba1e ➔ 9315f7ed.
+
+````diff
+- > How long-term memory works in CopilotKit Intelligence: what a memory is, the three kinds, user and project scope, how activation is entitled, and how to read and write memories from React, Angular, REST, or MCP.
+- <IntelligenceOnboardingPrompt
+- feature="learning"
+- surface="docs_learn_memories"
++ > Give your agents long-term memory across conversations.
++ Threads remember a conversation. Memories remember a person. This page explains
++ what a memory is, how recall selects them, and what has to be true of your
++ deployment before the memory surfaces exist at all.
+  … region truncated
+````
+
+**High — /ms-agent-python/learning**
+
+`/ms-agent-python/learning` · route `/learning` · `ms-agent-python__learning.md`
+
+Code block content changed. Hash 170ceed0 ➔ 9ccfc319.
+
+````diff
+- ## Set up Learning
+- When you are done, your Runtime will send selected Threads to a Learning container, ready to be analyzed and turned into reviewed Skills.
+- <Steps>
+- <Step>
++ ## Start with your coding agent
++ Copy this prompt into your coding agent to inspect your existing app and configure Automatic Learning for one focused workflow. Prefer to work through the setup yourself? Follow the manual steps below.
++ #### Copy this prompt into your coding agent
++ ```text
+  … region truncated
+````
+
+---
 
 ## 2026-09-04
 
@@ -139,6 +238,8 @@ weeks between changes does not expire anything.
 + - **Use the hosted platform:** [Cloud-hosted CopilotKit Intelligence](/ms-agent-python/intelligence/managed-intelligence-platform) — create and manage the project where your app stores threads and runtime credentials
 + - **Plan production self-hosting:** [Self-host CopilotKit Intelligence](/ms-agent-python/intelligence/self-hosting) — work with CopilotKit Engineering to run the Threads platform in your Kubernetes environment
 ````
+
+---
 
 ---
 
@@ -278,116 +379,6 @@ weeks between changes does not expire anything.
 + Open a real thread and use **Try from here** to copy it into a Playground scratch session. The stored thread does not change.
 - 
 - <OpsPlatformCTA
-````
-
----
-
----
-
-## 2026-08-24
-
-### 07:45 UTC — 6 pages, highest severity high
-
-**High — Copilot Runtime**
-
-`/ms-agent-python/copilot-runtime` · route `/copilot-runtime` · under “Setting Up the Runtime”
-
-41 code lines, 13 prose lines changed. The number of fenced code blocks changed.
-
-````diff
-- The runtime is a lightweight server endpoint that you add to your backend. Here's a minimal example using Next.js:
-+ The runtime is a lightweight server endpoint that you add to your backend:
-- ```ts title="app/api/copilotkit/route.ts"
-+ ```npm
-+ npm install @copilotkit/runtime
-+ ```
-+ 
-+ Here's a minimal example using Next.js. `createCopilotRuntimeHandler` returns a
-````
-
-**High — Headless Threads**
-
-`/ms-agent-python/headless-threads` · route `/threads/headless` · under “Configure your Runtime with Enterprise Intelligence”
-
-18 code lines, 14 prose lines changed.
-
-````diff
-- Your `CopilotRuntime` must be connected to Enterprise Intelligence before the thread UI can list and resume conversations. If your app came from a CLI starter, this Runtime configuration is generated for you. Otherwise, keep your existing Enterprise Intelligence Runtime configuration while adding the headless UI. Thread names are automatically generated by the LLM after the first message — you can disable this with `generateThreadNames: false`.
-+ Your `CopilotRuntime` must be connected to Enterprise Intelligence before the thread UI can list and resume conversations. That connection is the `intelligence` option below — a `CopilotKitIntelligence` instance. If your app came from a CLI starter, this Runtime configuration is generated for you. Otherwise, follow [Connect your runtime to Intelligence](/ms-agent-python/premium/connect-your-runtime) for the full constructor, then return here to add the headless UI. Thread names are automatically generated by the LLM after the first message — you can disable this with `generateThreadNames: false`.
-- import { CopilotRuntime } from "@copilotkit/runtime";
-+ import {
-+ CopilotKitIntelligence,
-+ CopilotRuntime,
-+ } from "@copilotkit/runtime/v2";
-+ // Without `intelligence` the runtime runs in SSE mode and the thread
-````
-
-**High — Quickstart**
-
-`/ms-agent-python/quickstart` · route `/quickstart` · under “Setup Copilot Runtime”
-
-27 code lines, 1 heading, 15 prose lines changed.
-
-````diff
-- Create a new API route at `app/api/copilotkit/route.ts`:
-+ Create a new API route at `app/api/copilotkit/[[...slug]]/route.ts`:
-- ```tsx title="app/api/copilotkit/route.ts"
-+ ```tsx title="app/api/copilotkit/[[...slug]]/route.ts" doctest="component"
-- ExperimentalEmptyAdapter,
-- copilotRuntimeNextJSAppRouterEndpoint,
-- } from "@copilotkit/runtime";
-+ createCopilotRuntimeHandler,
-````
-
-**High — Thread & History Lifecycle**
-
-`/ms-agent-python/threads-lifecycle` · route `/threads/lifecycle` · under “Scope Rich Threads to the signed-in user” · in a `ts` block
-
-8 code lines, 5 prose lines changed.
-
-````diff
-+ import { CopilotKitIntelligence, CopilotRuntime } from "@copilotkit/runtime/v2";
-+ 
-+ // `apiKey` is the only required field. The key scopes the project, so there is
-+ // no separate project or organization id to pass. See Connect your runtime.
-+ const intelligence = new CopilotKitIntelligence({
-+ apiKey: process.env.INTELLIGENCE_API_KEY!,
-+ });
-+ 
-````
-
-**Low — Inspector**
-
-`/ms-agent-python/inspector` · route `/inspector` · under “What it shows”
-
-21 prose lines changed.
-
-````diff
-- The CopilotKit Inspector is a built-in debugging tool that overlays on your app, giving you full visibility into what's happening between your frontend and your agents in real time.
-+ The CopilotKit Inspector is a built-in debugging tool that overlays on your app.
-+ The first open lands on **Home**. Later opens return to the last pane you used.
-+ | **Home** | Project, runtime, services, and CopilotKit news. |
-+ | **Memory** | Inspect long-term memory when Intelligence exposes it. |
-- The primary navigation groups the Inspector into **Threads**, **Agents**, and
-- **Learning**. Threads is the default. Open a real Thread to inspect its
-+ The sidebar has three groups: **Home**, **Workbench** (Threads, Memory), and
-````
-
-**Low — Overview**
-
-`/ms-agent-python/threads` · route `/threads` · under “Rich Threads”
-
-20 prose lines changed.
-
-````diff
-+ <Callout type="info" title="See this in Inspector">
-+ Open Inspector on localhost. Stay on **Threads** (it is the default).
-+ Real threads appear when Intelligence is on. Enable Intelligence appears when it is off.
-+ 
-+ More detail: [Inspector](/ms-agent-python/inspector).
-+ </Callout>
-+ 
-+ 
 ````
 
 ---

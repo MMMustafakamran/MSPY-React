@@ -3,10 +3,11 @@
 > Turn your Microsoft Agent Framework agent into an agent-native application in 10 minutes.
 
 
-<IntelligenceOnboardingPrompt
-  feature="learning"
-  surface="docs_microsoft_agent_framework_quickstart"
-/>
+## Start with your coding agent
+
+Use this prompt to connect your Microsoft Agent Framework agent to CopilotKit and verify a working conversation. Your coding agent will follow this guide in your project, or you can work through the manual steps below.
+
+Ask your coding agent to follow the setup steps on this page for your selected framework and frontend.
 
 ## Prerequisites
 
