@@ -621,42 +621,6 @@ export const PAGES = definePages([
     },
   },
   {
-    id: 'intelligence-quickstart',
-    name: 'Intelligence - Connect Intelligence in 5 minutes',
-    videoName: 'IntelligenceQuickstart',
-    docPath: 'intelligence/quickstart',
-    route: 'intelligence/quickstart',
-    // The doc's step 3. A plain `route.ts` with `mode: "single-route"` and one
-    // verb, where the page used to publish `[[...slug]]` and four.
-    ideFile: 'frontend/src/app/api/copilotkit-single/route.ts',
-    startLine: 1,
-    endLine: 38,
-    extraTabs: [
-      // Step 4: the matching provider flag.
-      {
-        filePath: 'frontend/src/components/single-endpoint-provider.tsx',
-        startLine: 26,
-        endLine: 48,
-      },
-      // Step 5: the read-back. The take's verdict is this component's count
-      // growing by one, not the chat producing a reply.
-      {
-        filePath: 'frontend/src/components/intelligence-status.tsx',
-        startLine: 62,
-        endLine: 84,
-      },
-    ],
-    prompt: 'What is the weather in Karachi?',
-    // The only page in this suite whose runtime route is never touched by any
-    // other take, so its first request is also the first time `next dev`
-    // compiles `/api/copilotkit-single`. On a cold CI runner that lands past
-    // the 30s default and the take fails with the agent apparently silent.
-    // `core/timeouts.ts` says the defaults suit a warm dev server and that a
-    // legitimately slow page should say so here; this is that page.
-    timeouts: { replyStartMs: 90_000 },
-    waitAfterPromptMs: 4000,
-  },
-  {
     id: 'human-in-the-loop-governed-actions',
     name: 'App Control - Governed Action Approval',
     videoName: 'GovernedActions',

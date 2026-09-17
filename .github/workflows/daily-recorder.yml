@@ -55,7 +55,7 @@ on:
         type: boolean
         default: false
       group_threads:
-        description: 'Rich Threads & Intelligence — Drawer, Headless, Lifecycle, Intelligence Quickstart'
+        description: 'Rich Threads & Intelligence — Drawer, Headless, Lifecycle, Learned Skills'
         type: boolean
         default: false
       group_backend:

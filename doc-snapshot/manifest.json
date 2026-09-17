@@ -220,18 +220,6 @@
       "age": 0,
       "date": "Mon, 14 Sep 2026 07:09:46 GMT"
     },
-    "/ms-agent-python/intelligence/quickstart": {
-      "file": "ms-agent-python__intelligence__quickstart.md",
-      "sha256": "1ee917aa2349850a93d81eb2f35057b25b529bf1982f36ba3b819e3c87df5eb3",
-      "bytes": 5980,
-      "lines": 157,
-      "routes": [
-        "/intelligence/quickstart"
-      ],
-      "status": "ok",
-      "age": 0,
-      "date": "Thu, 17 Sep 2026 07:24:54 GMT"
-    },
     "/ms-agent-python/prebuilt-components": {
       "file": "ms-agent-python__prebuilt-components.md",
       "sha256": "329b5413f52910141ef63db629694881c576e0824c0aa3d92b58c9b004226f57",
@@ -481,6 +469,7 @@
       "https://docs.copilotkit.ai/ms-agent-python/intelligence/intelligence-platform",
       "https://docs.copilotkit.ai/ms-agent-python/intelligence/managed-intelligence-platform",
       "https://docs.copilotkit.ai/ms-agent-python/intelligence/overview",
+      "https://docs.copilotkit.ai/ms-agent-python/intelligence/quickstart",
       "https://docs.copilotkit.ai/ms-agent-python/intelligence/self-hosting",
       "https://docs.copilotkit.ai/ms-agent-python/intelligence/threads-explained",
       "https://docs.copilotkit.ai/ms-agent-python/migrate/1.10.X",

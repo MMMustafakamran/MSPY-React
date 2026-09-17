@@ -523,9 +523,9 @@ export const CLI_VIDEOS = defineCliVideos([
    * `login` has been captured since 2026-09-03 and until now was filmed by
    * nothing: no video referenced it. This is what puts it on camera.
    *
-   * Steps 2-5 are not here and cannot be. They are the app itself, and a live
-   * browser take and a replayed cast are different recorders — `onSuccess`
-   * hands off to the page recording, which lands as its own file.
+   * Steps 2-5 are not here. They are the app itself, and the app no longer has
+   * an `/intelligence/quickstart` page, so there is no page recording to hand
+   * off to.
    */
   {
     id: 'intelligence-cli',
@@ -533,11 +533,6 @@ export const CLI_VIDEOS = defineCliVideos([
     videoName: 'Intelligence-1-Connect',
     docPath: 'intelligence/quickstart',
     flows: ['login', 'project-select'],
-
-    // Only meaningful once the key is actually provisioned, which is what
-    // `project-select`'s `expectFiles` decides. A failed capture skips this
-    // and the page recording never runs against a fallback runtime.
-    onSuccess: { recordPage: 'intelligence-quickstart' },
   },
 
   ...PACKAGE_MANAGERS.map(({ id }) => {

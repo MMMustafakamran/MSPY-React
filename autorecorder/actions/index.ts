@@ -40,7 +40,6 @@ import { runA2uiAction } from './a2ui.action';
 import { runGovernedActionsAction } from './governed-actions.action';
 import { runHeadlessUiAction } from './headless-ui.action';
 import { runInspectorAction } from './inspector.action';
-import { runIntelligenceAction } from './intelligence.action';
 import { runPrebuiltAction } from './prebuilt.action';
 import { runProgrammaticAction } from './programmatic.action';
 import { runRuntimeAction } from './runtime.action';
@@ -71,7 +70,6 @@ export const ACTION_MAP: Record<string, PageActionHandler> = {
   'threads-drawer': runThreadsDrawerAction,
   'threads-headless': runThreadsHeadlessAction,
   'threads-lifecycle': runThreadsLifecycleAction,
-  'intelligence-quickstart': runIntelligenceAction,
   'copilot-runtime': runRuntimeAction,
   'a2ui-fixed-schema': runA2uiAction,
 };

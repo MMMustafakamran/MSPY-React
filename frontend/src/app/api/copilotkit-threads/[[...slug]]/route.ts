@@ -9,11 +9,10 @@ import { createIntelligenceRuntime } from "@/lib/intelligence-runtime";
  * execution, `/api/copilotkit-threads` is configured with CopilotKit Intelligence
  * to persist and manage thread histories across sessions.
  *
- * The runtime itself now lives in `@/lib/intelligence-runtime`, because
- * `/api/copilotkit-single` mounts the same configuration through the
- * single-route handler the Intelligence Quickstart switched to.
+ * The runtime itself lives in `@/lib/intelligence-runtime`, which `lib/health.ts`
+ * also reads to report whether Intelligence is configured.
  *
- * This mount stays multi-route. The thread REST subtree — list, messages,
+ * This mount is multi-route. The thread REST subtree — list, messages,
  * events, state, rename, archive, delete — is dispatched only in multi-route
  * mode, and it is what `threads`, `threads-lifecycle`, `headless-threads` and
  * the drawer page all still publish.

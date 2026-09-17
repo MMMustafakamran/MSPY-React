@@ -320,10 +320,6 @@ All three are recorded by the autorecorder (`npm run record -- --threads-drawer`
 
 **`/status`** — Every route and its status in one table.
 
-### Intelligence
-
-**`/intelligence/quickstart`** — ⚠️ **Partial.** Steps 3 and 4 are implemented; steps 1, 2 and 5 are not. The 2026-09-09 sync rewrote step 3 from the multi-route handler to `mode: "single-route"` with a single `POST` export, and step 4 from `runtimeUrl` alone to `runtimeUrl` plus `useSingleEndpoint`. Neither needs a hosted project, so both are mounted now: `/api/copilotkit-single` takes the same runtime object as the multi-route mount, and `/intelligence/quickstart/demo-chat` drives it. Steps 1, 2 and 5 still open with `npx copilotkit@latest login` plus `project select`, which writes a `CPK_INTELLIGENCE_API_KEY` — an account-scoped resource this harness does not have, so the confirmation step has nothing to assert against. Three findings came out of the half that is testable, all on the route's page: the single endpoint accepts seven envelope methods and no thread, memory or annotation method is among them; single-route mode reports `threadEndpointsEnabled: false` from `/info`, which locks the Inspector thread list the page's last step tells you to check; and the page's own coding-agent prompt still instructs the reader to do the opposite of its manual steps. Still tracked as new because it is a genuinely new page; the rest of `/ms-agent-python/intelligence/*` is the old `/ms-agent-python/premium/*` set renamed, and stays out of scope.
-
 ---
 
 ## 8. Testing checklist / current status
@@ -345,9 +341,12 @@ All three are recorded by the autorecorder (`npm run record -- --threads-drawer`
 | `/ms-agent-python/generative-ui/a2ui/fixed-schema`            | `/generative-ui/a2ui/fixed-schema`            | ✅ Working     | 🎬        | Own agent, own provider, own catalog. Catalog schemas are zod 3 — see Known issues #14.                                  |
 | `/ms-agent-python/generative-ui/a2ui/styling`                 | `/generative-ui/a2ui/styling`                 | 🚧 Not started | —        | Tracked for drift. Implementable now that fixed-schema paints a surface; theme variables not wired.                      |
 | `/ms-agent-python/generative-ui/a2ui/advanced`                | `/generative-ui/a2ui/advanced`                | 🚧 Not started | —        | Tracked for drift. Builds on Dynamic Schema A2UI, which is unmapped here.                                                |
+| `/ms-agent-python/generative-ui/frontend-cards`               | `/generative-ui/frontend-cards`               | 🚧 Not started | —        | Tracked for drift only — no demo yet.                                                                                    |
 | `/ms-agent-python/frontend-tools`                             | `/frontend-tools`                             | ✅ Working     | 🎬        |                                                                                                                          |
 | `/ms-agent-python/webmcp`                                     | `/webmcp`                                     | 🚧 Not started | —        | Tracked for drift. Needs Chrome 149+ and the WebMCP origin trial.                                                        |
 | `/ms-agent-python/human-in-the-loop/governed-actions`         | `/human-in-the-loop/governed-actions`         | ✅ Working     | 🎬        | Tool-call variant. `useInterrupt` half needs a backend that pauses a run; published zod 3 schema retranslated for zod 4. |
+| `/ms-agent-python/human-in-the-loop/interrupt-flow`           | `/human-in-the-loop/interrupt-flow`           | 🚧 Not started | —        | Tracked for drift only — no demo yet.                                                                                    |
+| `/ms-agent-python/human-in-the-loop/tool-based`               | `/human-in-the-loop/tool-based`               | 🚧 Not started | —        | Tracked for drift only — no demo yet.                                                                                    |
 | `/ms-agent-python/shared-state/in-app-agent-read`             | `/shared-state/in-app-agent-read`             | ✅ Working     | 🎬        | Seeded via server `default_state` — see §9.                                                                              |
 | `/ms-agent-python/shared-state/in-app-agent-write`            | `/shared-state/in-app-agent-write`            | ✅ Working     | 🎬        |                                                                                                                          |
 | `/ms-agent-python/agent-app-context`                          | `/readables`                                  | ✅ Working     | 🎬        | Runs the page's `ContextAwareAgent` on `/context_agent` — see §9 #10.                                                    |
@@ -358,7 +357,8 @@ All three are recorded by the autorecorder (`npm run record -- --threads-drawer`
 | `/ms-agent-python/threads-lifecycle`                          | `/threads/lifecycle`                          | ⚠️ Partial    | 🎬        | "Thread via your own API on first message" not implemented — see §9 #11.                                                 |
 | `/ms-agent-python/copilot-runtime`                            | `/copilot-runtime`                            | ✅ Working     | 🎬        |                                                                                                                          |
 | `/ms-agent-python/ag-ui`                                      | `/ag-ui`                                      | ✅ Working     | 🎬        |                                                                                                                          |
-| `/ms-agent-python/intelligence/quickstart`                    | `/intelligence/quickstart`                    | ⚠️ Partial    | 🎬        | Single-route transport implemented and exercised; the hosted-project steps still need `CPK_INTELLIGENCE_API_KEY`.        |
+| `/ms-agent-python/intelligence/memories`                      | `/intelligence/memories`                      | 🚧 Not started | —        | Tracked for drift only — no demo yet.                                                                                    |
+| `/ms-agent-python/learning`                                   | `/learning`                                   | 🚧 Not started | —        | Tracked for drift only — no demo yet.                                                                                    |
 <!-- status-table:end -->
 
 **Legend:** ✅ Working · ⚠️ Partial · 📖 Reference · 🚧 Not started · ❌ Broken · 🎬 driven by the autorecorder. Generated by `npm run readme:status` from `frontend/src/lib/nav-config.ts` and `autorecorder/config/pages.config.ts`; only the Notes column is edited here.
@@ -562,8 +562,6 @@ The nav, every route header, the demo links, and the status table all derive fro
 **Rich Threads** — [Overview](https://docs.copilotkit.ai/ms-agent-python/threads) · [Threads Drawer](https://docs.copilotkit.ai/ms-agent-python/prebuilt-components/copilot-threads-drawer) · [Headless Threads](https://docs.copilotkit.ai/ms-agent-python/headless-threads) · [Thread & History Lifecycle](https://docs.copilotkit.ai/ms-agent-python/threads-lifecycle) · [Import & Synchronize History](https://docs.copilotkit.ai/ms-agent-python/threads-import) ‡
 
 **Backend** — [Copilot Runtime](https://docs.copilotkit.ai/ms-agent-python/copilot-runtime) · [AG-UI](https://docs.copilotkit.ai/ms-agent-python/ag-ui)
-
-**Intelligence** — [Quickstart](https://docs.copilotkit.ai/ms-agent-python/intelligence/quickstart) ‡
 
 **External** — [Microsoft Agent Framework docs](https://learn.microsoft.com/en-us/agent-framework/) · [AG-UI protocol](https://ag-ui.com) · [AG-UI event types](https://docs.ag-ui.com/concepts/events)
 

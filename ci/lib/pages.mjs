@@ -46,7 +46,7 @@ export const PAGE_GROUPS = {
     'auth',
     'human-in-the-loop-governed-actions',
   ],
-  threads: ['threads-drawer', 'threads-headless', 'threads-lifecycle', 'intelligence-quickstart', 'intelligence-learned-skills'],
+  threads: ['threads-drawer', 'threads-headless', 'threads-lifecycle', 'intelligence-learned-skills'],
   backend: ['copilot-runtime', 'ag-ui'],
   // The generated CLI demo pages. No dispatch checkbox (the form is at
   // GitHub's ten-input cap) and CI excludes them anyway -- they boot their

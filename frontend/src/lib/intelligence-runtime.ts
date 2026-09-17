@@ -11,22 +11,12 @@ import { HttpAgent } from "@ag-ui/client";
  * The Intelligence runtime from the Intelligence Quickstart, built once and
  * mounted twice.
  *
- * The doc builds a runtime in "Connect your runtime" and then exposes it in
- * "Expose one Runtime route". Those two steps used to prescribe the multi-route
- * handler; as of the 2026-09-09 sync the second one prescribes
- * `mode: "single-route"` instead, and the frontend step gained
- * `useSingleEndpoint`. Both mounts are kept so the difference under test is the
- * transport and nothing else:
+ * Mounted multi-route at `/api/copilotkit-threads`, which drives the three Rich
+ * Threads routes — what `threads`, `threads-lifecycle`, `headless-threads` and
+ * the drawer page publish.
  *
- *   `/api/copilotkit-threads` — multi-route, drives the three Rich Threads
- *                               routes. Still what `threads`,
- *                               `threads-lifecycle`, `headless-threads` and the
- *                               drawer page publish.
- *   `/api/copilotkit-single`  — single-route, drives `/intelligence/quickstart`.
- *                               What this page now publishes.
- *
- * A factory rather than a shared instance: each route builds its own so neither
- * mount can be affected by the other's channel activation.
+ * A factory rather than a shared instance, so a mount's channel activation
+ * stays its own.
  *
  * The three credentials below come from `frontend/.env.local`, copied from the
  * project `copilotkit init` scaffolded under `1cli-testing/`. Nothing here logs
