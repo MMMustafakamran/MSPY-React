@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "docsRoot": "https://docs.copilotkit.ai/ms-agent-python",
-  "syncedAt": "2026-09-17T07:24:54.971Z",
+  "syncedAt": "2026-09-18T08:13:40.475Z",
   "pages": {
     "/ms-agent-python": {
       "file": "ms-agent-python.md",
@@ -294,15 +294,15 @@
     },
     "/ms-agent-python/threads": {
       "file": "ms-agent-python__threads.md",
-      "sha256": "a446497750bf6fc615a66646ec5dd0db73fcd93dedac5ce4bf3096a571cc3515",
-      "bytes": 11533,
-      "lines": 203,
+      "sha256": "5de8e46344eb873fe09c1160b60124d77ab78715106069004495a3421f73701f",
+      "bytes": 12557,
+      "lines": 213,
       "routes": [
         "/threads"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Thu, 17 Sep 2026 07:24:54 GMT"
+      "date": "Fri, 18 Sep 2026 08:13:40 GMT"
     },
     "/ms-agent-python/threads-lifecycle": {
       "file": "ms-agent-python__threads-lifecycle.md",

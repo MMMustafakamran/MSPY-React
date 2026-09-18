@@ -9,6 +9,26 @@ Holds the 3 most recent dated entries. When a change lands on a fourth
 date, the oldest entry is dropped. Entries are counted, not aged, so a gap of
 weeks between changes does not expire anything.
 
+## 2026-09-18
+
+### 08:13 UTC — 1 page, highest severity medium · _npm run drift:sync_
+
+**Medium — /ms-agent-python/threads**
+
+`/ms-agent-python/threads` · route `/threads` · `ms-agent-python__threads.md`
+
+Headings / Structure changed. Hash a4464977 ➔ 5de8e463.
+
+````diff
++ ## Persistent, rich conversations for your agents
++ CopilotKit Intelligence provides the persistence and conversation management behind Rich Threads: rich history, continuity across devices, reconnection to active runs, and ready-made thread controls.
++ **Starting fresh?** Intelligence stores your conversation history and restores messages, generative UI, tool interactions, and multimodal inputs when users return.
++ **Already using LangGraph or ADK persistence?** Keep it. Rich Threads complement your existing setup with a consistent, interactive conversation experience for your users.
++ Use [Threads Drawer](/ms-agent-python/prebuilt-components/copilot-threads-drawer) for conversation switching, pagination, and archive/delete controls, or [Headless Threads](/ms-agent-python/headless-threads) to build your own UI. For how Intelligence and framework persistence work together, see [Threads & Persistence Architecture](/ms-agent-python/intelligence/threads-explained#how-rich-threads-complement-framework-persistence).
+````
+
+---
+
 ## 2026-09-17
 
 ### 07:24 UTC — 6 pages, highest severity high · _npm run drift:sync_
@@ -104,6 +124,8 @@ Code block content changed. Hash 170ceed0 ➔ 9ccfc319.
 + ```text
   … region truncated
 ````
+
+---
 
 ---
 
@@ -237,148 +259,6 @@ Code block content changed. Hash 170ceed0 ➔ 9ccfc319.
 + - **Understand the architecture:** [Threads & Persistence Architecture](/ms-agent-python/intelligence/threads-explained) — event replay, live reconnection, synchronization, locking, and lifecycle behavior
 + - **Use the hosted platform:** [Cloud-hosted CopilotKit Intelligence](/ms-agent-python/intelligence/managed-intelligence-platform) — create and manage the project where your app stores threads and runtime credentials
 + - **Plan production self-hosting:** [Self-host CopilotKit Intelligence](/ms-agent-python/intelligence/self-hosting) — work with CopilotKit Engineering to run the Threads platform in your Kubernetes environment
-````
-
----
-
----
-
-## 2026-08-30
-
-### 13:44 UTC — 8 pages, highest severity high
-
-**High — Readables**
-
-`/ms-agent-python/agent-app-context` · route `/readables` · under “Consume the data in your AG-UI server”
-
-45 code lines, 6 prose lines changed.
-
-````diff
-- The `context` you register on the frontend is forwarded to your AG-UI server in `ChatOptions.AdditionalProperties["ag_ui_context"]`. Use middleware to access this context and inject it into the agent's conversation.
-+ The `context` you register on the frontend is forwarded in the AG-UI `RunAgentInput`. Use middleware to read it and inject it into the agent's conversation.
-- using Azure.AI.OpenAI;
-- using Azure.Identity;
-+ using AGUI.Abstractions;
-+ using AGUI.Server;
-+ using OpenAI;
-+ using OpenAI.Chat;
-````
-
-**High — Authentication**
-
-`/ms-agent-python/auth` · route `/auth` · under “Backend Setup” · in a `csharp` block
-
-21 code lines, 3 prose lines changed. The number of fenced code blocks changed.
-
-````diff
-+ using OpenAI.Chat;
-+ builder.Services.AddAGUIServer();
-- string githubToken = builder.Configuration["GitHubToken"]!;
-- var openAI = new OpenAIClient(
-- new System.ClientModel.ApiKeyCredential(githubToken),
-- new OpenAIClientOptions { Endpoint = new Uri("https://models.inference.ai.azure.com") }
-- );
-+ string openAiApiKey = builder.Configuration["OPENAI_API_KEY"]
-````
-
-**High — Frontend Tools**
-
-`/ms-agent-python/frontend-tools` · route `/frontend-tools` · under “Create your AG-UI server” · in a `csharp` block
-
-18 code lines changed.
-
-````diff
-- using Azure.AI.OpenAI;
-- using Azure.Identity;
-+ using OpenAI;
-+ using OpenAI.Chat;
-- builder.Services.AddAGUI();
-+ builder.Services.AddAGUIServer();
-- string endpoint = builder.Configuration["AZURE_OPENAI_ENDPOINT"]!;
-- string deployment = builder.Configuration["AZURE_OPENAI_CHAT_DEPLOYMENT_NAME"]!;
-````
-
-**High — State Rendering**
-
-`/ms-agent-python/generative-ui/state-rendering` · route `/generative-ui/state-rendering` · under “Stream state from your agent” · in a `csharp` block
-
-92 code lines changed.
-
-````diff
-- using Azure.AI.OpenAI;
-- using Azure.Identity;
-+ using AGUI.Abstractions;
-+ using AGUI.Server;
-+ using OpenAI;
-+ using OpenAI.Chat;
-+ using AIChatMessage = Microsoft.Extensions.AI.ChatMessage;
-+ using AIChatResponseFormat = Microsoft.Extensions.AI.ChatResponseFormat;
-````
-
-**High — Tool Rendering**
-
-`/ms-agent-python/generative-ui/tool-rendering` · route `/generative-ui/tool-rendering` · under “Give your agent a tool to call” · in a `csharp` block
-
-23 code lines changed.
-
-````diff
-- using Azure.AI.OpenAI;
-- using Azure.Identity;
-+ using Microsoft.Extensions.AI;
-+ using OpenAI;
-+ using OpenAI.Chat;
-- builder.Services.AddAGUI();
-+ builder.Services.AddAGUIServer();
-- string endpoint = builder.Configuration["AZURE_OPENAI_ENDPOINT"]!;
-````
-
-**High — Quickstart**
-
-`/ms-agent-python/quickstart` · route `/quickstart` · under “Quickstart”
-
-37 code lines, 30 prose lines changed. The number of fenced code blocks changed.
-
-````diff
-- <OpsPlatformCTA
-- variant="card"
-- title="Ship Microsoft Agent Framework to production"
-- body="Add persistent threads and the inspector with CopilotKit Intelligence."
-- ctaLabel="Create a free account"
-+ <IntelligenceOnboardingPrompt
-+ feature="learning"
-- - A GitHub Personal Access Token (for GitHub Models API - free AI access)
-````
-
-**Low — Headless Threads**
-
-`/ms-agent-python/headless-threads` · route `/threads/headless` · under “What is this?”
-
-6 prose lines changed.
-
-````diff
-- <OpsPlatformCTA
-- variant="inline"
-- title="Threads run in CopilotKit Intelligence"
-- body="Get persistent threads and realtime sync on the free Developer tier."
-+ <IntelligenceOnboardingPrompt
-+ feature="threads"
-````
-
-**Low — Overview**
-
-`/ms-agent-python/threads` · route `/threads` · under “Rich Threads”
-
-14 prose lines changed.
-
-````diff
-+ <IntelligenceOnboardingPrompt
-+ feature="threads"
-+ surface="docs_threads_overview"
-+ />
-+ 
-+ Open a real thread and use **Try from here** to copy it into a Playground scratch session. The stored thread does not change.
-- 
-- <OpsPlatformCTA
 ````
 
 ---
