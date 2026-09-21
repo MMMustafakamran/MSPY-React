@@ -6,7 +6,7 @@ import {
   useAgent,
   useCopilotChatConfiguration,
 } from "@copilotkit/react-core/v2";
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 import { DemoFrame } from "@/components/demo-frame";
 
@@ -151,8 +151,16 @@ function Readout({
     () => false,
   );
 
+  // On the render where the thread changes, `agent.messages` still holds the
+  // previous thread's conversation until the chat clears or replays it, so
+  // that count belongs to the old thread. Crediting it to the new one made the
+  // ledger read "2 msg" for fresh, empty threads on camera.
+  const lastThread = useRef<string | undefined>(undefined);
   useEffect(() => {
-    if (threadId) onSeen({ id: threadId, explicit, messages: messages.length });
+    if (!threadId) return;
+    const switched = lastThread.current !== threadId;
+    lastThread.current = threadId;
+    onSeen({ id: threadId, explicit, messages: switched ? 0 : messages.length });
   }, [threadId, explicit, messages.length, onSeen]);
 
   return (
@@ -198,11 +206,9 @@ export default function Page() {
       const i = prev.findIndex((t) => t.id === thread.id);
       if (i === -1) return [...prev, thread];
       const next = [...prev];
-      next[i] = {
-        ...next[i],
-        explicit: thread.explicit,
-        messages: Math.max(next[i].messages, thread.messages),
-      };
+      // `explicit` stays as first seen: the ledger records how each thread
+      // started. The live readout above shows the flag as it is now.
+      next[i] = { ...next[i], messages: Math.max(next[i].messages, thread.messages) };
       return next;
     });
   }, []);

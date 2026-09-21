@@ -584,7 +584,7 @@ export const PAGES = definePages([
       {
         filePath: 'frontend/src/app/threads/lifecycle/demo-chat/page.tsx',
         startLine: 128,
-        endLine: 157,
+        endLine: 165,
       },
     ],
     // Deliberately about nothing: the take is about the threadId, not the
