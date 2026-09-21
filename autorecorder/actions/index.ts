@@ -40,6 +40,8 @@ import { runA2uiAction } from './a2ui.action';
 import { runGovernedActionsAction } from './governed-actions.action';
 import { runHeadlessUiAction } from './headless-ui.action';
 import { runInspectorAction } from './inspector.action';
+import { runJevAction } from './jev.action';
+import { runMarkdownAction } from './markdown.action';
 import { runPrebuiltAction } from './prebuilt.action';
 import { runProgrammaticAction } from './programmatic.action';
 import { runRuntimeAction } from './runtime.action';
@@ -62,7 +64,11 @@ import {
 export const ACTION_MAP: Record<string, PageActionHandler> = {
   'prebuilt-components': runPrebuiltAction,
   slots: runSlotsAction,
+  markdown: runMarkdownAction,
   'headless-ui': runHeadlessUiAction,
+  // No chat and no agent on this page: the Jev decision layer is absent, so
+  // the handler drives the published form and the prepared controls instead.
+  'jev-generative-ui': runJevAction,
   'programmatic-control': runProgrammaticAction,
   inspector: runInspectorAction,
   'human-in-the-loop-governed-actions': runGovernedActionsAction,

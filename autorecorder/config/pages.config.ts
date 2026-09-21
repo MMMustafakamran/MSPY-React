@@ -692,6 +692,87 @@ export const PAGES = definePages([
     waitAfterPromptMs: 6000,
   },
 
+  {
+    // Appended, not filed under Custom Look and Feel where the doc groups it,
+    // for the reason a2ui-fixed-schema gives above: filenames carry the array
+    // position, so inserting mid-array renumbers every clip after it.
+    id: 'markdown',
+    name: 'Custom Look and Feel - Markdown Rendering',
+    videoName: 'MarkdownRendering',
+    docPath: 'custom-look-and-feel/markdown',
+    route: 'custom-look-and-feel/markdown',
+    // The published snippets, not the demo that mounts them. All three are in
+    // one file and each carries its own highlight marker; this range is the
+    // first, the `components` map, which is the technique the page says to
+    // reach for first.
+    ideFile: 'frontend/src/app/custom-look-and-feel/markdown/published-snippets.tsx',
+    startLine: 68,
+    endLine: 97,
+    extraTabs: [
+      // The class string and the replacement renderer.
+      {
+        filePath: 'frontend/src/app/custom-look-and-feel/markdown/published-snippets.tsx',
+        startLine: 108,
+        endLine: 122,
+      },
+      {
+        filePath: 'frontend/src/app/custom-look-and-feel/markdown/published-snippets.tsx',
+        startLine: 143,
+        endLine: 155,
+      },
+    ],
+    // One prompt, sent once per tab. It has to provoke every tag the page
+    // makes a claim about: a link (target/rel and data-streamdown), an h2, a
+    // kbd and a sup (allowlisted tags that survive), and a reference-chip (a
+    // custom tag, which must not). A reply with none of them leaves the four
+    // claims unchecked, and the handler warns when that happens.
+    prompt:
+      'Reply in markdown with a level-2 heading, a sentence containing a link to https://copilotkit.ai, an inline <kbd>Ctrl</kbd>, a footnote marker written as <sup>1</sup>, and this exact sentence: Hi <reference-chip id="42">Doc 42</reference-chip>.',
+    prompts: [
+      'Reply in markdown with a level-2 heading, a sentence containing a link to https://copilotkit.ai, an inline <kbd>Ctrl</kbd>, a footnote marker written as <sup>1</sup>, and this exact sentence: Hi <reference-chip id="42">Doc 42</reference-chip>.',
+      'Same again please: a level-2 heading and a sentence linking to https://copilotkit.ai.',
+      'Same again please: a level-2 heading and a sentence linking to https://copilotkit.ai.',
+      'Same again please: a level-2 heading and a sentence linking to https://copilotkit.ai.',
+    ],
+    waitAfterPromptMs: 2500,
+  },
+  {
+    id: 'jev-generative-ui',
+    name: 'Cookbook - Jev fast generative UI (prepared controls only)',
+    videoName: 'JevGenerativeUI',
+    docPath: 'cookbook/jev-generative-ui',
+    route: 'cookbook/jev-generative-ui',
+    // The published schemas and catalog. This and `read-action.ts` are the only
+    // two files of the recipe that run here; `choose-panel.ts`,
+    // `picker-agent.ts` and `learned-guidance.ts` are quoted on the route page
+    // because @typesafe-ai/sdk, @langchain/openai and
+    // @copilotkit/intelligence-langgraph are absent and the Jev key comes from
+    // a third-party vendor. Nothing was installed to change that.
+    ideFile: 'frontend/src/app/cookbook/jev-generative-ui/workspaces.ts',
+    startLine: 27,
+    endLine: 51,
+    extraTabs: [
+      // The one decision the recipe makes without Jev.
+      {
+        filePath: 'frontend/src/app/cookbook/jev-generative-ui/read-action.ts',
+        startLine: 26,
+        endLine: 43,
+      },
+      // The published render block, and the three substitutions above it.
+      {
+        filePath: 'frontend/src/app/cookbook/jev-generative-ui/demo-chat/page.tsx',
+        startLine: 223,
+        endLine: 245,
+      },
+    ],
+    // Typed into the recipe's own `#request` form, not a chat composer. There
+    // is no agent on this page, so `runJevAction` drives the form and the
+    // prepared controls directly; the reply to this is the demo saying which
+    // module and which key are missing.
+    prompt: 'I need somewhere to work',
+    waitAfterPromptMs: 2500,
+  },
+
   // The scaffolded app, once per package manager — video 3 of each set.
   // `generated: true`: these files do not exist until the CLI pipeline has run,
   // so the doctor reports them rather than failing, and an unfiltered run skips

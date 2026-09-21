@@ -110,6 +110,18 @@ export const NAV: NavGroup[] = [
         offNav: true,
       },
       {
+        path: "/custom-look-and-feel/markdown",
+        hasDemo: true,
+        title: "Markdown Rendering",
+        docPath: "/ms-agent-python/custom-look-and-feel/markdown",
+        summary:
+          "The markdownRenderer slot on the assistant message: a Streamdown components map, a class string, and a replacement renderer.",
+        status: "working",
+        offNav: true,
+        statusNote:
+          "All three published snippets ship verbatim and all three typecheck. The page is live and in the sitemap but absent from the section sidebar, which lists only Slots and Fully Headless UI under Custom Look and Feel.",
+      },
+      {
         path: "/custom-look-and-feel/headless-ui",
         hasDemo: true,
         title: "Headless UI",
@@ -405,6 +417,23 @@ export const NAV: NavGroup[] = [
           "Turn real application use into evidence-backed Insights and reviewed, reusable Skills.",
         status: "not-started",
         statusNote: "Tracked for drift only — no demo yet.",
+      },
+    ],
+  },
+  {
+    title: "Cookbook",
+    routes: [
+      {
+        path: "/cookbook/jev-generative-ui",
+        hasDemo: true,
+        title: "Jev: fast generative UI",
+        docPath: "/ms-agent-python/cookbook/jev-generative-ui",
+        summary:
+          "A workspace picker whose prepared controls are chosen and ranked by Jev, a TypeSafe decision service, and carried to React over AG-UI.",
+        status: "partial",
+        offNav: true,
+        statusNote:
+          "Half of it. The schemas, the catalog, readAction and the published Picker render block run; choosePanel, explain, PickerAgent and the Automatic Learning helper do not, because @typesafe-ai/sdk, @langchain/openai and @copilotkit/intelligence-langgraph are absent and the Jev key comes from a third-party vendor. The demo never fakes a Jev decision.",
       },
     ],
   },

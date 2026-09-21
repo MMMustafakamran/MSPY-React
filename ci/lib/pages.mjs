@@ -30,7 +30,7 @@ const PAGES_CONFIG = path.join(RECORDER_DIR, 'config', 'pages.config.ts');
  */
 export const PAGE_GROUPS = {
   getting_started: ['quickstart', 'prebuilt-components'],
-  custom_look: ['slots', 'headless-ui', 'programmatic-control', 'inspector'],
+  custom_look: ['slots', 'markdown', 'headless-ui', 'programmatic-control', 'inspector'],
   generative_ui: [
     'display-only',
     'interactive',
@@ -48,6 +48,9 @@ export const PAGE_GROUPS = {
   ],
   threads: ['threads-drawer', 'threads-headless', 'threads-lifecycle', 'intelligence-learned-skills'],
   backend: ['copilot-runtime', 'ag-ui'],
+  // The Cookbook recipes. One so far, and it records only the half of itself
+  // that runs -- see actions/jev.action.ts.
+  cookbook: ['jev-generative-ui'],
   // The generated CLI demo pages. No dispatch checkbox (the form is at
   // GitHub's ten-input cap) and CI excludes them anyway -- they boot their
   // own dev server -- but every id must belong to a group, and these are ids.

@@ -256,6 +256,8 @@ The code on a page is never a re-typed approximation: each page reads real files
 
 **`/custom-look-and-feel/slots`** _(live but absent from the doc sidebar)_ — Three override levels. **Pass:** level 1 tints the message area, level 2 auto-focuses the input, level 3 shows a custom header, layout, and cursor. **Fail:** all three tabs look identical.
 
+**`/custom-look-and-feel/markdown`** _(live but absent from the sidebar)_ — The `markdownRenderer` slot, in the three forms the page publishes plus one probe of ours. **Try:** ask for a reply containing an h2, a link, a `<kbd>`, a `<sup>` and a `<reference-chip>`, then press **Read the rendered HTML**. **Pass:** tab 1 renders the link and heading in the amber `my-link` / `my-heading` styles and the readout carries no `node="[object Object]"`; tab 2 is the default renderer, so the readout does carry `data-streamdown="link"`; tab 3 shows the raw markdown in a `<pre>`; tab 4, which is ours and not doc code, does write `node="[object Object]"`. No tab shows a `<reference-chip>` — it is stripped and its text kept. **Fail:** all four tabs look alike, meaning the slot object never reached the renderer. See §9 #20.
+
 **`/custom-look-and-feel/headless-ui`** _(live but absent from the sidebar)_ — A chat with zero CopilotKit chrome. **Try:** `Tell me a joke`. **Pass:** messages stream into hand-written bubbles. **Fail:** Send does nothing.
 
 **`/programmatic-control`** — Drives the agent with no chat component. **Pass:** status flips to Running, the transcript grows, Stop halts it mid-stream.
@@ -320,6 +322,10 @@ All three are recorded by the autorecorder (`npm run record -- --threads-drawer`
 
 **`/status`** — Every route and its status in one table.
 
+### Cookbook
+
+**`/cookbook/jev-generative-ui`** _(live but absent from the section sidebar)_ — ⚠️ **Half of it runs, and the page says which half.** The recipe's own division is that your application owns the schemas, the catalog, the prepared controls and the confirmed actions, while Jev decides which control fits and how the rooms rank. The first half is shipped verbatim: `lib/workspaces.ts` and the published `readAction`, driving the published `Picker` render block. The second half is quoted and not shipped, because `@typesafe-ai/sdk` is not installed and `TYPESAFE_API_KEY` is issued by TypeSafe, a third-party vendor. **Try:** type `I need somewhere to work`, then place the comparison panel by hand and click Studio. **Pass:** free text answers with a note naming the missing module and key rather than a panel; clicking Studio writes `Selected Studio. No booking was made.` and sets the Selected workspace line, which is `readAction` running. **Fail:** a panel appears on its own after free text — nothing here can choose one, so that would mean something is standing in for the Jev call. The two panel-placing buttons are labelled on screen as a stand-in, and the option order is the catalog's, not a Jev ranking. See §9 #21.
+
 ---
 
 ## 8. Testing checklist / current status
@@ -331,6 +337,7 @@ All three are recorded by the autorecorder (`npm run record -- --threads-drawer`
 | `/ms-agent-python/quickstart?agent=bring-your-own`            | `/quickstart`                                 | ✅ Working     | 🎬        |                                                                                                                          |
 | `/ms-agent-python/prebuilt-components`                        | `/prebuilt-components`                        | ✅ Working     | 🎬        | Doc page is a 191-byte component stub.                                                                                   |
 | `/ms-agent-python/custom-look-and-feel/slots`                 | `/custom-look-and-feel/slots`                 | ✅ Working     | 🎬        | **Not in the doc sidebar**, but resolves.                                                                                |
+| `/ms-agent-python/custom-look-and-feel/markdown`              | `/custom-look-and-feel/markdown`              | ✅ Working     | 🎬        | All three snippets verbatim; all three typecheck. **Not in the doc sidebar** — see §9 #20.                               |
 | `/ms-agent-python/custom-look-and-feel/headless-ui`           | `/custom-look-and-feel/headless-ui`           | ✅ Working     | 🎬        | **Not in the doc sidebar**; resolves.                                                                                    |
 | `/ms-agent-python/programmatic-control`                       | `/programmatic-control`                       | ✅ Working     | 🎬        |                                                                                                                          |
 | `/ms-agent-python/inspector`                                  | `/inspector`                                  | ✅ Working     | 🎬        | Dev-only by design.                                                                                                      |
@@ -359,6 +366,7 @@ All three are recorded by the autorecorder (`npm run record -- --threads-drawer`
 | `/ms-agent-python/ag-ui`                                      | `/ag-ui`                                      | ✅ Working     | 🎬        |                                                                                                                          |
 | `/ms-agent-python/intelligence/memories`                      | `/intelligence/memories`                      | 🚧 Not started | —        | Tracked for drift only — no demo yet.                                                                                    |
 | `/ms-agent-python/learning`                                   | `/learning`                                   | 🚧 Not started | —        | Tracked for drift only — no demo yet.                                                                                    |
+| `/ms-agent-python/cookbook/jev-generative-ui`                 | `/cookbook/jev-generative-ui`                 | ⚠️ Partial    | 🎬        | Prepared controls only. The Jev decision layer needs a vendor key and three absent packages — see §9 #21.                |
 <!-- status-table:end -->
 
 **Legend:** ✅ Working · ⚠️ Partial · 📖 Reference · 🚧 Not started · ❌ Broken · 🎬 driven by the autorecorder. Generated by `npm run readme:status` from `frontend/src/lib/nav-config.ts` and `autorecorder/config/pages.config.ts`; only the Notes column is edited here.
@@ -480,6 +488,52 @@ Learning's manual list also names "LangGraph Python, LangGraph TypeScript, Mastr
 
 Neither page is implemented here beyond drift tracking: both routes are stubs, and the workflow needs a provisioned Learning container with published Skills. Verified by reading the two snapshots at `doc-snapshot/pages/ms-agent-python__learning.md` and `...__intelligence__learned-skills.md` as synced 2026-09-21.
 
+**20. Markdown Rendering: the page is accurate, and three things around it are not**
+[Markdown Rendering](https://docs.copilotkit.ai/ms-agent-python/custom-look-and-feel/markdown) was tracked on 2026-09-21 and implemented at `/custom-look-and-feel/markdown`. Unusually for this repo, every claim on it held: the `components` map, the class string and the replacement renderer all ship verbatim at `frontend/src/app/custom-look-and-feel/markdown/published-snippets.tsx`, all three typecheck, and the published `error TS2353` for a custom tag key reproduces word for word. Four things are still worth recording.
+
+*The published "Replace the renderer" snippet does compile here, which #5 above would predict it does not.* #5 is about `SlotValue<C> = C | string | Partial<ComponentProps<C>>` pinning a replacement to the default component's statics, and it is why the Slots page's level-3 sample fails. `CopilotChatAssistantMessage.MarkdownRenderer` is declared `React.FC<Omit<ComponentProps<typeof Streamdown>, "children"> & { content: string }>` with no statics at all, unlike `CopilotChatMessageView`, which carries a required `Cursor`. So the bare `PlainText` is assignable and `npx tsc --noEmit` reports nothing on it. Recorded because the inverse would have been the finding.
+
+*`my-link` and `my-heading` are named and never defined.* The `components` snippet's only visible effect is `className="my-link"` and `className="my-heading"`. Neither class is defined anywhere on the page, and neither is a Tailwind utility. Followed exactly, the snippet is a net loss: it strips Streamdown's own classes and its `data-streamdown` attribute (which the page's own third warning says it will) and puts an undefined class in their place, so the override looks like it did nothing. Both classes are defined in `frontend/src/app/globals.css`, with the reason in a comment there, so the swap is visible on camera. The snippet itself is untouched.
+
+*The published idiom for dropping `node` is an ESLint warning.* Destructuring `node` and not using it is the fix the page prescribes and is exactly what `@typescript-eslint/no-unused-vars` reports — two warnings per overridden tag, at `published-snippets.tsx(77,21)` and `(82,22)`. Shipped as published, warning and all. The rule's `ignoreRestSiblings` default would have spared this if `node` were spread rather than named, but naming it is the whole point. Unmentioned on the page. Note also that the compiler does not catch the mistake the page warns about: a JSX spread carrying `node` typechecks clean, so the only signal is the rendered DOM, which is why `/custom-look-and-feel/markdown/demo-chat` carries a **Read the rendered HTML** button and a fourth tab, ours and not doc code, that spreads `node` on purpose.
+
+*The page publishes one of the two errors a reader will see.* Adding `"reference-chip"` to the map produces the documented `TS2353` **and** a `TS7031` on the callback, because an unknown key also loses its contextual typing. Both are quoted on the route page.
+
+Two deviations, both marked in place in `published-snippets.tsx`: `agentId="my_agent"` is added to each snippet, because no snippet on the page (or on Slots) binds its chat to an agent and this harness registers five named agents and no `default`, so the published form throws in `useAgent` during render; and a `labels={{ welcomeMessageText }}` is set on two of them so the active tab is named on screen. The published snippets are quoted directly above each shipped one. The file itself is a deviation of a kind: the first snippet is published as `export function Chat()` inside `page.tsx`, and this repo does not hang extra named exports off an App Router route module, so it lives in a sibling module and the `export` survives.
+
+Finally, the page is live, in `sitemap.xml`, and absent from the section's own sidebar tree, which lists only `Slots` and `Fully Headless UI` under Custom Look and Feel. It is reachable by URL, search or sitemap only. (Read from the sidebar JSON the docs site server-renders. The same read shows that `slots` and `headless-ui`, which `nav-config.ts` still marks `offNav: true`, *are* in that sidebar now — a stale marking in this repo rather than a doc defect, left alone here.)
+
+Verified against `@copilotkit/react-core` 1.69.2 (declared `^1.69.2`), `streamdown` 1.6.11 (transitive, undeclared), `typescript` 5.9.3, `eslint-config-next` 16.3.2, `next` 16.3.2, `react` 19.2.8.
+
+**21. Jev: fast generative UI pins a stack this repo does not have, and needs a third-party key for the half that matters**
+[Jev: fast generative UI](https://docs.copilotkit.ai/ms-agent-python/cookbook/jev-generative-ui) was tracked on 2026-09-21 and implemented as far as it goes at `/cookbook/jev-generative-ui`. Nothing was installed, upgraded or added for it.
+
+*The install line.* Ten exact pins: `@copilotkit/core@1.73.0 @copilotkit/react-core@1.73.0 @copilotkit/runtime@1.73.0 @ag-ui/client@0.0.59 @ag-ui/core@0.0.59 @typesafe-ai/sdk@0.6.0 rxjs@7.8.1 zod@4.6.5 @langchain/openai@1.5.13 @langchain/core@1.2.11`. Against this repo: CopilotKit is 1.69.2 (declared `^1.69.2`, published 2026-08-26; 1.73.0 published 2026-09-19), `@ag-ui/client` is 0.0.57 (declared `0.0.57`, pinned exactly for the reason in #13), `@ag-ui/core` resolves 0.0.58 hoisted and 0.0.57 under `@ag-ui/client`, `zod` is 4.4.3 (declared `^4.4.3`), `rxjs` is 7.8.1 (transitive, undeclared), `@langchain/core` is 1.2.8 (transitive, undeclared). `@typesafe-ai/sdk` and `@langchain/openai` are absent, as is `@copilotkit/intelligence-langgraph` from the optional section. All three exist on npm at the pinned versions; they are simply not installed here, and `npx tsc --noEmit` on a throwaway probe reports three `TS2307`s and nothing else.
+
+*The vendor key.* `TYPESAFE_API_KEY` is issued through the TypeSafe quickstart at `docs.typesafe.ai`, outside CopilotKit. It is the one credential on the page with no local substitute: `choosePanel` is the whole decision layer, so without it the recipe has no generative UI left in it.
+
+*Two of the ten pins are never imported by any snippet on the page* — `@copilotkit/core` and `@langchain/core`. Both are legitimate as a transitive and a peer, but a reader cannot tell which of the ten lines correspond to code the page is about to show them. The reverse also happens: `rxjs` and `@ag-ui/core` *are* imported by name and are undeclared in this repo, resolving only because CopilotKit hoists them.
+
+*The page pins its own extension against a stack it cannot match.* The Automatic Learning section says to install `@copilotkit/intelligence-langgraph@1.71.2` "alongside the pinned stack above", which is 1.73.0. That package has exactly two published versions, 0.1.0 and 1.71.2, so the skew cannot be closed by bumping it, and the page never says whether a 1.71.2 registry client is expected to work against 1.73.0 runtime types.
+
+*The run-error handler discards the cause the same section tells you to surface.* Automatic Learning: "Let initialization failures reach the run-error handler; do not silently claim the learned configuration ran with empty guidance." That handler is `PickerAgent`'s `.catch(() => { … })`, which takes no argument, logs nothing, and emits one fixed string. A failed `registry.initialize()` reaches the user as "The picker could not finish. Try again." and reaches the developer as nothing. Every other throw in the recipe carries a distinct message and all of them are flattened there.
+
+*It mounts the runtime with an API no other page in this section uses.* `createCopilotEndpoint` plus `endpoint.fetch(request)`. Quickstart, Copilot Runtime and the section landing page all publish `createCopilotRuntimeHandler` for the same job, and Copilot Runtime names a third, `createCopilotEndpointSingleRoute`, for the plain `route.ts` case. Three mounting APIs in one section, with no page relating any of them. This one does compile at the installed 1.69.2.
+
+*Its published paths collide with the harness and no alternative is given.* "Before you start" says to use an App Router project with the `@/*` alias and to place everything inside `src/` if the project has one, which this repo does. Followed literally that puts the recipe's `app/page.tsx` over the harness landing page and its `app/api/copilotkit/[[...slug]]/route.ts` over the runtime route every other page in this section shares, and `basePath: "/api/copilotkit"` is hardcoded in the snippet with a matching `runtimeUrl` on the frontend. The recipe is written for a fresh project and never says so in those words.
+
+*Model ids.* `client.systemOne({ model: "jev-1.13.0" })` pins a Jev model in code with no note on how to find a current one and no link to a model list. On the OpenAI side the reverse: `.env.local` sets `OPENAI_MODEL=gpt-5.4` and the code reads `process.env.OPENAI_MODEL || "gpt-5.4"`, so the variable can be deleted with no effect — the mirror image of #7.
+
+*A negative result worth recording.* The AG-UI adapter (`PickerAgent` and `runPicker`), the runtime route, and the whole published `Picker` component all typecheck **unchanged** against the installed 1.69.2 tree. So nothing demonstrated on the page is known to *need* the 1.73.0 floor the install line sets; only the three absent modules fail, and they fail for being absent rather than for being wrong. Probe files, deleted after the run.
+
+*What is shipped.* The two published files that need nothing absent: `lib/workspaces.ts` verbatim at `frontend/src/app/cookbook/jev-generative-ui/workspaces.ts`, and the published `readAction` verbatim at `read-action.ts`. `readAction` is published inside `lib/picker-agent.ts`; the rest of that file imports `./choose-panel` and `@langchain/openai` and cannot compile here, so the one function that depends on nothing but the catalog is split out and the split is noted in the file. The published `Picker` render block runs at `demo-chat/page.tsx` with three substitutions, each quoted and marked in place: `agent.state` becomes a local `useState` because no `picker` agent exists, `send` runs `readAction` and stops where the recipe would run the agent, and `agent.abortRun()` becomes a no-op that is unreachable while `busy` is false. `choose-panel.ts`, `picker-agent.ts`, `route.ts` and `learned-guidance.ts` are quoted on the route page and not shipped.
+
+*The demo does not fake a Jev decision.* A panel has to come from somewhere, and the only honest answer is the tester: two buttons place either prepared control by hand, labelled on screen as a stand-in, with the option order stated as the catalog's rather than a Jev ranking. Free text answers with a note naming the missing module and key instead of producing a panel.
+
+Live, in `sitemap.xml`, and absent from the section sidebar, which has no Cookbook folder at all — only a top-level link to `/cookbook`, outside the section.
+
+Verified against `@copilotkit/react-core` 1.69.2 (declared `^1.69.2`), `@copilotkit/runtime` 1.69.2 (declared `^1.69.2`), `@ag-ui/client` 0.0.57 (declared `0.0.57`), `@ag-ui/core` 0.0.58 (transitive), `rxjs` 7.8.1 (transitive), `zod` 4.4.3 (declared `^4.4.3`), `@langchain/core` 1.2.8 (transitive), `typescript` 5.9.3, `next` 16.3.2, `react` 19.2.8, `node` 26.7.0.
+
 ---
 
 ## 10. Troubleshooting
@@ -499,7 +553,7 @@ Neither page is implemented here beyond drift tracking: both routes are stubs, a
 
 ## Doc drift detection
 
-`/doc-sync` keeps this repo honest about the docs it mirrors. Press **Sync docs now** (on the landing page or on `/doc-sync`) and it fetches the markdown source behind all 27 tracked doc pages, diffs each against the copy stored in `doc-snapshot/`, replaces that copy, and reports what moved — ranked by whether the change can actually break an implementation.
+`/doc-sync` keeps this repo honest about the docs it mirrors. Press **Sync docs now** (on the landing page or on `/doc-sync`) and it fetches the markdown source behind all 35 tracked doc pages, diffs each against the copy stored in `doc-snapshot/`, replaces that copy, and reports what moved — ranked by whether the change can actually break an implementation.
 
 Doc pages are fetched by appending `.md` to their URL, which returns the authored MDX rather than 250 KB of rendered HTML. Every response is checked for `text/markdown` before it is allowed near the snapshot: a URL that misses the markdown handler still answers `200` with the HTML app shell, and writing that in would destroy the baseline and report the whole corpus as rewritten on the next run. A run commits all pages or none.
 
@@ -592,7 +646,7 @@ The nav, every route header, the demo links, and the status table all derive fro
 
 **Basics** — [Prebuilt Components](https://docs.copilotkit.ai/ms-agent-python/prebuilt-components)
 
-**Custom Look and Feel** — [Slots](https://docs.copilotkit.ai/ms-agent-python/custom-look-and-feel/slots) † · [Headless UI](https://docs.copilotkit.ai/ms-agent-python/custom-look-and-feel/headless-ui) † · [Programmatic Control](https://docs.copilotkit.ai/ms-agent-python/programmatic-control) · [Inspector](https://docs.copilotkit.ai/ms-agent-python/inspector)
+**Custom Look and Feel** — [Slots](https://docs.copilotkit.ai/ms-agent-python/custom-look-and-feel/slots) † · [Markdown Rendering](https://docs.copilotkit.ai/ms-agent-python/custom-look-and-feel/markdown) † · [Headless UI](https://docs.copilotkit.ai/ms-agent-python/custom-look-and-feel/headless-ui) † · [Programmatic Control](https://docs.copilotkit.ai/ms-agent-python/programmatic-control) · [Inspector](https://docs.copilotkit.ai/ms-agent-python/inspector)
 
 **Generative UI** — [Your Components · Display-only](https://docs.copilotkit.ai/ms-agent-python/generative-ui/your-components/display-only) · [Your Components · Interactive](https://docs.copilotkit.ai/ms-agent-python/generative-ui/your-components/interactive) · [Tool Rendering](https://docs.copilotkit.ai/ms-agent-python/generative-ui/tool-rendering) · [State Rendering](https://docs.copilotkit.ai/ms-agent-python/generative-ui/state-rendering) · [A2UI · Fixed Schema](https://docs.copilotkit.ai/ms-agent-python/generative-ui/a2ui/fixed-schema) · [A2UI · Styling](https://docs.copilotkit.ai/ms-agent-python/generative-ui/a2ui/styling) ‡ · [A2UI · Advanced](https://docs.copilotkit.ai/ms-agent-python/generative-ui/a2ui/advanced) ‡
 
@@ -605,6 +659,8 @@ The nav, every route header, the demo links, and the status table all derive fro
 **Rich Threads** — [Overview](https://docs.copilotkit.ai/ms-agent-python/threads) · [Threads Drawer](https://docs.copilotkit.ai/ms-agent-python/prebuilt-components/copilot-threads-drawer) · [Headless Threads](https://docs.copilotkit.ai/ms-agent-python/headless-threads) · [Thread & History Lifecycle](https://docs.copilotkit.ai/ms-agent-python/threads-lifecycle) · [Import & Synchronize History](https://docs.copilotkit.ai/ms-agent-python/threads-import) ‡
 
 **Backend** — [Copilot Runtime](https://docs.copilotkit.ai/ms-agent-python/copilot-runtime) · [AG-UI](https://docs.copilotkit.ai/ms-agent-python/ag-ui)
+
+**Cookbook** — [Jev: fast generative UI](https://docs.copilotkit.ai/ms-agent-python/cookbook/jev-generative-ui) †
 
 **External** — [Microsoft Agent Framework docs](https://learn.microsoft.com/en-us/agent-framework/) · [AG-UI protocol](https://ag-ui.com) · [AG-UI event types](https://docs.ag-ui.com/concepts/events)
 

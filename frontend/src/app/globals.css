@@ -47,6 +47,28 @@ body {
   min-height: 20rem;
 }
 
+/* The two class names the Markdown Rendering page's `components` override
+   applies, `my-link` and `my-heading`. The doc page names them and never
+   defines them, so following it exactly produces an override whose only
+   visible effect is the one it removes: Streamdown's own classes and its
+   `data-streamdown` attribute stop being emitted, and nothing takes their
+   place. Defined here so `/custom-look-and-feel/markdown` shows a swap rather
+   than a regression. The snippet itself is untouched. See README §9 #20. */
+.my-link {
+  font-weight: 600;
+  color: #b45309;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.my-heading {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #b45309;
+  border-left: 3px solid #b45309;
+  padding-left: 0.5rem;
+}
+
 /* Shiki renders its own <pre class="shiki"> with an inline background. The
    figure already supplies the surface and the scroll container, so strip the
    background and match the padding/type of the unhighlighted fallback. */
