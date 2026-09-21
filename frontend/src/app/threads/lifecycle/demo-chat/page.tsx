@@ -151,16 +151,24 @@ function Readout({
     () => false,
   );
 
-  // On the render where the thread changes, `agent.messages` still holds the
-  // previous thread's conversation until the chat clears or replays it, so
-  // that count belongs to the old thread. Crediting it to the new one made the
-  // ledger read "2 msg" for fresh, empty threads on camera.
-  const lastThread = useRef<string | undefined>(undefined);
+  // When the thread changes, `agent.messages` still holds the previous
+  // thread's conversation until the chat clears or replays it. So a count is
+  // only this thread's once it has moved from what was on screen when the
+  // thread became active. Taking the first count, or a "just switched" flag,
+  // both credited fresh empty threads with the old thread's "2 msg" on camera;
+  // the flag failed because StrictMode runs a mount's effects twice and the
+  // second run no longer looks like a switch.
+  const since = useRef<{ id?: string; baseline: number | null }>({ baseline: null });
   useEffect(() => {
     if (!threadId) return;
-    const switched = lastThread.current !== threadId;
-    lastThread.current = threadId;
-    onSeen({ id: threadId, explicit, messages: switched ? 0 : messages.length });
+    if (since.current.id !== threadId) {
+      since.current = { id: threadId, baseline: messages.length };
+      onSeen({ id: threadId, explicit, messages: 0 });
+      return;
+    }
+    if (since.current.baseline !== null && messages.length === since.current.baseline) return;
+    since.current.baseline = null;
+    onSeen({ id: threadId, explicit, messages: messages.length });
   }, [threadId, explicit, messages.length, onSeen]);
 
   return (
