@@ -9,16 +9,20 @@ export default function Page() {
 
       <Panel title="What it demonstrates">
         <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-          Mint → run → hydrate → switch, made observable. The panel reports the
-          live <code>threadId</code> and, more usefully,{" "}
-          <code>hasExplicitThreadId</code> — the flag that decides whether
-          mounting replays history or shows a welcome screen.
+          Every lifecycle claim on the page, one button each, with the chat&apos;s
+          real resolved state read back after every step: the auto-minted{" "}
+          <code>threadId</code>, a remount re-minting it, re-opening the first
+          thread with <code>setActiveThreadId(id, {"{"} explicit: true {"}"})</code>{" "}
+          and watching its history replay, <code>startNewThread()</code>, then a
+          pinned <code>threadId</code> prop that makes both setters no-op and
+          survives a remount. A ledger keeps every id the chat has been on, so a
+          re-mint reads as a before and after.
         </p>
         <div className="mt-4">
           <TryIt
-            prompts={["Can you tell me a joke?"]}
-            expect="hasExplicitThreadId is false on a fresh chat and flips to true when you open a known conversation, whose transcript replays into the view."
-            fail="Clicking a conversation changes the id but the transcript stays empty — replay needs a server-side store, so check /threads first."
+            prompts={["Say hello in one short sentence."]}
+            expect="Remount gives a new id and an empty chat. Open conversation returns to the first id with its messages replayed. With a threadId pinned, New chat changes nothing and the amber line shows the Ignoring startNewThread() warning."
+            fail="Open conversation returns to the id but the message count stays at 0: nothing replayed, so the runtime's store is not answering connect()."
           />
         </div>
       </Panel>
@@ -27,15 +31,20 @@ export default function Page() {
         <SourceCodeGroup
           files={[
             { file: "frontend/src/app/threads/lifecycle/demo-chat/page.tsx" },
+            { file: "frontend/src/app/api/copilotkit/[[...slug]]/route.ts" },
             {
               file: "frontend/src/app/api/copilotkit-threads/[[...slug]]/route.ts",
             },
           ]}
           note={
             <>
-              The runtime file is here for <code>identifyUser</code>, the
-              contract the doc&apos;s &ldquo;scope Rich Threads to the signed-in
-              user&rdquo; section describes. Ours is static, which the doc calls
+              The demo runs on <code>/api/copilotkit</code>, whose{" "}
+              <code>InMemoryAgentRunner</code> replays a thread&apos;s history
+              from <code>connect()</code>: the page&apos;s &ldquo;persisting
+              AgentRunner&rdquo; case, for the life of the process. The
+              Intelligence runtime is listed for <code>identifyUser</code>, the
+              contract the &ldquo;scope Rich Threads to the signed-in user&rdquo;
+              section describes. Ours is static, which the doc calls
               single-user-demo only.
             </>
           }
@@ -46,16 +55,17 @@ export default function Page() {
         <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
           <code>setActiveThreadId</code> and <code>startNewThread</code> both
           no-op with a console warning when the <code>threadId</code> is
-          prop-controlled. This demo therefore passes no <code>threadId</code>{" "}
-          prop at all — the opposite choice from the{" "}
+          prop-controlled. The demo shows both halves: until you press{" "}
+          <em>Pin a threadId prop</em> it passes none and the setters drive the
+          chat; after, the same <em>New chat</em> button does nothing, and the
+          only evidence is the warning the demo surfaces on screen. Compare the{" "}
           <a
             href="/threads/headless"
             className="text-[var(--accent)] underline underline-offset-4"
           >
             headless route
           </a>
-          , which drives the prop and never calls the setters. Mixing them is
-          the failure this pairing is meant to make obvious.
+          , which drives the prop and never calls the setters.
         </p>
       </Panel>
 

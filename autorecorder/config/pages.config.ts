@@ -576,18 +576,21 @@ export const PAGES = definePages([
     videoName: 'ThreadsLifecycle',
     docPath: 'threads-lifecycle',
     route: 'threads/lifecycle',
+    // The page's own ThreadControls, then the readout that proves each step.
     ideFile: 'frontend/src/app/threads/lifecycle/demo-chat/page.tsx',
-    startLine: 25,
-    endLine: 40,
+    startLine: 74,
+    endLine: 116,
     extraTabs: [
       {
         filePath: 'frontend/src/app/threads/lifecycle/demo-chat/page.tsx',
-        startLine: 70,
-        endLine: 100,
+        startLine: 118,
+        endLine: 145,
       },
     ],
-    prompt: 'Give me a one-line joke, then I will start a new thread.',
-    waitAfterPromptMs: 4000,
+    // Deliberately about nothing: the take is about the threadId, not the
+    // model's reply.
+    prompt: 'Say hello in one short sentence.',
+    waitAfterPromptMs: 3000,
   },
   {
     id: 'copilot-runtime',
