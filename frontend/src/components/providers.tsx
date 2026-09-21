@@ -28,10 +28,10 @@ const RUNTIME_URL = "/api/copilotkit";
 // its entitlement through the Runtime, so the credential is server-side
 // configuration rather than a prop here. See `lib/intelligence-runtime.ts`.
 //
-// Note the docs disagree with themselves: /ms-agent-python/inspector still
-// publishes `publicLicenseKey={process.env.NEXT_PUBLIC_COPILOTKIT_LICENSE_KEY}`
-// on the provider. Following the newer page so the server-side claim is the one
-// actually under test.
+// /ms-agent-python/inspector used to contradict that by publishing
+// `publicLicenseKey` on the provider. The 2026-09-21 sync replaced the prop
+// with `runtimeUrl="/api/copilotkit"`, so the two pages now agree and no
+// tracked page sets a browser-side key any more.
 const AUTH_TOKEN = process.env.NEXT_PUBLIC_AUTH_BEARER_TOKEN;
 
 export function Providers({ children }: { children: ReactNode }) {

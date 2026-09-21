@@ -14,6 +14,12 @@ import { DemoFrame } from "@/components/demo-frame";
  * `SkillRegistryContextProvider` cannot be constructed here in any language
  * this repo runs, and the two tools it would register never exist.
  *
+ * The 2026-09-21 sync added a second candidate, `BuiltInAgent`, which would run
+ * in the TypeScript runtime this app already has. It does not help: at
+ * `@copilotkit/runtime` 1.69.2 `learnedSkills` is not a property of
+ * `BuiltInAgentConfiguration` in either mode, so neither published snippet
+ * compiles. The route page carries the compiler output.
+ *
  * The demo shows the absence rather than faking the presence: the agent is
  * this repo's normal `my_agent`, and the prompt asks for the exact tool names
  * the page reserves. The agent answers from its own instructions with no tool
@@ -44,7 +50,7 @@ function SkillToolProbe() {
             >
               <th className="py-1 pr-3 font-medium text-slate-500">{tool}</th>
               <td data-testid="skill-tool-status" className="py-1 text-rose-600 dark:text-rose-400">
-                not registered — adapter is .NET only
+                not registered: .NET adapter, or learnedSkills at 1.69.2
               </td>
             </tr>
           ))}
@@ -52,6 +58,8 @@ function SkillToolProbe() {
       </table>
       <p className="mt-2 font-mono text-[11px] text-slate-500">
         CopilotKit.Intelligence.AgentFramework targets net9.0 · this backend is Python
+        <br />
+        BuiltInAgent.learnedSkills · TS2353 at @copilotkit/runtime 1.69.2
       </p>
     </div>
   );

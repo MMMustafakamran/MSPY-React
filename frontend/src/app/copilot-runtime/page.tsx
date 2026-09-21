@@ -10,6 +10,18 @@ const myAgent = new HttpAgent({ url: "http://localhost:8000/" });
   <YourApp />
 </CopilotKitProvider>`;
 
+/** The new section's two snippets, as published. */
+const KEY_SNIPPET = `const runtime = new CopilotRuntime({
+  agents: {
+    // \`my_agent\` is the key — the one string the frontend may ask for.
+    my_agent: new HttpAgent({ url: "http://localhost:8000/" }),
+  },
+});`;
+
+const PROVIDER_SNIPPET = `<CopilotKit runtimeUrl="/api/copilotkit" agent="my_agent" useSingleEndpoint={false}>
+  <YourApp />
+</CopilotKit>`;
+
 const COMPARISON: [string, string, string][] = [
   ["Authentication", "Safe defaults provided", "You manage it"],
   ["AG-UI middleware", "Runs server-side", "Not available"],
@@ -54,6 +66,54 @@ export default function Page() {
           <code>createCopilotRuntimeHandler</code> in v2 because the agents call
           the model themselves over AG-UI.
         </p>
+      </Panel>
+
+      <Panel
+        title="Which name identifies an agent"
+        description="Added by the 2026-09-21 sync: the key in the agents map is the only name the frontend can ask for."
+      >
+        <CodeBlock
+          filename="app/api/copilotkit/[[...slug]]/route.ts"
+          language="ts"
+          code={KEY_SNIPPET}
+        />
+        <CodeBlock
+          filename="app/providers.tsx"
+          language="tsx"
+          code={PROVIDER_SNIPPET}
+        />
+        <p className="mt-4 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+          This repo is the case the section describes.{" "}
+          <code>backend/agents.py</code> builds the quickstart agent as{" "}
+          <code>Agent(name=&quot;MyAgent&quot;)</code>, the runtime registers it
+          under <code>my_agent</code>, and only <code>my_agent</code> resolves.
+          The demo runs both halves of the section against the live runtime: the{" "}
+          <code>GET /api/copilotkit/info</code> readout the section ends on, and
+          a hook that asks for the declared name instead of the key.
+        </p>
+        <p className="mt-3 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+          The provider snippet is quoted rather than shipped. It sets the agent
+          once on <code>&lt;CopilotKit&gt;</code>; this harness serves five ids
+          from one <code>&lt;CopilotKitProvider&gt;</code>, so every route names
+          the one it wants, exactly as the Quickstart demo already does.
+        </p>
+        <div className="mt-4">
+          <Callout tone="warn" title="The error it names is not the error you get">
+            The section&apos;s callout says asking for an unregistered name
+            raises <code>CopilotKitAgentDiscoveryError</code>. At{" "}
+            <code>@copilotkit/react-core</code> 1.69.2 that class is not exported
+            from <code>@copilotkit/react-core/v2</code> at all (importing it is
+            TS2305), and <code>useAgent</code> throws a plain{" "}
+            <code>Error</code> reading{" "}
+            <code>
+              useAgent: Agent &apos;X&apos; not found after runtime sync
+            </code>
+            . The class does exist in the v1 surface, where{" "}
+            <code>useCoAgentStateRender</code> raises it as a banner. The second
+            half of the callout holds either way: the message lists the keys the
+            runtime returned.
+          </Callout>
+        </div>
       </Panel>
 
       <Panel title="The demo page">

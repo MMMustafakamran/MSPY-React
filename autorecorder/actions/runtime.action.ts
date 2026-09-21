@@ -44,6 +44,27 @@ export const runRuntimeAction: PageActionHandler = async (
     }
   }
 
+  // 4/4: the name that is not a key.
+  //
+  // "Which name identifies an agent" arrived with the 2026-09-21 sync, and its
+  // claim is that only the agents-map key resolves. The probe asks for
+  // `MyAgent`, the name backend/agents.py gives the same agent, and fails if the
+  // result never renders: a take that skipped it would show four working tabs
+  // and none of the section.
+  console.log(`   [Copilot Runtime] 4/4: Asking for an unregistered name...`);
+  await page.locator('[data-testid="runtime-keys"]').first().waitFor({ timeout: 20000 });
+  await beat(1200);
+
+  const askButton = page.locator('[data-testid="ask-unregistered"]').first();
+  const askBox = await askButton.boundingBox().catch(() => null);
+  if (askBox) {
+    await humanGlide(page, askBox.x + askBox.width / 2, askBox.y + askBox.height / 2, 20);
+    await humanClick(page);
+  }
+
+  await page.locator('[data-testid="unregistered-result"]').first().waitFor({ timeout: 20000 });
+  await beat(2500);
+
   await humanGlide(page, 960, 500, 25);
   await beat(1500);
 };

@@ -437,6 +437,49 @@ Casting past the type error builds and then fails quietly, which is the part wor
 
 `frontend/package.json` carries `"zod-v3": "npm:zod@^3.25.75"` and only `generative-ui/a2ui/fixed-schema/a2ui/definitions.ts` imports it. Two copies of zod 3 in one tree is fine here: the binder matches on `typeName` strings rather than `instanceof` specifically so a schema built by another module instance still reads correctly, and says so in its own comment.
 
+**15. The landing page's new `route.ts` cannot serve the handler it mounts, and reads an env var nothing defines**
+The 2026-09-21 sync gave [`/ms-agent-python`](https://docs.copilotkit.ai/ms-agent-python) a runtime snippet of its own, titled `app/api/copilotkit/route.ts`. Two things in it are wrong, and neither fails loudly.
+
+The filename contradicts every other page that mounts the same handler. [Quickstart](https://docs.copilotkit.ai/ms-agent-python/quickstart) and [Copilot Runtime](https://docs.copilotkit.ai/ms-agent-python/copilot-runtime) both title the identical `createCopilotRuntimeHandler` snippet `app/api/copilotkit/[[...slug]]/route.ts`, and the latter states the reason in its own prose: the route "lives at a **catch-all** path ... so the runtime can serve its sub-routes (`/info`, agent runs, threads) rather than a single URL". A plain `route.ts` in Next.js 16.3.2 receives its exact path only. Calling the landing snippet's handler in-process at `@copilotkit/runtime` 1.69.2, `GET /api/copilotkit/info` answers 200 with the agents map, but that path is never routed to a plain `route.ts`; the one path that is, the bare base, answers `{"error":"Not found"}` on both `GET` and `POST`. A reader who follows the landing page gets a 404 on every request while `next build` succeeds.
+
+The agent URL is `process.env.AGENT_URL!`. No tracked page under `/ms-agent-python` sets `AGENT_URL`: the Quickstart hardcodes `"http://localhost:8000/"` in the same position, and its env blocks carry model provider keys only. The non-null assertion satisfies the compiler and `new HttpAgent({ url: undefined })` constructs without complaint, so the gap surfaces as a failed run rather than a startup error. This repo's own variable is `MS_AGENT_URL`, a name the docs never publish.
+
+Implemented verbatim at `frontend/src/app/api/copilotkit-landing/route.ts`, with `AGENT_URL` left unset. One deviation, the mount path: `basePath` is `/api/copilotkit-landing` rather than the published `/api/copilotkit`, because Next.js refuses a plain `route.ts` beside the optional catch-all that Quickstart and Copilot Runtime need ("You cannot define a route with the same specificity as a optional catch-all route"). The published line is quoted in a comment above the shipped one. No provider in this harness points at the mount; it exists so the snippet is compiled as published instead of described.
+
+Verified against `@copilotkit/runtime` 1.69.2 (declared `^1.69.2`), `@copilotkit/react-core` 1.69.2 (declared `^1.69.2`), `@ag-ui/client` 0.0.57 (declared `0.0.57`), `next` 16.3.2 (declared `16.3.2`).
+
+**16. `BuiltInAgent`'s `learnedSkills` option does not exist in the installed runtime**
+The 2026-09-21 sync added a `BuiltInAgent` row to the adapter table on [Automatic learned skill delivery](https://docs.copilotkit.ai/ms-agent-python/intelligence/learned-skills), against `@copilotkit/runtime/v2` with "no wrapper or separate adapter package is required". It is the first adapter on that page this repo could host, since it runs in the Next runtime rather than in the Python agent. Neither of its two snippets compiles.
+
+Classic mode: `learnedSkills` is not a property of `BuiltInAgentConfiguration` (TS2353). Factory mode: the same error against `BuiltInAgentClassicConfig | BuiltInAgentAISDKFactoryConfig`, plus `Property 'learnedSkills' does not exist on type 'AgentFactoryContext'` (TS2339) on the destructured factory argument. The prose then says to "Import `BuiltInAgentFactoryContext` from `@copilotkit/runtime/v2` to annotate a factory context"; that name is not exported and the compiler suggests `AgentFactoryContext` (TS2724), which is what the factory is actually handed. Only `convertMessagesToVercelAISDKMessages` resolves.
+
+Both snippets are quoted on `/intelligence/learned-skills` with the compiler output beside them, rather than shipped as a file: an uncompilable module takes the whole frontend typecheck down, and the snippet is the finding either way. The page's own "Deployment requirements" section still sits at the bottom, so nothing warns a reader before the setup steps.
+
+Verified against `@copilotkit/runtime` 1.69.2 (declared `^1.69.2`), `ai` 6.0.256, `@ai-sdk/openai` 3.0.97. The CLI scaffold under `1-cli-testing/app` declares 1.70.2, which is not installed here.
+
+**17. The agent-discovery error the Copilot Runtime page names is not the one raised**
+The same sync added ["Which name identifies an agent"](https://docs.copilotkit.ai/ms-agent-python/copilot-runtime) to the Copilot Runtime page. Its warning callout says that asking for an unregistered name "resolves no agent, and the frontend raises `CopilotKitAgentDiscoveryError`".
+
+At `@copilotkit/react-core` 1.69.2 that class is not exported from `@copilotkit/react-core/v2` at all (importing it is TS2305). `useAgent` throws a plain `Error` during render: ``useAgent: Agent 'X' not found after runtime sync (runtimeUrl=...). Known agents: [...]``. The class does exist in the v1 surface, where `useCoAgentStateRender` raises it as a banner error, so the page describes v1 behaviour in a v2 section. The rest of the callout holds: the message does list the keys the runtime returned.
+
+The section is otherwise accurate against this repo, which is a live instance of the case it describes. `backend/agents.py` builds the quickstart agent as `Agent(name="MyAgent")`, the runtime registers it under `my_agent`, and `GET /api/copilotkit/info` advertises the map key as the agent's `name`. `/copilot-runtime/demo-chat` runs both halves: the `/info` key readout the section closes on, and a hook asking for `MyAgent` behind an error boundary.
+
+Verified against `@copilotkit/react-core` 1.69.2 (declared `^1.69.2`), `@copilotkit/runtime` 1.69.2 (declared `^1.69.2`).
+
+**18. The Quickstart's new `project select` step has no sign-in before it, and moved the key to a file Next.js may not read**
+Step 1 stopped issuing a license key this sync: it is now "Sign in to managed Intelligence" through a web signup link. The runtime step then tells you to run `npx copilotkit@latest project select` from the frontend app directory. Nothing between them runs `copilotkit login`, and `project select` needs a CLI session rather than a browser one. This repo's own recorder config encodes that prerequisite: the `project-select` flow is ordered after a `login` flow and aborts on `/not (?:logged|signed) in/i`, observed against `copilotkit@4.9.24`.
+
+The env file also changed name without changing scope. The key used to be shown as `.env.local`; it is now `.env`, described as what `project select` writes. Both are read by Next.js in a Next app, so the instruction works there, but the same page's agent steps use `agent/.env` for the Python process, and a reader with one `.env` per repo now has two files with the same name and different owners. This repo keeps its copy in `frontend/.env.local`.
+
+Verified against `copilotkit` CLI 4.9.24 (invoked as `@latest`, so unpinnable by construction), `@copilotkit/runtime` 1.69.2 (declared `^1.69.2`).
+
+**19. Learning and Learned skills disagree about how a container is named**
+[Learning](https://docs.copilotkit.ai/ms-agent-python/learning) gained a "Set up automatic skill delivery" section this sync whose manual path is an env block: `CPK_INTELLIGENCE_API_KEY` plus `CPK_INTELLIGENCE_LEARNING_CONTAINER_ID=expense-review`, "in the agent's server environment". [Learned skills](https://docs.copilotkit.ai/ms-agent-python/intelligence/learned-skills) says the opposite for its newest adapter: "Omitting the configuration disables all skill requests, even when delivery environment variables exist." For `BuiltInAgent` the container id has to be written in code, so following Learning's manual steps alone produces an agent that requests nothing and reports no error.
+
+Learning's manual list also names "LangGraph Python, LangGraph TypeScript, Mastra, Google ADK, or Microsoft Agent Framework" while linking to the adapter section whose first row is now `BuiltInAgent`.
+
+Neither page is implemented here beyond drift tracking: both routes are stubs, and the workflow needs a provisioned Learning container with published Skills. Verified by reading the two snapshots at `doc-snapshot/pages/ms-agent-python__learning.md` and `...__intelligence__learned-skills.md` as synced 2026-09-21.
+
 ---
 
 ## 10. Troubleshooting

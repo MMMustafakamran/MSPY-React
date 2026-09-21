@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { BackendHealth } from "@/components/backend-health";
 import { RouteHeader } from "@/components/route-header";
+import { SourceCode } from "@/components/source-code";
 import { Callout, KeyValue, Panel, TryIt } from "@/components/ui";
 import { DOCS_ROOT, NAV } from "@/lib/nav-config";
 import { DocSyncedAt } from "@/components/doc-synced-at";
@@ -150,6 +151,34 @@ export default function Page() {
           <Callout tone="info">
             The model provider key lives only in the agent process. The browser
             never holds it, because it never talks to the agent directly.
+          </Callout>
+        </div>
+      </Panel>
+
+      <Panel
+        title="The landing page's own runtime route"
+        description="New with the 2026-09-21 sync: the doc landing page now publishes a route.ts. Mounted as published at /api/copilotkit-landing; no page here points a provider at it."
+      >
+        <SourceCode file="frontend/src/app/api/copilotkit-landing/route.ts" />
+        <div className="mt-4 space-y-3">
+          <Callout tone="warn" title="A plain route.ts cannot serve this handler">
+            The snippet is titled <code>app/api/copilotkit/route.ts</code>, but
+            the handler it mounts is the multi-route one. The Quickstart and the
+            Copilot Runtime page both put the same handler at{" "}
+            <code>app/api/copilotkit/[[...slug]]/route.ts</code>, and the latter
+            says why: the runtime has to serve sub-routes such as{" "}
+            <code>/info</code>. A plain <code>route.ts</code> receives its exact
+            path only, and at @copilotkit/runtime 1.69.2 the handler answers the
+            bare base path with 404 for both verbs it exports.
+          </Callout>
+          <Callout tone="warn" title="AGENT_URL is never defined">
+            The agent URL is read from <code>process.env.AGENT_URL!</code>. No
+            tracked page tells the reader to set it: the Quickstart hardcodes{" "}
+            <code>http://localhost:8000/</code> and its env blocks carry model
+            keys only. The non-null assertion hides the gap from the compiler
+            and <code>HttpAgent</code> accepts an undefined URL, so the first
+            symptom is a failed run rather than a startup error. It is left
+            unset here.
           </Callout>
         </div>
       </Panel>

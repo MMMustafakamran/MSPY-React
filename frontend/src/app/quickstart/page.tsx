@@ -69,11 +69,16 @@ export default function Page() {
         <code>runner: new InMemoryAgentRunner()</code> with{" "}
         <code>intelligence: new CopilotKitIntelligence(&#123; apiKey &#125;)</code>{" "}
         plus <code>identifyUser</code>, and reads{" "}
-        <code>CPK_INTELLIGENCE_API_KEY</code> from <code>.env.local</code> —
-        renamed this sync from <code>INTELLIGENCE_API_KEY</code>, with the
-        placeholder going from <code>your_license_key</code> to{" "}
-        <code>cpk-...</code>, which is the first time the page separates the
-        project key from a license. The same
+        <code>CPK_INTELLIGENCE_API_KEY</code> from <code>.env</code>. As of the
+        2026-09-21 sync the key is no longer pasted by hand into{" "}
+        <code>.env.local</code>: the step runs{" "}
+        <code>npx copilotkit@latest project select</code> from the frontend app
+        directory and says that command writes the file. Step 1 no longer hands
+        out a license key either; it is now a sign-in to managed Intelligence,
+        and the page never runs <code>copilotkit login</code> before{" "}
+        <code>project select</code>. This repo keeps its copy of the key in{" "}
+        <code>frontend/.env.local</code>, which Next.js reads alongside{" "}
+        <code>.env</code>. The same
         step&apos;s callout documents dropping both options to fall back to SSE
         mode with an in-memory runner — that is what{" "}
         <code>/api/copilotkit</code> here does, so Threads and the Inspector stay
