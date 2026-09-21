@@ -31,6 +31,25 @@ drift check → implement changed pages into the harness → record → report
    prerequisites. Report it even if inference makes the page work.
 4. Every finding pins installed vs declared versions.
 
+## Pages excluded from recording
+
+Standing instruction from the project owner. These stay **fully tracked**
+(snapshot, drift, manifest, route, findings) and are **never filmed**:
+
+| Page id | Why |
+|---|---|
+| `intelligence-learned-skills` | Owner instruction: not recorded. |
+| `markdown` | No path to it from the docs sidebar, so not under test yet. |
+| `jev-generative-ui` | Same, and its decision layer needs a third-party vendor key. |
+
+The mechanism is `SKIP_RECORDING` in `autorecorder/config/pages.config.ts`,
+which `cli.ts` subtracts before any selection or sharding, locally and in CI.
+A listed page still answers `npm run ci:pages` and still counts for drift and
+coverage. Only the camera is off.
+
+**Do not re-enable one without asking.** Deleting an entry here is how a page
+silently starts recording again with nobody having chosen that.
+
 ## Gaps the pipeline misses — check by hand
 
 - **New pages** — no route, no recorder entry, no diff; snapshotted but untested.

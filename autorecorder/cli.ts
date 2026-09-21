@@ -6,7 +6,7 @@ import { existsSync, mkdirSync, renameSync, unlinkSync, writeFileSync } from 'no
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
-import { PAGES } from './config/pages.config';
+import { PAGES, SKIP_RECORDING } from './config/pages.config';
 import { PROJECT } from './config/project.config';
 import { isCi } from './core/cli/ci-guard';
 import { checkServicesHealth } from './core/diagnostics';
@@ -238,8 +238,16 @@ async function main(): Promise<void> {
       : [];
   const missingGenerated = [...notYetProduced, ...ciExcluded];
 
+  // Pages listed in SKIP_RECORDING stay registered (doctor, CI groups, the
+  // note) but are never recorded, by any selection, locally or in CI.
+  const notRecorded = PAGES.filter((p) => p.id in SKIP_RECORDING);
+  const recordable = PAGES.filter((p) => !(p.id in SKIP_RECORDING));
+  for (const p of notRecorded) {
+    console.log(`\n⏸️ Not recording ${p.id}: ${SKIP_RECORDING[p.id]}`);
+  }
+
   const idList = values.pages ?? values.only;
-  const { pages: targetPages, shard: applied } = selectPages(PAGES, {
+  const { pages: targetPages, shard: applied } = selectPages(recordable, {
     ids: idList ? String(idList).split(',').map((s) => s.trim()).filter(Boolean) : undefined,
     page: values.page ? String(values.page) : pageWord,
     filter: values.filter ? String(values.filter) : undefined,
@@ -258,6 +266,17 @@ async function main(): Promise<void> {
   if (targetPages.length === 0) {
     if (applied) {
       console.log(`\nℹ️ [Matrix Sharding]: No pages assigned to this worker shard. Exiting cleanly.`);
+      process.exit(0);
+    }
+    // Asking only for excluded pages is a no-op, not a bad selection: the ids
+    // are real, so exiting 1 here would fail a run that did exactly as told.
+    if (notRecorded.length > 0 && selectPages(PAGES, {
+      ids: idList ? String(idList).split(',').map((s) => s.trim()).filter(Boolean) : undefined,
+      page: values.page ? String(values.page) : pageWord,
+      filter: values.filter ? String(values.filter) : undefined,
+      queries,
+    }).pages.length > 0) {
+      console.log(`\nℹ️ Everything selected is excluded from recording. Nothing to do.`);
       process.exit(0);
     }
     console.error(`❌ No matching page found for: ${rawArgs.join(' ') || '(nothing)'}`);
