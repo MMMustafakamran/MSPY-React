@@ -223,7 +223,7 @@ Available via `messageView={{ assistantMessage: { ... } }}`:
 
 | Slot               | Description                        |
 | ------------------ | ---------------------------------- |
-| `markdownRenderer` | The markdown rendering component.  |
+| `markdownRenderer` | The markdown rendering component. See [Markdown Rendering](/ms-agent-python/custom-look-and-feel/markdown). |
 | `toolbar`          | The action toolbar below messages. |
 | `copyButton`       | Copy message button.               |
 | `thumbsUpButton`   | Thumbs up feedback button.         |

@@ -9,6 +9,168 @@ Holds the 3 most recent dated entries. When a change lands on a fourth
 date, the oldest entry is dropped. Entries are counted, not aged, so a gap of
 weeks between changes does not expire anything.
 
+## 2026-09-21
+
+### 07:26 UTC — 11 pages, highest severity high · _npm run drift:sync_
+
+**High — /ms-agent-python**
+
+`/ms-agent-python` · routes `/`, `/doc-sync` · `ms-agent-python.md`
+
+Code fence count changed. Hash 17f42214 ➔ a3b003be.
+
+````diff
+- frameworkIcon={<MicrosoftIcon className="h-10 w-10 text-primary" width={40} height={40} />}
+- header="Bring your Microsoft Agent Framework agents to your users"
+- subheader="Give your Microsoft Agent Framework agents real user-interactivity using CopilotKit and AG-UI. Build rich, interactive, agent-powered applications."
+- bannerVideo="https://cdn.copilotkit.ai/docs/copilotkit/videos/coagents/overview.mp4"
++ frameworkIcon={<MicrosoftIcon className="h-12 w-12" />}
++ header="Bring your Microsoft Agent Framework agents to your users"
++ subheader="The Microsoft Agent Framework runs your agents. CopilotKit gives them a surface your users can see, interrupt and steer."
++ guideLink="/microsoft-agent-framework/quickstart"
+  … region truncated
+````
+
+**Low — /ms-agent-python/custom-look-and-feel/slots**
+
+`/ms-agent-python/custom-look-and-feel/slots` · route `/custom-look-and-feel/slots` · `ms-agent-python__custom-look-and-feel__slots.md`
+
+Prose / text phrasing updated. Hash b03880ee ➔ 736c9e9a.
+
+````diff
+- | `markdownRenderer` | The markdown rendering component.  |
++ | `markdownRenderer` | The markdown rendering component. See [Markdown Rendering](/ms-agent-python/custom-look-and-feel/markdown). |
+````
+
+**Low — /ms-agent-python/inspector**
+
+`/ms-agent-python/inspector` · route `/inspector` · `ms-agent-python__inspector.md`
+
+Prose / text phrasing updated. Hash d03ea755 ➔ a750872b.
+
+````diff
+- `NEXT_PUBLIC_COPILOTKIT_LICENSE_KEY` is a browser-visible publishable key. It is
+- different from the server-side `CPK_INTELLIGENCE_API_KEY` that
+- `copilotkit project select` writes into your `.env`. The Runtime consumes the
+- server-side key; never expose it to the browser.
++ For managed Intelligence, `copilotkit project select` writes
++ `CPK_INTELLIGENCE_API_KEY` to your server-side `.env`. The Runtime uses that key
++ and reports Intelligence access to the browser. Never expose the project API
++ key to the browser. See [Runtime endpoints](/ms-agent-python/backend/runtime-endpoints) for the
+  … region truncated
+````
+
+**Medium — /ms-agent-python/prebuilt-components/copilot-threads-drawer**
+
+`/ms-agent-python/prebuilt-components/copilot-threads-drawer` · route `/threads/drawer` · `ms-agent-python__prebuilt-components__copilot-threads-drawer.md`
+
+Headings / Structure changed. Hash 4d95bba9 ➔ b9592d3d.
+
+````diff
+- server-side). <SignupLink surface="docs_drawer">Get a free developer account</SignupLink> to set that up.
+- For multi-user applications, configure the Runtime to
+- [scope Rich Threads to the signed-in user](/ms-agent-python/threads-lifecycle#scope-rich-threads-to-the-signed-in-user).
+- <OpsPlatformCTA
++ server-side). <SignupLink surface="docs_drawer">Start managed onboarding</SignupLink> to create or select a project.
++ For multi-user applications, configure the Runtime to
++ [scope Rich Threads to the signed-in user](/ms-agent-python/threads-lifecycle#scope-rich-threads-to-the-signed-in-user).
++ <OpsPlatformCTA
+  … region truncated
+````
+
+**High — /ms-agent-python/quickstart**
+
+`/ms-agent-python/quickstart` · route `/quickstart` · `ms-agent-python__quickstart.md`
+
+Code fence count changed. Hash f9e92c68 ➔ 107840f5.
+
+````diff
+- ### Create a free account
+- <SignupLink surface="docs_microsoft_agent_framework_quickstart_step1">Sign up for a free developer account</SignupLink> for CopilotKit Intelligence to get a license key. You'll use it later to enable persistent threads and the inspector.
+- </Step>
+- <Step>
++ ### Set up CopilotKit Intelligence
++ <SignupLink surface="docs_microsoft_agent_framework_quickstart_step1">Sign in to managed Intelligence</SignupLink>. Managed setup uses a server-side project API key and does not issue `COPILOTKIT_LICENSE_TOKEN`. You will connect the app after you create it below.
++ </Step>
++ <Step>
+  … region truncated
+````
+
+**High — /ms-agent-python/copilot-runtime**
+
+`/ms-agent-python/copilot-runtime` · route `/copilot-runtime` · `ms-agent-python__copilot-runtime.md`
+
+Code fence count changed. Hash 117f965b ➔ d3b00150.
+
+````diff
+- The Copilot Runtime is the backend layer that connects your frontend application to your AI agents. It's set up during the [quickstart](/ms-agent-python/quickstart) and is the recommended way to use CopilotKit.
+- ## Setting Up the Runtime
+- The runtime is a lightweight server endpoint that you add to your backend:
+- ```npm
++ The Copilot Runtime is the backend layer that connects your frontend application to your AI agents. It's set up during the [quickstart](/ms-agent-python/quickstart) and is the recommended way to use CopilotKit.
++ ## Setting Up the Runtime
++ The runtime is a lightweight server endpoint that you add to your backend:
++ ```npm
+  … region truncated
+````
+
+**High — /ms-agent-python/learning**
+
+`/ms-agent-python/learning` · route `/learning` · `ms-agent-python__learning.md`
+
+Code fence count changed. Hash 9ccfc319 ➔ 1f896eca.
+
+````diff
+- ## Start with your coding agent
+- Copy this prompt into your coding agent to inspect your existing app and configure Automatic Learning for one focused workflow. Prefer to work through the setup yourself? Follow the manual steps below.
+- #### Copy this prompt into your coding agent
+- ```text
++ Automatic Learning checks eligible containers on a daily schedule. After you approve a Skill, automatic skill delivery makes it available to connected agents. Scheduling, publication, and delivery are separate: a scheduled run does not approve Skills, and enabling delivery does not connect your agent for you.
++ ## Start with your coding agent
++ Copy this prompt into your coding agent to inspect your existing app and configure Automatic Learning for one focused workflow. Prefer to work through the setup yourself? Follow the manual steps below.
++ #### Copy this prompt into your coding agent
+  … region truncated
+````
+
+**Low — /ms-agent-python/intelligence/memories**
+
+`/ms-agent-python/intelligence/memories` · route `/intelligence/memories` · `ms-agent-python__intelligence__memories.md`
+
+Prose / text phrasing updated. Hash 9315f7ed ➔ 2c764691.
+
+````diff
+- import { useMemories } from "@copilotkit/react-core";
++ import { useMemories } from "@copilotkit/react-core/v2";
+````
+
+**High — /ms-agent-python/intelligence/learned-skills**
+
+`/ms-agent-python/intelligence/learned-skills` · route `/intelligence/learned-skills` · `ms-agent-python__intelligence__learned-skills.md`
+
+Code fence count changed. Hash bd49a781 ➔ 2e5b4fe2.
+
+````diff
+- ## Choose an adapter
+- | Framework                 | Package                                  | Native extension                                                     |
+- | ------------------------- | ---------------------------------------- | -------------------------------------------------------------------- |
+- | LangGraph Python          | `copilotkit-intelligence-langgraph`      | `create_skill_registry_middleware`                                   |
++ <Callout type="info">
++ Start with the [Learning guide](/ms-agent-python/learning) to collect Threads, configure daily runs, and review Skills. Before connecting an adapter, check that **Skill delivery** is enabled in the container's **Skills** tab. For guided setup, select **Set up skill delivery** there and copy the prompt into your coding agent.
++ </Callout>
++ ## Choose an adapter
+  … region truncated
+````
+
+**New — https://docs.copilotkit.ai/ms-agent-python/cookbook/jev-generative-ui**
+
+Listed upstream, tracked nowhere in this repo. Not snapshotted by this run.
+
+**New — https://docs.copilotkit.ai/ms-agent-python/custom-look-and-feel/markdown**
+
+Listed upstream, tracked nowhere in this repo. Not snapshotted by this run.
+
+---
+
 ## 2026-09-18
 
 ### 08:13 UTC — 1 page, highest severity medium · _npm run drift:sync_
@@ -26,6 +188,8 @@ Headings / Structure changed. Hash a4464977 ➔ 5de8e463.
 + **Already using LangGraph or ADK persistence?** Keep it. Rich Threads complement your existing setup with a consistent, interactive conversation experience for your users.
 + Use [Threads Drawer](/ms-agent-python/prebuilt-components/copilot-threads-drawer) for conversation switching, pagination, and archive/delete controls, or [Headless Threads](/ms-agent-python/headless-threads) to build your own UI. For how Intelligence and framework persistence work together, see [Threads & Persistence Architecture](/ms-agent-python/intelligence/threads-explained#how-rich-threads-complement-framework-persistence).
 ````
+
+---
 
 ---
 
@@ -123,142 +287,6 @@ Code block content changed. Hash 170ceed0 ➔ 9ccfc319.
 + #### Copy this prompt into your coding agent
 + ```text
   … region truncated
-````
-
----
-
----
-
-## 2026-09-04
-
-### 08:09 UTC — 8 pages, highest severity high
-
-**High — Readables**
-
-`/ms-agent-python/agent-app-context` · route `/readables` · under “Consume the data in your AG-UI server” · in a `python` block
-
-59 code lines changed.
-
-````diff
-- from agent_framework import Agent, SupportsChatGetResponse
-- from agent_framework.ag_ui import AgentFrameworkAgent
-+ import json
-+ from collections.abc import AsyncGenerator
-+ from typing import Any
-+ from uuid import uuid4
-+ from ag_ui.core import BaseEvent
-+ from agent_framework import Agent, BaseChatClient
-````
-
-**High — Headless Threads**
-
-`/ms-agent-python/headless-threads` · route `/threads/headless` · under “Configure your Runtime with CopilotKit Intelligence”
-
-2 code lines, 22 prose lines changed.
-
-````diff
-- Your `CopilotRuntime` must be connected to CopilotKit Intelligence before the thread UI can list and resume conversations. That connection is the `intelligence` option below — a `CopilotKitIntelligence` instance. If your app came from a CLI starter, this Runtime configuration is generated for you. Otherwise, follow [Connect your runtime to Intelligence](/ms-agent-python/premium/connect-your-runtime) for the full constructor, then return here to add the headless UI. Thread names are automatically generated by the LLM after the first message — you can disable this with `generateThreadNames: false`.
-+ Your `CopilotRuntime` must be connected to CopilotKit Intelligence before the thread UI can list and resume conversations. That connection is the `intelligence` option below — a `CopilotKitIntelligence` instance. If your app came from a CLI starter, this Runtime configuration is generated for you. Otherwise, follow [Connect your runtime to Intelligence](/ms-agent-python/intelligence/connect-your-runtime) for the full constructor, then return here to add the headless UI. Thread names are automatically generated by the LLM after the first message — you can disable this with `generateThreadNames: false`.
-- apiKey: process.env.INTELLIGENCE_API_KEY!,
-+ apiKey: process.env.CPK_INTELLIGENCE_API_KEY!,
-- CLI-created starters write the cloud-hosted platform URLs and project-scoped `INTELLIGENCE_API_KEY` to `.env`; keep that key server-side. Existing Intelligence-enabled apps should keep their current server-side Runtime configuration. Production self-hosting uses the same React APIs and is deployed with CopilotKit Engineering through [Self-host CopilotKit Intelligence](/ms-agent-python/premium/self-hosting).
-+ CLI `init` and its `create` alias write the cloud-hosted platform URLs,
-+ `SL_ENABLED`, project-scoped `CPK_INTELLIGENCE_API_KEY`, and optional
-+ `CPK_TELEMETRY_ID` to `.env`.
-````
-
-**Low — Inspector**
-
-`/ms-agent-python/inspector` · route `/inspector` · under “Showing or hiding the Inspector”
-
-2 prose lines changed.
-
-````diff
-- a **different credential** from the server-side `INTELLIGENCE_API_KEY` that
-+ a **different credential** from the server-side `CPK_INTELLIGENCE_API_KEY` that
-````
-
-**High — Quickstart**
-
-`/ms-agent-python/quickstart` · route `/quickstart` · under “Setup Copilot Runtime” · in a `tsx` block
-
-4 code lines, 4 prose lines changed.
-
-````diff
-- apiKey: process.env.INTELLIGENCE_API_KEY!,
-+ apiKey: process.env.CPK_INTELLIGENCE_API_KEY!,
-- The runtime reads the license key from step 1. Add it to the app that serves
-+ The runtime reads the project API key from step 1. Add it to the app that serves
-- INTELLIGENCE_API_KEY=your_license_key
-+ CPK_INTELLIGENCE_API_KEY=cpk-...
-- [Connect your runtime to Intelligence](/ms-agent-python/premium/connect-your-runtime) for the
-+ [Connect your runtime to Intelligence](/ms-agent-python/intelligence/connect-your-runtime) for the
-````
-
-**High — Reading agent state**
-
-`/ms-agent-python/shared-state/in-app-agent-read` · route `/shared-state/in-app-agent-read` · under “Use the `useAgent` Hook”
-
-27 code lines, 2 headings, 7 prose lines changed.
-
-````diff
-- optionally provide an initial state.
-+ initialize missing UI-owned state after the connected agent is ready.
-+ import { useEffect } from "react";
-+ import { useAgent } from "@copilotkit/react-core/v2";
-- const { agent } = useAgent({
-+ const { agent, isReady } = useAgent({
-- initialState: { language: "english" }  // optionally provide an initial state
-+ const state = (agent.state ?? {}) as Partial<AgentState>;
-````
-
-**High — Writing agent state**
-
-`/ms-agent-python/shared-state/in-app-agent-write` · route `/shared-state/in-app-agent-write` · under “Call `agent.setState` from the `useAgent` hook” · in a `tsx` block
-
-12 code lines changed.
-
-````diff
-+ import { useEffect } from "react";
-- const { agent } = useAgent({ // [!code highlight]
-+ const { agent, isReady } = useAgent({
-- initialState: { language: "english" }  // optionally provide an initial state
-+ const state = (agent.state ?? {}) as Partial<AgentState>;
-+ useEffect(() => {
-+ if (!isReady || state.language !== undefined) return;
-+ agent.setState({ ...(agent.state ?? {}), language: "english" });
-````
-
-**High — Thread & History Lifecycle**
-
-`/ms-agent-python/threads-lifecycle` · route `/threads/lifecycle` · under “The lifecycle at a glance”
-
-2 code lines, 8 prose lines changed.
-
-````diff
-- 2. **Run.** Messages and tool calls stream under that `threadId`. If a server-side store is configured (CopilotKit Intelligence, or a persisting `AgentRunner`), they are persisted as they happen so the thread can be replayed later. A runtime with no persistence layer keeps nothing server-side. See [Threads & Persistence Architecture](/ms-agent-python/premium/threads-explained) for the full server-side model.
-+ 2. **Run.** Messages and tool calls stream under that `threadId`. If a server-side store is configured (CopilotKit Intelligence, or a persisting `AgentRunner`), they are persisted as they happen so the thread can be replayed later. A runtime with no persistence layer keeps nothing server-side. See [Threads & Persistence Architecture](/ms-agent-python/intelligence/threads-explained) for the full server-side model.
-- Replay requires a **server-side store to replay from**: CopilotKit Intelligence, or a persisting `AgentRunner` (e.g. the SQLite runner). A self-hosted runtime with no persistence layer has nothing to replay, so `connectAgent()` returns an empty stream and the conversation starts blank. If history isn't restoring, check that a store is configured, not the client code. The [Persistence Architecture](/ms-agent-python/premium/threads-explained) page covers how replay works server-side.
-+ Replay requires a **server-side store to replay from**: CopilotKit Intelligence, or a persisting `AgentRunner` (e.g. the SQLite runner). A self-hosted runtime with no persistence layer has nothing to replay, so `connectAgent()` returns an empty stream and the conversation starts blank. If history isn't restoring, check that a store is configured, not the client code. The [Persistence Architecture](/ms-agent-python/intelligence/threads-explained) page covers how replay works server-side.
-- apiKey: process.env.INTELLIGENCE_API_KEY!,
-+ apiKey: process.env.CPK_INTELLIGENCE_API_KEY!,
-- [Connect your runtime to Intelligence](/ms-agent-python/premium/connect-your-runtime) covers the
-+ [Connect your runtime to Intelligence](/ms-agent-python/intelligence/connect-your-runtime) covers the
-````
-
-**Low — Overview**
-
-`/ms-agent-python/threads` · route `/threads` · under “Next steps”
-
-6 prose lines changed.
-
-````diff
-- - **Understand the architecture:** [Threads & Persistence Architecture](/ms-agent-python/premium/threads-explained) — event replay, live reconnection, synchronization, locking, and lifecycle behavior
-- - **Use the hosted platform:** [Cloud-hosted CopilotKit Intelligence](/ms-agent-python/premium/managed-intelligence-platform) — create and manage the project where your app stores threads and runtime credentials
-- - **Plan production self-hosting:** [Self-host CopilotKit Intelligence](/ms-agent-python/premium/self-hosting) — work with CopilotKit Engineering to run the Threads platform in your Kubernetes environment
-+ - **Understand the architecture:** [Threads & Persistence Architecture](/ms-agent-python/intelligence/threads-explained) — event replay, live reconnection, synchronization, locking, and lifecycle behavior
-+ - **Use the hosted platform:** [Cloud-hosted CopilotKit Intelligence](/ms-agent-python/intelligence/managed-intelligence-platform) — create and manage the project where your app stores threads and runtime credentials
-+ - **Plan production self-hosting:** [Self-host CopilotKit Intelligence](/ms-agent-python/intelligence/self-hosting) — work with CopilotKit Engineering to run the Threads platform in your Kubernetes environment
 ````
 
 ---
