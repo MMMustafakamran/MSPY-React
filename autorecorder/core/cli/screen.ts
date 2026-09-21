@@ -129,11 +129,12 @@ const RAW_PER_VISIBLE_CHAR = 16;
  * short of the whole session.
  *
  * The window is measured in *visible* text, after escape codes are stripped.
- * It used to be cut from the raw bytes first, so a prompt followed by one
- * frame's worth of padding fell outside it while `lastLines` - which strips
- * first - still showed it as the last thing on screen. The CLI recorder then
- * waited out its full timeout for "App name" with "App name" on screen, and
- * reported that the prompt never appeared.
+ * Cut from the raw bytes first, a prompt followed by one frame's worth of
+ * styled padding can fall outside it while `lastLines`, which strips first,
+ * still shows it as the last thing on screen. A defensive fix with a test of
+ * its own: it did NOT cause the CI "App name" timeout on 2026-09-21. That was
+ * the CLI withholding its prompts under `CI=true`; see `INTERACTIVE_TUI_ENV`
+ * in `config/cli.config.ts`.
  */
 export function tailMatches(
   raw: string,

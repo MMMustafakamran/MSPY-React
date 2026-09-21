@@ -8,7 +8,7 @@
   "cli/finding.ts": "ca659990527820cd",
   "cli/flow.ts": "ef349df7283a6e9b",
   "cli/redact.ts": "4a7b644ca1ef19c0",
-  "cli/screen.ts": "9693e5650a137b07",
+  "cli/screen.ts": "8bf593af4f09a408",
   "cli/service.ts": "49651b4170902c6c",
   "cli/session.ts": "379d708dd90fa26e",
   "cli/terminal.ts": "532709e429bb55b7",
