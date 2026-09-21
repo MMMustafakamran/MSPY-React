@@ -72,7 +72,7 @@ export default function Page() {
         agentId="my_agent"
         labels={{
           welcomeMessageText:
-            'Try "Deploy the app by running npm run deploy, but check with me first" — nothing runs until you click.',
+            'Try "Run npm run deploy for me. Request my approval for the command first." — nothing runs until you click.',
         }}
       />
     </DemoFrame>

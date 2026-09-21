@@ -321,7 +321,12 @@ export const PAGES = definePages([
     // and "check with me before it runs" names the approval step the tool
     // exists for — the same phrasing that makes the Governed Actions page fire
     // its gate on every take.
-    prompt: 'Deploy the app for me by running npm run deploy, but check with me before it runs.',
+    //
+    // 2026-09-21: that wording still let the model ask in prose ("I need your
+    // approval first... Reply with approve") instead of calling the tool —
+    // "check with me" reads as a chat turn. Naming the approval step as the
+    // tool's own action ("request my approval") leaves no prose route.
+    prompt: 'Run npm run deploy for me. Request my approval for the command first.',
     waitAfterPromptMs: 4000,
     demo: {
       sendTimeoutMs: 12000,

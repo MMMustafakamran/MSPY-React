@@ -109,7 +109,11 @@ const ACTIVE = new WeakMap<Page, ConsoleEntry[]>();
  * account rejecting the request. Anything else (a warning, an image 404) is
  * not proof and the wait continues.
  */
-const FATAL = /agent_run_failed|RUN_ERROR|insufficient_quota|no credits|invalid_api_key|Incorrect API key|\/api\/copilotkit\S* net::ERR/i;
+// net::ERR_ABORTED is excluded: it is the browser cancelling its own request
+// (a threads-list refetch superseded by the next one, a component unmounting),
+// not the endpoint failing. On 2026-09-21 threads-drawer was failed "0s in" on
+// an aborted GET /threads while the run itself returned 200 and replied.
+const FATAL = /agent_run_failed|RUN_ERROR|insufficient_quota|no credits|invalid_api_key|Incorrect API key|\/api\/copilotkit\S* net::ERR_(?!ABORTED)/i;
 
 /**
  * The first fatal error captured on `page` since capture began, or undefined.
