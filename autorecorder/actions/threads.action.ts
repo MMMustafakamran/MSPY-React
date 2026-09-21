@@ -151,6 +151,7 @@ const LIFECYCLE = {
   explicit: '[data-testid="thread-explicit"]',
   messages: '[data-testid="message-count"]',
   warning: '[data-testid="setter-warning"]',
+  parent: '[data-testid="parent-thread-id"]',
 } as const;
 
 async function readText(page: Page, selector: string): Promise<string> {
@@ -238,29 +239,59 @@ export const runThreadsLifecycleAction: PageActionHandler = async (
   if (ranMessages < 2) ctx.fail('The turn left fewer than two messages on the thread.');
   await dwellOn(page, LIFECYCLE.id, 1800);
 
-  // 3: a remount re-mints
-  step(3, 'Remounting with no pinned id, which the page says re-mints...');
+  // 3: a remount re-mints, unless the id is inherited from a parent provider
+  const parentId = await readText(page, LIFECYCLE.parent);
+  const inherited = isUuid(parentId) && parentId === minted;
+  step(
+    3,
+    inherited
+      ? 'Remounting; the id is inherited from a parent provider, so it should be kept...'
+      : 'Remounting with no pinned id, which the page says re-mints...',
+  );
   if (!(await glideClick(page, '[data-testid="remount"]', 'clicked "Remount chat"'))) {
     ctx.fail('The Remount control was not on screen.');
     return;
   }
-  const remounted = await waitForReadout(
-    page,
-    LIFECYCLE.id,
-    (t) => isUuid(t) && t !== minted,
-    8000,
-  );
+  let remounted: string;
+  if (inherited) {
+    await beat(2500);
+    remounted = await readText(page, LIFECYCLE.id);
+  } else {
+    remounted = await waitForReadout(
+      page,
+      LIFECYCLE.id,
+      (t) => isUuid(t) && t !== minted,
+      8000,
+    );
+  }
   await beat(1500);
   const remountedMessages = Number(await readText(page, LIFECYCLE.messages));
-  if (remounted === minted) {
-    ctx.warn(`Remounting kept ${short(minted)}; the page says an auto-minted id re-mints on remount.`);
+  if (inherited) {
+    // Precedence rule 3 in action. The page lists the rule, but its remount
+    // warning is stated unconditionally, and the v2 <CopilotKit> wrapper always
+    // supplies a parent id, so under it the warning describes something that
+    // does not happen.
+    if (remounted === minted) {
+      console.log(`   ✅ Kept ${short(minted)}: inherited from the parent provider (precedence 3).`);
+      ctx.warn(
+        `The chat's threadId ${short(minted)} is inherited from the root <CopilotKit> provider, so a remount keeps it ` +
+          `rather than re-minting as the page's remount warning says. The conversation still left the screen ` +
+          `(${remountedMessages} messages after the remount), because an inherited id is not explicit and nothing replays it.`,
+      );
+    } else {
+      ctx.warn(`An inherited threadId changed on remount: ${short(minted)} became ${short(remounted)}.`);
+    }
   } else {
-    console.log(`   ✅ Re-minted: ${short(minted)} -> ${short(remounted)}`);
-  }
-  if (remountedMessages > 0) {
-    ctx.warn(
-      `After the remount the new thread still showed ${remountedMessages} message(s); the page says a new id starts a new conversation.`,
-    );
+    if (remounted === minted) {
+      ctx.warn(`Remounting kept ${short(minted)}; the page says an auto-minted id re-mints on remount.`);
+    } else {
+      console.log(`   ✅ Re-minted: ${short(minted)} -> ${short(remounted)}`);
+    }
+    if (remountedMessages > 0) {
+      ctx.warn(
+        `After the remount the new thread still showed ${remountedMessages} message(s); the page says a new id starts a new conversation.`,
+      );
+    }
   }
   await dwellOn(page, LIFECYCLE.id, 2200);
 

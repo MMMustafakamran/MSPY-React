@@ -578,13 +578,13 @@ export const PAGES = definePages([
     route: 'threads/lifecycle',
     // The page's own ThreadControls, then the readout that proves each step.
     ideFile: 'frontend/src/app/threads/lifecycle/demo-chat/page.tsx',
-    startLine: 74,
-    endLine: 116,
+    startLine: 84,
+    endLine: 126,
     extraTabs: [
       {
         filePath: 'frontend/src/app/threads/lifecycle/demo-chat/page.tsx',
-        startLine: 118,
-        endLine: 145,
+        startLine: 128,
+        endLine: 157,
       },
     ],
     // Deliberately about nothing: the take is about the threadId, not the

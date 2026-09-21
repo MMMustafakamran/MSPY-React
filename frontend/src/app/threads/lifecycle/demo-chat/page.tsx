@@ -20,6 +20,14 @@ import { DemoFrame } from "@/components/demo-frame";
  * a separate `useAgent` hook, which is a mutable property rather than React
  * state and so never repainted when the chat minted or switched a thread.
  *
+ * Whether a remount re-mints depends on what sits above the chat, which is
+ * precedence rule 3 on the page. Under a bare `CopilotKitProvider` nothing
+ * does, so the chat's own `useMemo` mints and a remount re-mints. Under the
+ * v2 `<CopilotKit>` wrapper there is always a parent: it renders a
+ * `CopilotChatConfigurationProvider` of its own at the app root, the chat
+ * inherits that id, and a remount keeps it. The panel shows the parent's id so
+ * the clip says which case it is filming.
+ *
  * The buttons map one to one onto the page's claims:
  *
  *   Remount       a new React key re-mints an auto id and starts a new chat
@@ -37,7 +45,9 @@ import { DemoFrame } from "@/components/demo-frame";
  * logged "No known conversations listed" and passed.
  */
 
-const AGENT_ID = "default";
+// The quickstart agent on `/api/copilotkit`. That runtime registers no
+// `default`; the old demo only found one through the Intelligence runtime.
+const AGENT_ID = "my_agent";
 
 /** One thread the chat has been on, in the order they first appeared. */
 interface SeenThread {
@@ -118,9 +128,11 @@ function ThreadControls({ existingId }: { existingId: string | undefined }) {
 function Readout({
   onSeen,
   pinned,
+  parentThreadId,
 }: {
   onSeen: (thread: SeenThread) => void;
   pinned: string | undefined;
+  parentThreadId: string | undefined;
 }) {
   const config = useCopilotChatConfiguration();
   // [2] threads-lifecycle: manual hydration reads the agent's messages
@@ -153,6 +165,12 @@ function Readout({
       <dd>
         <code data-testid="thread-explicit">{String(explicit)}</code>
       </dd>
+      <dt className="text-slate-500">Parent provider threadId</dt>
+      <dd className="break-all">
+        <code data-testid="parent-thread-id">
+          {mounted ? (parentThreadId ?? "none (the chat mints its own)") : ""}
+        </code>
+      </dd>
       <dt className="text-slate-500">threadId prop</dt>
       <dd className="break-all">
         <code data-testid="thread-pinned">{pinned ?? "none (setters are in control)"}</code>
@@ -170,6 +188,8 @@ export default function Page() {
   const [pinned, setPinned] = useState<string | undefined>();
   const [seen, setSeen] = useState<SeenThread[]>([]);
   const warning = useCopilotKitWarnings();
+  // Read outside the demo's own provider, so this is whatever sits above it.
+  const parent = useCopilotChatConfiguration();
 
   // The ledger lives above the keyed provider so a remount cannot erase it: it
   // is the before-and-after that makes a re-minted id readable on camera.
@@ -199,7 +219,7 @@ export default function Page() {
       <CopilotChatConfigurationProvider key={mountKey} agentId={AGENT_ID} threadId={pinned}>
         <div className="flex h-full flex-col">
           <div className="shrink-0 space-y-3 border-b border-slate-200 p-3 dark:border-slate-800">
-            <Readout onSeen={onSeen} pinned={pinned} />
+            <Readout onSeen={onSeen} pinned={pinned} parentThreadId={parent?.threadId} />
 
             <div className="flex flex-wrap gap-2">
               <button
