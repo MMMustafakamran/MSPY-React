@@ -310,9 +310,9 @@ Four routes, one per doc page. All share the Intelligence-backed runtime at `/ap
 
 **`/threads/headless`** — The same data through `useThreads`, driving a sidebar this repo writes. **Try:** send a message, then Rename the row and reload. **Pass:** the new name survives the reload (it round-tripped through the platform, not just optimistic state); Archive hides the row until you tick Archived; Delete asks first, then removes it permanently. **Fail:** rows list but mutations error — mutations need the Intelligence runtime, unlike the read-only routes.
 
-**`/threads/lifecycle`** — The lifecycle made observable. **Try:** send a message, hit "New chat", then click the conversation you just made under "Open a known conversation". **Pass:** `hasExplicitThreadId` reads `false` on the fresh chat and flips to `true` on the picked one, whose transcript replays and whose messages appear in the `agent.messages` readout. **Fail:** the id changes but the transcript stays empty — replay needs a server-side store, so check `/threads` first.
+**`/threads/lifecycle`** — The lifecycle made observable, one button per claim, with the chat's resolved state read back from its `CopilotChatConfigurationProvider`. **Try:** send a message, press "Remount chat", then "Open conversation", "New chat", "Pin a threadId prop" and "New chat" again. **Pass:** the remount gives a new id and an empty chat; "Open conversation" returns to the first id with its messages replayed from `/api/copilotkit`'s `InMemoryAgentRunner`; with the id pinned, "New chat" changes nothing and the amber line shows the `Ignoring startNewThread()` warning; the pinned id survives a remount. **Fail:** the re-opened thread shows 0 messages (nothing replayed). Runs on `my_agent`; see §9 #22.
 
-All three are recorded by the autorecorder (`npm run record -- --threads-drawer`, `--threads-headless`, `--threads-lifecycle`). Note that each run leaves a real thread on the Intelligence project, so the list grows one row per recording against the free tier's 200-thread cap.
+All three are recorded by the autorecorder (`npm run record -- --threads-drawer`, `--threads-headless`, `--threads-lifecycle`). The drawer and headless takes each leave a real thread on the Intelligence project, so the list grows one row per recording against the free tier's 200-thread cap. The lifecycle take does not: it runs on `/api/copilotkit`'s in-memory runner.
 
 ### Backend
 
@@ -535,6 +535,12 @@ Live, in `sitemap.xml`, and absent from the section sidebar, which has no Cookbo
 Verified against `@copilotkit/react-core` 1.69.2 (declared `^1.69.2`), `@copilotkit/runtime` 1.69.2 (declared `^1.69.2`), `@ag-ui/client` 0.0.57 (declared `0.0.57`), `@ag-ui/core` 0.0.58 (transitive), `rxjs` 7.8.1 (transitive), `zod` 4.4.3 (declared `^4.4.3`), `@langchain/core` 1.2.8 (transitive), `typescript` 5.9.3, `next` 16.3.2, `react` 19.2.8, `node` 26.7.0.
 
 ---
+
+**22. Thread & History Lifecycle: the switch snippet's `existingId` is never defined**
+
+[Thread & History Lifecycle](https://docs.copilotkit.ai/ms-agent-python/threads-lifecycle) publishes `ThreadControls` calling `config?.setActiveThreadId(existingId, { explicit: true })`. `existingId` appears nowhere else on the page, and nothing says where an app gets the id of a conversation worth re-opening. The demo supplies the first thread that held a conversation, as a prop, with `!` because the button stays disabled until one exists; both handler calls are otherwise the page's text, and the published lines are quoted above them in `frontend/src/app/threads/lifecycle/demo-chat/page.tsx`.
+
+The rest of the client lifecycle was observed by the recorder on CI-resolved `@copilotkit/react-core` 1.73.0 (declared `^1.69.2`), with the runtime on `InMemoryAgentRunner`: an auto id with `hasExplicitThreadId` false; a remount re-minting the id and clearing the chat; `setActiveThreadId(id, { explicit: true })` returning to the first thread and replaying both of its messages from the runner's `connect()`; `startNewThread()` minting a fresh non-explicit id; and, with a `threadId` prop pinned, `startNewThread()` changing nothing and logging `[CopilotKit] Ignoring startNewThread(): threadId is controlled via the threadId prop on CopilotChatConfigurationProvider.`, with the pinned id surviving a remount. Not exercised: `identifyUser` and Intelligence scoping, the headless first-message path, and the framework checkpointer layer.
 
 ## 10. Troubleshooting
 

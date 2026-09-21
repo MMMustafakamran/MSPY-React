@@ -370,7 +370,8 @@ export const NAV: NavGroup[] = [
         summary:
           "Mint, replay, switch: how a threadId comes to exist and what makes history hydrate into the view.",
         status: "partial",
-        statusNote: "Requires the license above for server-side replay.",
+        statusNote:
+          "Mint, remount, replay, switch and the prop-controlled no-op are each driven and read back; replay comes from /api/copilotkit's InMemoryAgentRunner, no license needed. The switch snippet's `existingId` is never defined. The own-API first-message path and Intelligence scoping are not exercised.",
       },
     ],
   },
