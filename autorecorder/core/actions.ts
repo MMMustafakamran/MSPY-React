@@ -551,10 +551,14 @@ export const runStandardAction: PageActionHandler = async (
     if (box) {
       await humanGlide(page, box.x + box.width / 2, box.y + box.height / 2, 20);
       await sleep(600);
+      // Counted before the click, not after the beat: a fast agent answers
+      // inside the beat (interactive, 2026-09-21: reply in <1s), and a count
+      // taken afterwards already includes that reply, so the wait below
+      // looked for a second one that never came and failed a working take.
+      sinceMsgCount = Math.max(sinceMsgCount, await getAssistantMessageCount(page));
       await humanClick(page);
       console.log(`   ✓ Clicked ${demo.click.selector}`);
       await beat(demo.click.beatMs ?? 800);
-      sinceMsgCount = Math.max(sinceMsgCount, await getAssistantMessageCount(page));
     } else {
       ctx.fail(demo.click.missing);
     }
