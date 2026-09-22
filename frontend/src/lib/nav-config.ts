@@ -396,6 +396,17 @@ export const NAV: NavGroup[] = [
           "A live capture of the raw AG-UI event stream flowing between the runtime and this page.",
         status: "working",
       },
+      {
+        path: "/backend/message-history",
+        hasDemo: true,
+        title: "Message history",
+        docPath: "/ms-agent-python/backend/message-history",
+        summary:
+          "Trimming the transcript forwarded to the agent: the page's middleware inside a second runtime, and its messageFilter prop.",
+        status: "partial",
+        statusNote:
+          "The middleware and its check work as published. `messageFilter`, the page's recommended recipe, is not a prop on any published @copilotkit/react-core (1.69.2 installed, 1.73.0 latest), so it is a type error and does nothing.",
+      },
     ],
   },
   {
@@ -403,7 +414,7 @@ export const NAV: NavGroup[] = [
     routes: [
       {
         path: "/intelligence/memories",
-        title: "Memories & Recall",
+        title: "User Memories",
         docPath: "/ms-agent-python/intelligence/memories",
         summary:
           "How long-term memory works in CopilotKit Intelligence: user and project scope, activation, reading and writing memories.",
@@ -412,7 +423,7 @@ export const NAV: NavGroup[] = [
       },
       {
         path: "/learning",
-        title: "Learning",
+        title: "Automatic Learning",
         docPath: "/ms-agent-python/learning",
         summary:
           "Turn real application use into evidence-backed Insights and reviewed, reusable Skills.",

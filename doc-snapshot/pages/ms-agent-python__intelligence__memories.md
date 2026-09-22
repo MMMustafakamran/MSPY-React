@@ -1,9 +1,9 @@
-# Memories & Recall
+# User Memories
 
 > Give your agents long-term memory across conversations.
 
 
-Threads remember a conversation. Memories remember a person. This page explains
+Rich Threads remember a conversation. User Memories remember a person. This page explains
 what a memory is, how recall selects them, and what has to be true of your
 deployment before the memory surfaces exist at all.
 
@@ -89,10 +89,10 @@ Copy this prompt into your coding agent to inspect your existing CopilotKit app 
 ### Copy this prompt into your coding agent
 
 ```text
-Help me set up long-term Memories & Recall in my existing CopilotKit app. Read https://docs.copilotkit.ai/intelligence/memories and follow its setup instructions. Inspect my app and deployment, confirm memory entitlement and the required configuration, then implement and verify saving and recalling a memory for the signed-in user. Never reveal credentials.
+Help me set up long-term User Memories in my existing CopilotKit app. Read https://docs.copilotkit.ai/intelligence/memories and follow its setup instructions. Inspect my app and deployment, confirm memory entitlement and the required configuration, then implement and verify saving and recalling a memory for the signed-in user. Never reveal credentials.
 ```
 
-## Set up Memory manually
+## Set up User Memories manually
 
 When you are done, your app will be able to save a memory for a signed-in user and recall it in a later conversation.
 

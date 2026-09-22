@@ -132,7 +132,7 @@ Use **Open Intelligence** in the results header to open the Intelligence app in 
 new tab. Use the analysis and Skill-review links to open the selected Learning
 container in Intelligence.
 Inspector does not approve or publish candidates. If Learning is not configured,
-choose **Copy setup prompt**. See [Learning](/ms-agent-python/learning) for the complete workflow.
+choose **Copy setup prompt**. See [Automatic Learning](/ms-agent-python/learning) for the complete workflow.
 
 ## Control when Inspector appears
 

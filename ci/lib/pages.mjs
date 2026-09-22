@@ -47,7 +47,7 @@ export const PAGE_GROUPS = {
     'human-in-the-loop-governed-actions',
   ],
   threads: ['threads-drawer', 'threads-headless', 'threads-lifecycle', 'intelligence-learned-skills'],
-  backend: ['copilot-runtime', 'ag-ui'],
+  backend: ['copilot-runtime', 'ag-ui', 'message-history'],
   // The Cookbook recipes. One so far, and it records only the half of itself
   // that runs -- see actions/jev.action.ts.
   cookbook: ['jev-generative-ui'],

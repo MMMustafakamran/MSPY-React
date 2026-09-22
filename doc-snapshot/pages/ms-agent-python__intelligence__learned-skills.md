@@ -7,7 +7,7 @@ Learned skill delivery makes one Learning container's published skills available
 Developer instructions retain precedence. Learned skills cannot override the agent's role, safety rules, tool restrictions, or application policy.
 
 <Callout type="info">
-  Start with the [Learning guide](/ms-agent-python/learning) to collect Threads, configure daily runs, and review Skills. Before connecting an adapter, check that **Skill delivery** is enabled in the container's **Skills** tab. For guided setup, select **Set up skill delivery** there and copy the prompt into your coding agent.
+  Start with the [Automatic Learning guide](/ms-agent-python/learning) to collect Threads, configure daily runs, and review Skills. Before connecting an adapter, check that **Skill delivery** is enabled in the container's **Skills** tab. For guided setup, select **Set up skill delivery** there and copy the prompt into your coding agent.
 </Callout>
 
 ## Choose an adapter
@@ -277,7 +277,7 @@ The read-only status contains `initialized`, `revision`, `mode`, `lastCheckedAt`
 
 Remove the old manual Learning-directory wiring when you enable an adapter for the same container. Keep unrelated static or hand-authored skills as needed. The adapter does not scan, change, or delete downloaded files.
 
-`copilotkit skills download` remains supported for inspection, offline use, and unsupported frameworks. See the [Learning guide](/ms-agent-python/learning) for the manual workflow.
+`copilotkit skills download` remains supported for inspection, offline use, and unsupported frameworks. See the [Automatic Learning guide](/ms-agent-python/learning) for the manual workflow.
 
 ## Deployment requirements
 

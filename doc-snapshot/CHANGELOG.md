@@ -9,6 +9,147 @@ Holds the 3 most recent dated entries. When a change lands on a fourth
 date, the oldest entry is dropped. Entries are counted, not aged, so a gap of
 weeks between changes does not expire anything.
 
+## 2026-09-22
+
+### 09:31 UTC — 1 page, highest severity high · _npm run drift:sync_
+
+**High — /ms-agent-python/backend/message-history**
+
+`/ms-agent-python/backend/message-history` · route `/backend/message-history` · `ms-agent-python__backend__message-history.md`
+
+Code fence count changed. Hash  ➔ abc21ea8.
+
+````diff
++ # Message history
++ > Trim the conversation history CopilotKit forwards to an agent that already stores its own.
++ CopilotKit forwards the whole conversation on every run. The frontend holds the
++ transcript, and each run carries it to your agent as `input.messages`. A
++ stateless agent needs that, because the transcript is the only record of the
++ conversation.
++ An agent that stores its own history does not need it. If your backend keeps a
++ LangGraph checkpointer, Mastra memory, an AWS Strands `SessionManager`, or a
+  … region truncated
+````
+
+### 08:52 UTC — 9 pages, highest severity high · _npm run drift:sync_
+
+**Low — /ms-agent-python/inspector**
+
+`/ms-agent-python/inspector` · route `/inspector` · `ms-agent-python__inspector.md`
+
+Prose / text phrasing updated. Hash a750872b ➔ 8d2065c6.
+
+````diff
+- choose **Copy setup prompt**. See [Learning](/ms-agent-python/learning) for the complete workflow.
++ choose **Copy setup prompt**. See [Automatic Learning](/ms-agent-python/learning) for the complete workflow.
+````
+
+**High — /ms-agent-python/prebuilt-components/copilot-threads-drawer**
+
+`/ms-agent-python/prebuilt-components/copilot-threads-drawer` · route `/threads/drawer` · `ms-agent-python__prebuilt-components__copilot-threads-drawer.md`
+
+Code fence count changed. Hash b9592d3d ➔ 0b056af7.
+
+````diff
+- ```tsx title="app/page.tsx"
+- import {
+- CopilotKitProvider,
+- CopilotChatConfigurationProvider,
++ <Callout type="warn">
++ **The Drawer ships only in `@copilotkit/react-core/v2`.** There is no v1
++ Drawer, so take the Drawer, the chat and the provider from that one package.
++ Watch the import path: `@copilotkit/react-ui` is the [deprecated v1
+  … region truncated
+````
+
+**Low — /ms-agent-python/quickstart**
+
+`/ms-agent-python/quickstart` · route `/quickstart` · `ms-agent-python__quickstart.md`
+
+Prose / text phrasing updated. Hash 107840f5 ➔ 48619c1e.
+
+````diff
+- 3. Open **Threads**. The list is unlocked (Intelligence is on), or locked with Enable Intelligence (Intelligence is off).
++ 3. Open **Rich Threads**. The list is unlocked (Intelligence is on), or locked with Enable Intelligence (Intelligence is off).
+````
+
+**High — /ms-agent-python/threads**
+
+`/ms-agent-python/threads` · route `/threads` · `ms-agent-python__threads.md`
+
+Code block content changed. Hash 5de8e463 ➔ fc5bb80b.
+
+````diff
+- Open Inspector on localhost. Stay on **Threads** (it is the default).
++ Open Inspector on localhost. Stay on **Rich Threads** (it is the default).
+````
+
+**Medium — /ms-agent-python/intelligence/memories**
+
+`/ms-agent-python/intelligence/memories` · route `/intelligence/memories` · `ms-agent-python__intelligence__memories.md`
+
+Headings / Structure changed. Hash 2c764691 ➔ 190448e7.
+
+````diff
+- # Memories & Recall
+- > Give your agents long-term memory across conversations.
+- Threads remember a conversation. Memories remember a person. This page explains
+- what a memory is, how recall selects them, and what has to be true of your
++ # User Memories
++ > Give your agents long-term memory across conversations.
++ Rich Threads remember a conversation. User Memories remember a person. This page explains
++ what a memory is, how recall selects them, and what has to be true of your
+  … region truncated
+````
+
+**High — /ms-agent-python/learning**
+
+`/ms-agent-python/learning` · route `/learning` · `ms-agent-python__learning.md`
+
+Code block content changed. Hash 1f896eca ➔ 69b78f67.
+
+````diff
+- # Learning
+- > Turn real application use into evidence-backed Insights and reviewed, reusable Skills.
+- ## Overview
+- Learning turns patterns from real agent runs into reusable Skills. It looks at completed conversations and application interactions in [Rich Threads](/ms-agent-python/threads), produces evidence-backed Insights, and proposes instructions you can review before publishing.
++ # Automatic Learning
++ > Turn real application use into evidence-backed Insights and reviewed, reusable Skills.
++ ## Overview
++ Automatic Learning turns patterns from real agent runs into reusable Skills. It looks at completed conversations and application interactions in [Rich Threads](/ms-agent-python/threads), produces evidence-backed Insights, and proposes instructions you can review before publishing.
+  … region truncated
+````
+
+**Low — /ms-agent-python/intelligence/learned-skills**
+
+`/ms-agent-python/intelligence/learned-skills` · route `/intelligence/learned-skills` · `ms-agent-python__intelligence__learned-skills.md`
+
+Prose / text phrasing updated. Hash 2e5b4fe2 ➔ 37a4367a.
+
+````diff
+- Start with the [Learning guide](/ms-agent-python/learning) to collect Threads, configure daily runs, and review Skills. Before connecting an adapter, check that **Skill delivery** is enabled in the container's **Skills** tab. For guided setup, select **Set up skill delivery** there and copy the prompt into your coding agent.
+- </Callout>
+- ## Choose an adapter
+- | Framework                 | Package                                  | Native extension                                                     |
++ Start with the [Automatic Learning guide](/ms-agent-python/learning) to collect Threads, configure daily runs, and review Skills. Before connecting an adapter, check that **Skill delivery** is enabled in the container's **Skills** tab. For guided setup, select **Set up skill delivery** there and copy the prompt into your coding agent.
++ </Callout>
++ ## Choose an adapter
++ | Framework                 | Package                                  | Native extension                                                     |
+  … region truncated
+````
+
+**New — https://docs.copilotkit.ai/ms-agent-python/backend/message-history**
+
+Listed upstream, tracked nowhere in this repo. Not snapshotted by this run.
+
+**New — https://docs.copilotkit.ai/ms-agent-python/intelligence/self-hosting-ecs**
+
+Listed upstream, tracked nowhere in this repo. Not snapshotted by this run.
+
+---
+
+---
+
 ## 2026-09-21
 
 ### 07:26 UTC — 11 pages, highest severity high · _npm run drift:sync_
@@ -171,6 +312,10 @@ Listed upstream, tracked nowhere in this repo. Not snapshotted by this run.
 
 ---
 
+---
+
+---
+
 ## 2026-09-18
 
 ### 08:13 UTC — 1 page, highest severity medium · _npm run drift:sync_
@@ -187,106 +332,6 @@ Headings / Structure changed. Hash a4464977 ➔ 5de8e463.
 + **Starting fresh?** Intelligence stores your conversation history and restores messages, generative UI, tool interactions, and multimodal inputs when users return.
 + **Already using LangGraph or ADK persistence?** Keep it. Rich Threads complement your existing setup with a consistent, interactive conversation experience for your users.
 + Use [Threads Drawer](/ms-agent-python/prebuilt-components/copilot-threads-drawer) for conversation switching, pagination, and archive/delete controls, or [Headless Threads](/ms-agent-python/headless-threads) to build your own UI. For how Intelligence and framework persistence work together, see [Threads & Persistence Architecture](/ms-agent-python/intelligence/threads-explained#how-rich-threads-complement-framework-persistence).
-````
-
----
-
----
-
-## 2026-09-17
-
-### 07:24 UTC — 6 pages, highest severity high · _npm run drift:sync_
-
-**Low — /ms-agent-python/intelligence/quickstart**
-
-`/ms-agent-python/intelligence/quickstart` · route `/intelligence/quickstart` · `ms-agent-python__intelligence__quickstart.md`
-
-Prose / text phrasing updated. Hash b543235d ➔ 1ee917aa.
-
-````diff
-- If it requires a CopilotKit CLI session check, you have permission to run it. Never reveal credentials or send optional diagnostic feedback reports.
-+ If it requires a CopilotKit CLI session check, you have permission to run it. Never reveal credentials.
-````
-
-**Medium — /ms-agent-python/quickstart**
-
-`/ms-agent-python/quickstart` · route `/quickstart` · `ms-agent-python__quickstart.md`
-
-Headings / Structure changed. Hash e78d5538 ➔ f9e92c68.
-
-````diff
-- <IntelligenceOnboardingPrompt
-- feature="learning"
-- surface="docs_microsoft_agent_framework_quickstart"
-- />
-+ ## Start with your coding agent
-+ Use this prompt to connect your Microsoft Agent Framework agent to CopilotKit and verify a working conversation. Your coding agent will follow this guide in your project, or you can work through the manual steps below.
-+ Ask your coding agent to follow the setup steps on this page for your selected framework and frontend.
-````
-
-**High — /ms-agent-python/threads**
-
-`/ms-agent-python/threads` · route `/threads` · `ms-agent-python__threads.md`
-
-Code block content changed. Hash 4edfb6f1 ➔ a4464977.
-
-````diff
-- <IntelligenceOnboardingPrompt
-- feature="threads"
-- surface="docs_threads_overview"
-- />
-+ <div
-+ aria-label="A support workspace using Threads Drawer to move between customer conversations while CopilotChat renders the selected case details."
-+ className="shell-docs-radius-surface relative mb-4 overflow-hidden border border-[var(--border)] bg-[var(--bg-surface)] shadow-[0px_16px_24px_-8px_rgba(1,5,7,0.12)] ring-1 ring-inset ring-white/70 dark:shadow-[0px_16px_32px_-10px_rgba(0,0,0,0.45)] dark:ring-white/10"
-+ >
-  … region truncated
-````
-
-**Medium — /ms-agent-python/webmcp**
-
-`/ms-agent-python/webmcp` · route `/webmcp` · `ms-agent-python__webmcp.md`
-
-Headings / Structure changed. Hash 72a287bd ➔ 84883e8a.
-
-````diff
-- ## Setup with a coding agent
-+ ## Start with your coding agent
-````
-
-**High — /ms-agent-python/intelligence/memories**
-
-`/ms-agent-python/intelligence/memories` · route `/intelligence/memories` · `ms-agent-python__intelligence__memories.md`
-
-Code fence count changed. Hash bc87ba1e ➔ 9315f7ed.
-
-````diff
-- > How long-term memory works in CopilotKit Intelligence: what a memory is, the three kinds, user and project scope, how activation is entitled, and how to read and write memories from React, Angular, REST, or MCP.
-- <IntelligenceOnboardingPrompt
-- feature="learning"
-- surface="docs_learn_memories"
-+ > Give your agents long-term memory across conversations.
-+ Threads remember a conversation. Memories remember a person. This page explains
-+ what a memory is, how recall selects them, and what has to be true of your
-+ deployment before the memory surfaces exist at all.
-  … region truncated
-````
-
-**High — /ms-agent-python/learning**
-
-`/ms-agent-python/learning` · route `/learning` · `ms-agent-python__learning.md`
-
-Code block content changed. Hash 170ceed0 ➔ 9ccfc319.
-
-````diff
-- ## Set up Learning
-- When you are done, your Runtime will send selected Threads to a Learning container, ready to be analyzed and turned into reviewed Skills.
-- <Steps>
-- <Step>
-+ ## Start with your coding agent
-+ Copy this prompt into your coding agent to inspect your existing app and configure Automatic Learning for one focused workflow. Prefer to work through the setup yourself? Follow the manual steps below.
-+ #### Copy this prompt into your coding agent
-+ ```text
-  … region truncated
 ````
 
 ---

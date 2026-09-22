@@ -177,6 +177,7 @@ export const SKIP_RECORDING: Record<string, string> = {
     'owner instruction: not reachable from the docs sidebar, so not under test yet',
   'jev-generative-ui':
     'owner instruction: not reachable from the docs sidebar, so not under test yet',
+  'message-history': 'owner instruction: tracked and built 2026-09-22, not recorded yet',
 };
 
 export const PAGES = definePages([
@@ -525,8 +526,17 @@ export const PAGES = definePages([
     docPath: 'prebuilt-components/copilot-threads-drawer',
     route: 'threads/drawer',
     ideFile: 'frontend/src/app/threads/drawer/demo-chat/page.tsx',
-    startLine: 80,
-    endLine: 116,
+    startLine: 91,
+    endLine: 125,
+    extraTabs: [
+      {
+        // "Use the Drawer with a sidebar chat": the same drawer hosted by
+        // <CopilotSidebar>, the demo's third tab.
+        filePath: 'frontend/src/app/threads/drawer/demo-chat/page.tsx',
+        startLine: 141,
+        endLine: 154,
+      },
+    ],
     prompt: 'Tell me a short joke about programmers.',
     waitAfterPromptMs: 4000,
   },
@@ -800,6 +810,29 @@ export const PAGES = definePages([
     // module and which key are missing.
     prompt: 'I need somewhere to work',
     waitAfterPromptMs: 2500,
+  },
+  {
+    // Tracked 2026-09-22. Registered so coverage and the doctor see it, but in
+    // SKIP_RECORDING until the owner turns it on.
+    id: 'message-history',
+    name: 'Backend - Message History',
+    videoName: 'MessageHistory',
+    docPath: 'backend/message-history',
+    route: 'backend/message-history',
+    ideFile: 'frontend/src/app/api/copilotkit-trimmed/[[...slug]]/route.ts',
+    startLine: 19,
+    endLine: 26,
+    extraTabs: [
+      {
+        // The browser recipe, verbatim, over a prop no release declares.
+        filePath: 'frontend/src/app/backend/message-history/demo-chat/page.tsx',
+        startLine: 86,
+        endLine: 96,
+      },
+    ],
+    prompts: ['My name is Sam.', 'What is my name?'],
+    prompt: 'My name is Sam.',
+    waitAfterPromptMs: 4000,
   },
 
   // The scaffolded app, once per package manager — video 3 of each set.

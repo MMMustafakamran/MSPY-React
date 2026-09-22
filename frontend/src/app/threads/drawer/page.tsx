@@ -16,10 +16,22 @@ export default function Page() {
           selection state nor a thread-select handler is yours to write.
         </p>
         <p className="mt-3 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-          The demo has two tabs. <strong>Zero props</strong> is the doc&apos;s
+          The demo has three tabs. <strong>Zero props</strong> is the doc&apos;s
           integration verbatim. <strong>Customized</strong> is the same drawer
           with <code>renderRow</code>, <code>limit</code>, and the two label
-          overrides — every documented customization that works in 1.68.2.
+          overrides — every documented customization that works in 1.68.2.{" "}
+          <strong>Sidebar host</strong> is the 2026-09-22 section &ldquo;Use the
+          Drawer with a sidebar chat&rdquo;: the drawer beside{" "}
+          <code>&lt;CopilotSidebar defaultOpen&gt;</code>, which renders a{" "}
+          <code>CopilotChat</code> inside itself and so reads the same
+          configuration. That snippet renders <code>&lt;YourMainContent /&gt;</code>{" "}
+          without defining it; the demo supplies a placeholder.
+        </p>
+        <p className="mt-3 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+          The same sync added two callouts. The drawer ships only in{" "}
+          <code>@copilotkit/react-core/v2</code>. And its chat-header launcher
+          appears on mobile viewports only; on desktop the drawer is always
+          visible, so no launcher is the intended result.
         </p>
         <div className="mt-4">
           <TryIt
