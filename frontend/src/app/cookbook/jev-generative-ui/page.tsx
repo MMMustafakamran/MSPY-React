@@ -436,7 +436,7 @@ export default function Page() {
 
       <Panel
         title="The Automatic Learning extension, quoted"
-        description="lib/learned-guidance.ts. Needs @copilotkit/intelligence-langgraph plus a provisioned Learning container with published Skills, which is the same wall FINDINGS.md #16 and #19 describe."
+        description="lib/learned-guidance.ts. Needs @copilotkit/intelligence-langgraph plus a provisioned Learning container with published Skills, which is the same wall FINDINGS.md #19 (and the removed #16, see git history) describe."
       >
         <CodeBlock
           filename="lib/learned-guidance.ts (quoted, not shipped)"

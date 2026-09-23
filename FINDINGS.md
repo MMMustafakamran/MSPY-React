@@ -1,73 +1,94 @@
 # Findings — MsPy-react
+Current open doc defects only. A finding is added here only after a human reviews and approves it; page failures in a run are never written here automatically. Resolved or superseded findings are removed (see git history).
+Stack: `@copilotkit/react-core`/`runtime` 1.73.3 (`^1.73.3`), `@ag-ui/client` 0.0.59, `agent-framework-ag-ui` 1.1.0, `agent-framework-openai` 1.13.0 (`1-cli-testing/*/app` declares 1.70.2).
 
-Doc defects / doc-vs-implementation gaps. Moved from README §9 on 2026-09-23; numbers unchanged (code cites "FINDINGS.md #N").
+## [Quickstart](https://docs.copilotkit.ai/ms-agent-python/quickstart)
 
-Baseline: `@copilotkit/react-core`/`runtime` 1.69.2 (`^1.69.2`), `agent-framework-ag-ui` 1.1.0, `agent-framework-openai` 1.13.0. On 2026-09-23 CopilotKit moved to 1.73.3 (`^1.73.3`), `@copilotkit/web-inspector` 1.73.3 (transitive), `@ag-ui/client` 0.0.57 → 0.0.59 (exact). Python deps unchanged. `1-cli-testing/*/app` still declares 1.70.2.
-Legend: ❌ open · ✅ resolved · ⚠️ partial/unconfirmed
+7. **Model id mismatch**: the env sets `OPENAI_CHAT_MODEL_ID=gpt-5.4-mini` but the code default is `gpt-4o-mini`. The repo keeps the code default.
+8. **Installs `@copilotkit/react-ui`** (v1), but every component comes from `@copilotkit/react-core/v2`.
+9. **agent-framework packages are pre-release**: `uv add` needs `--prerelease=allow`, and the docs leave it out.
+13. **`@ag-ui/client` installed twice**: the unpinned `npm install @ag-ui/client` differs from CopilotKit's pinned copy, so `HttpAgent` is not assignable to `AbstractAgent` ("separate declarations of a private property '_debug'"). No page says which version to install. Not yet checked against npm latest 1.0.0.
+18. **`project select` has no `login` step, and the key file is renamed**: `npx copilotkit@latest project select` needs a CLI session and aborts with "not logged in" (CLI 4.9.24). The key file changes from `.env.local` to `.env`, which clashes with `agent/.env`. Learning, Intelligence Quickstart and Skill delivery all run `login` first; Quickstart does not. The repo keeps `frontend/.env.local`.
 
-## 1–22
+## [Landing page](https://docs.copilotkit.ai/ms-agent-python)
 
-1. ❌ **`useAgent` has no `initialState`** — Shared State pages pass `useAgent({ agentId, initialState })`; not in `UseAgentProps` (type error). Read page's `render` prop also absent. Repo seeds via `default_state` on `add_agent_framework_fastapi_endpoint`.
-2. ✅ (doc sync 2026-08-27) **`AzureOpenAIChatClient` not importable** — `agent_framework.azure` (`agent-framework-azure-ai` 1.0.0rc6) doesn't export it. Pages now use `OpenAIChatClient(..., azure_endpoint=...)` + `DefaultAzureCredential()` fallback; `backend/chat_client.py` matches.
-3. ❌ **`useDefaultRenderTool` sample destructures `args`** — `DefaultRenderProps` has `name, toolCallId, parameters, status, result`; no `args`. Named `useRenderTool` sample is correct.
-4. ❌ **Inspector toggle depends on provider** — `enableInspector={false}` works only on `<CopilotKit>`. `<CopilotKitProvider>` reads `showDevConsole` (default false) and self-mounts the inspector; a hand-mounted `<CopilotKitInspector />` shows "CopilotKit core not attached".
-5. ❌ (still fails 1.73.3) **Slots: plain component not assignable** — `SlotValue<C> = C | string | Partial<ComponentProps<C>>` requires default's statics; level-3 example fails typecheck. Works for function-default slots (e.g. `cursor`).
-6. ❌ **Headless UI: `msg.content` not a `ReactNode`** — typed `string | ContentPart[] | Record<…> | undefined`; `<p>{msg.content}</p>` fails. Also imports `randomUUID` from undeclared `@copilotkit/shared`; repo uses `crypto.randomUUID()`.
-7. ❌ **Quickstart model id mismatch** — env `OPENAI_CHAT_MODEL_ID=gpt-5.4-mini` vs code default `gpt-4o-mini`. Repo keeps code default.
-8. ❌ **Quickstart installs `@copilotkit/react-ui`** (v1) while all components come from `@copilotkit/react-core/v2`. Not a dependency here.
-9. ❌ **agent-framework packages are pre-release** — `uv add` needs `--prerelease=allow`; docs omit it.
-10. ✅ (2026-09-04) **Readables context never reached agent** — `agent_framework_ag_ui` 1.1.0 never reads `input_data["context"]`; old sample claimed "forwarded automatically". Doc now uses a `ContextAwareAgent` subclass; repo serves it at `/context_agent` (bound by `/readables`). Measured: `/sample_agent` 0/3 colleagues, `/context_agent` 3/3. See `QA-FINDINGS-2026-09-04.md` §1.
-11. ❌ **Threads need Intelligence + catch-all route** — docs use `@copilotkit/runtime/v2` `createCopilotRuntimeHandler` on `[[...slug]]`. `<CopilotThreadsDrawer>` needs `licenseStatus` `valid`/`expiring`, reported by `/info` only with a `CopilotKitIntelligence` instance; in-memory runtime leaves drawer locked despite 200s. Repo uses `/api/copilotkit-threads/[[...slug]]`. "Create thread with your own API on first message" not implemented (no backend minting threads).
-12. ❌ **Threads Drawer `slot` children dropped by React wrapper** — [drawer page](https://docs.copilotkit.ai/ms-agent-python/prebuilt-components/copilot-threads-drawer) shows `<span slot="header">`. Web component declares the 5 slots, but `CopilotThreadsDrawerProps` has no `children` (type error) and wrapper renders `React.createElement(TAG, props, rowChildren)` from `renderRow` only. `renderRow`/`limit`/`label`/`recentLabel` work. Verified 1.68.2.
-13. ⚠️ **`@ag-ui/client` installed twice** — Quickstart's unpinned `npm install @ag-ui/client` diverges from CopilotKit's pinned copy → `HttpAgent` not assignable to `AbstractAgent` ("separate declarations of a private property '_debug'"). Repro'd at 1.69.2 (0.0.57 vs 0.0.58) and 1.73.3 (0.0.59 vs pin 0.0.57); pin now 0.0.59. npm latest is 1.0.0 (untested). No page says which version to install.
-14. ❌ **A2UI catalog is zod 3 only; zod 4 fails silently** — `@copilotkit/a2ui-renderer` 1.69.2 depends on `zod@^3.25`; `CatalogDefinitions` typed on zod 3 `ZodObject`. Casting a zod 4 schema builds, but `GenericBinder` (`@a2ui/web_core`) reads `_def.typeName`/`_def.shape()` → bindings unresolved, blank card, no error. Repo: `"zod-v3": "npm:zod@^3.25.75"` used only in `generative-ui/a2ui/fixed-schema/a2ui/definitions.ts`.
-15. ❌ **Landing [`route.ts`](https://docs.copilotkit.ai/ms-agent-python) can't serve its handler; reads undefined `AGENT_URL`** — titled `app/api/copilotkit/route.ts`, but [Quickstart](https://docs.copilotkit.ai/ms-agent-python/quickstart)/[Copilot Runtime](https://docs.copilotkit.ai/ms-agent-python/copilot-runtime) use `[[...slug]]/route.ts` ("lives at a **catch-all** path"). Plain route only gets base path → `{"error":"Not found"}` on GET/POST; `next build` passes. `process.env.AGENT_URL!` defined by no page; `new HttpAgent({ url: undefined })` fails only at run. Repo: `frontend/src/app/api/copilotkit-landing/route.ts` verbatim, basePath `/api/copilotkit-landing` (Next forbids plain route beside optional catch-all). Verified runtime/react-core 1.69.2, `@ag-ui/client` 0.0.57, `next` 16.3.2.
-16. ✅ (runtime 1.73.3; failed 1.69.2; no min version stated) **`BuiltInAgent` `learnedSkills`** — [Skill delivery](https://docs.copilotkit.ai/ms-agent-python/intelligence/learned-skills). At 1.69.2: TS2353 (`learnedSkills` not in config), TS2339 (not on `AgentFactoryContext`), TS2724 (`BuiltInAgentFactoryContext` not exported). At 1.73.3 (`ai` 6.0.256, `@ai-sdk/openai` 3.0.97, TS 5.9.3) both snippets compile clean. Quoted, not mounted (would replace the MAF agent).
-17. ❌ (still 1.73.3, types only) **Wrong agent-discovery error named** — [Copilot Runtime](https://docs.copilotkit.ai/ms-agent-python/copilot-runtime) says frontend raises `CopilotKitAgentDiscoveryError`; not exported from `react-core/v2` (TS2305; only in `@copilotkit/shared`). `useAgent` throws plain `Error`: `useAgent: Agent 'X' not found after runtime sync ... Known agents: [...]`. Class is v1 behaviour. Demo: `/copilot-runtime/demo-chat` (`Agent(name="MyAgent")` registered as `my_agent`).
-18. ❌ **Quickstart `project select` lacks `login`; key file renamed** — step 1 is web sign-in, then `npx copilotkit@latest project select` needs a CLI session; recorder aborts on `/not (?:logged|signed) in/i` (CLI 4.9.24). Key file `.env.local` → `.env`, clashing with `agent/.env`. [Automatic Learning](https://docs.copilotkit.ai/ms-agent-python/learning), [Intelligence Quickstart](https://docs.copilotkit.ai/ms-agent-python/intelligence/quickstart), [Skill delivery](https://docs.copilotkit.ai/ms-agent-python/intelligence/learned-skills) all run `login` first; [Quickstart](https://docs.copilotkit.ai/ms-agent-python/quickstart) still doesn't (snapshot line 350). Repo keeps `frontend/.env.local`.
-19. ❌ **Container naming contradiction** — [Learning](https://docs.copilotkit.ai/ms-agent-python/learning) manual path: env `CPK_INTELLIGENCE_LEARNING_CONTAINER_ID`. [Learned skills](https://docs.copilotkit.ai/ms-agent-python/intelligence/learned-skills): "Omitting the configuration disables all skill requests, even when delivery environment variables exist." → `BuiltInAgent` via env alone requests nothing, silently. See #27. Evidence: `doc-snapshot/pages/ms-agent-python__learning.md`, `...__intelligence__learned-skills.md` (2026-09-21).
-20. ⚠️ **[Markdown Rendering](https://docs.copilotkit.ai/ms-agent-python/custom-look-and-feel/markdown): page accurate, surroundings not** — snippets ship verbatim in `frontend/src/app/custom-look-and-feel/markdown/published-snippets.tsx`; `TS2353` reproduces.
-   - Renderer replacement compiles (not a #5 case): `MarkdownRenderer` has no statics.
-   - `my-link`/`my-heading` classes undefined anywhere; snippet strips Streamdown classes + `data-streamdown`. Defined in `globals.css` here.
-   - Prescribed unused `node` destructure → `@typescript-eslint/no-unused-vars` at `(77,21)`, `(82,22)`. Spreading `node` typechecks clean.
-   - Unknown key gives `TS2353` **and** undocumented `TS7031`.
-   - Deviations: `agentId="my_agent"` added (no `default` agent), `labels`; first snippet moved out of `page.tsx`.
-   - Page absent from section sidebar (sitemap only).
-   - Verified react-core 1.69.2, `streamdown` 1.6.11, TS 5.9.3, `next` 16.3.2, `react` 19.2.8.
-21. ❌ **[Jev generative UI](https://docs.copilotkit.ai/ms-agent-python/cookbook/jev-generative-ui) pins an unmatched stack + third-party key** — at `/cookbook/jev-generative-ui`.
-   - Pins 10 exact versions (CopilotKit 1.73.0, `@ag-ui/*` 0.0.59, `zod@4.6.5`, `@typesafe-ai/sdk@0.6.0`, `@langchain/openai@1.5.13`, ...); installed had 1.69.2, 0.0.57, zod 4.4.3; `@typesafe-ai/sdk`, `@langchain/openai`, `@copilotkit/intelligence-langgraph` absent → 3× `TS2307` only.
-   - `TYPESAFE_API_KEY` (docs.typesafe.ai) required; `choosePanel` is the whole decision layer.
-   - `@copilotkit/core`, `@langchain/core` pinned but unimported; `rxjs`, `@ag-ui/core` imported but undeclared.
-   - `@copilotkit/intelligence-langgraph@1.71.2` vs stack 1.73.0; only 0.1.0/1.71.2 exist.
-   - `PickerAgent` `.catch(() => {…})` discards cause, contra page's own rule; user sees "The picker could not finish. Try again."
-   - Uses `createCopilotEndpoint` + `endpoint.fetch`; other pages use `createCopilotRuntimeHandler` / `createCopilotEndpointSingleRoute`. Unrelated.
-   - Paths collide with harness (`app/page.tsx`, `app/api/copilotkit/[[...slug]]/route.ts`, hardcoded `basePath`).
-   - `model: "jev-1.13.0"` unexplained; `OPENAI_MODEL` fallback equals default (mirror of #7).
-   - Negative result: adapter, route, `Picker` typecheck unchanged at 1.69.2; 1.73.0 floor not needed.
-   - Shipped: `workspaces.ts`, `read-action.ts` verbatim; `demo-chat/page.tsx` with 3 marked substitutions; no faked Jev decisions. Absent from sidebar.
-22. ❌ **[Threads lifecycle](https://docs.copilotkit.ai/ms-agent-python/threads-lifecycle): `existingId` undefined** — `setActiveThreadId(existingId, { explicit: true })`; never defined. Demo passes first thread id as prop (`frontend/src/app/threads/lifecycle/demo-chat/page.tsx`). Rest observed working at react-core 1.73.0 (`InMemoryAgentRunner`), incl. `[CopilotKit] Ignoring startNewThread(): threadId is controlled via the threadId prop...`. Not exercised: `identifyUser`, headless first-message, checkpointer.
+15. **`route.ts` can't serve its handler and reads an undefined `AGENT_URL`**: the file is titled `app/api/copilotkit/route.ts`, but Quickstart and Copilot Runtime require `[[...slug]]/route.ts`. The plain route returns `{"error":"Not found"}`, yet `next build` passes. No page defines `process.env.AGENT_URL!`. Repo: `frontend/src/app/api/copilotkit-landing/route.ts`.
 
-## 2026-09-22 sync
+## [Copilot Runtime](https://docs.copilotkit.ai/ms-agent-python/copilot-runtime)
 
-Renames only on 5 pages (Automatic Learning, User Memories, Rich Threads). New: `/backend/message-history` (#25); `/intelligence/self-hosting-ecs` in `sitemap.knownUnmapped`.
+17. **Names the wrong agent-discovery error**: `CopilotKitAgentDiscoveryError` is not exported from `react-core/v2` (TS2305). `useAgent` throws a plain `Error`: `useAgent: Agent 'X' not found after runtime sync ...`. Demo: `/copilot-runtime/demo-chat`.
 
-23. ⚠️ **[Threads Drawer](https://docs.copilotkit.ai/ms-agent-python/prebuilt-components/copilot-threads-drawer) sidebar snippet uses undefined `<YourMainContent />`** — placeholder supplied. Third tab at `/threads/drawer/demo-chat` (no nested provider; `height: "100%"`). Typechecked only; `<CopilotPopup>` not exercised.
-24. ✅ (web-inspector 1.73.3; failed 1.69.2; no min version stated) **Docs name Inspector tabs that didn't exist** — Quickstart/Rich Threads/Learning say **Rich Threads**/**Automatic Learning**; 1.69.2 labels `Threads`/`Learning` (1.73.0 too). 1.73.3 has `Rich Threads`, `Automatic Learning`, **Try from here**; [Inspector](https://docs.copilotkit.ai/ms-agent-python/inspector) now matches. Try from here reachable (`/api/copilotkit-threads/info` → `{"list":true,"inspect":true}`, `licenseStatus: "valid"`); not clicked.
-25. ⚠️ (`messageFilter` ✅ at react-core 1.73.3; failed 1.69.2, 1.73.0; no min version) **[Message history](https://docs.copilotkit.ai/ms-agent-python/backend/message-history)**
-   - `messageFilter={(messages) => messages.slice(-1)}` undeclared ≤1.73.0; 1.73.3 declares it (`TS2578` on removed `@ts-expect-error`). Browser behaviour not re-observed.
-   - Middleware `trim-history.ts` works (`@ag-ui/client` 0.0.59); `/api/copilotkit-trimmed`.
-   - `process.env.AGENT_URL!` undefined (see #15); check script `TS2339` on `trimmedParallel[i].toolCallId`; `selfManagedAgents` quoted only ("Enterprise plan").
-   - ❌ Page lists MAF as keeping own history; here (`agent-framework-ag-ui` 1.1.0, `-core` 1.14.0) trimmed runtime answered `UNKNOWN` vs `Sam` untrimmed → agent forgets thread. Page never says how MAF keeps history. In `SKIP_RECORDING`.
+## Shared State pages
 
-## 2026-09-23 sync + 1.73.3 upgrade
+1. **`useAgent` has no `initialState`**: it is not in `UseAgentProps` (type error). The `render` prop on the Read page does not exist either. The repo seeds state via `default_state` on `add_agent_framework_fastapi_endpoint`.
 
-Wording: "managed" → "cloud-hosted"; "Fully Headless UI" → "Headless UI"; "Automatic learned skill delivery" → "Skill delivery".
+## Tool rendering (`useDefaultRenderTool`)
 
-26. ❌ **[Skill delivery](https://docs.copilotkit.ai/ms-agent-python/intelligence/learned-skills): placeholder `revision: "exact-revision-id"` live in every snippet** (BuiltInAgent ×2, LangGraph Py/TS, Mastra, ADK, .NET, SDK client). Replace-note appears once; compiles clean at runtime 1.73.3. Endpoint behaviour unobserved.
-27. ❌ **"Omit them to use environment variables" vs "Omitting the configuration disables all skill requests"** — same page (lines 35, 76, 85, 100). Runtime 1.73.3: `BuiltInAgent` sets `skillRegistry` undefined when `config.learnedSkills === undefined`; env fallback only with `learnedSkills: {}`. Read from `node_modules/@copilotkit/runtime/dist`; not run.
-28. ❌ **SDK-client snippet sets `apiUrl` without `wsUrl`** — runtime 1.73.3 `warnOnPartialHostOverride`: "apiUrl is set ... but wsUrl is not, so wsUrl falls back to the managed default". Self-hosted realtime goes to cloud host. Not run.
-29. ❌ **[Automatic Learning](https://docs.copilotkit.ai/ms-agent-python/learning) prose puts `getLearningContainerId` "on the CopilotKit runtime"**; snippet/table use `CopilotKitIntelligence`. Runtime-level one is `@deprecated` at 1.73.3; absent at 1.69.2 (no min version).
-30. ⚠️ **[Plans](https://docs.copilotkit.ai/ms-agent-python/intelligence/plans) says free Developer includes User Memory** — sibling harnesses got `403 MEMORY_NOT_ENTITLED` (Mastra-react 2026-09-11, Agno-react 2026-09-17; `1-Demos/`). Not reproduced here; re-test.
-31. ❌ **`/ms-agent-python/intelligence/connect-your-runtime` removed, 404, no redirect** — links re-pointed to `/intelligence/quickstart` (checked 2026-09-23). `sitemap.knownUnmapped` entry removed.
-32. ❌ **Two placeholders for `CPK_INTELLIGENCE_API_KEY`** — Skill delivery line 40 `"your-project-key"` vs line 373 `cpk-...` (also Automatic Learning l.179, Quickstart l.356). First drops the identifying `cpk-` prefix.
-33. ✅ **Harness gap: Skill delivery had no `nav-config.ts` entry** ("No nav entry registered"). Added as "Skill delivery" under Intelligence.
+3. **Sample destructures `args`**: `DefaultRenderProps` has `name, toolCallId, parameters, status, result` and no `args`.
+
+## Inspector
+
+4. **Toggle depends on the provider**: `enableInspector={false}` works only on `<CopilotKit>`. `<CopilotKitProvider>` reads `showDevConsole` and mounts the inspector itself. A hand-mounted `<CopilotKitInspector />` shows "CopilotKit core not attached".
+
+## Slots
+
+5. **Plain component not assignable**: `SlotValue<C> = C | string | Partial<ComponentProps<C>>` requires the default component's statics, so the level-3 example fails typecheck at 1.73.3.
+
+## Headless UI
+
+6. **`msg.content` is not a `ReactNode`**: it is typed `string | ContentPart[] | Record<…> | undefined`, so `<p>{msg.content}</p>` fails. The page also imports `randomUUID` from `@copilotkit/shared`, which is not a declared dependency.
+
+## [Markdown Rendering](https://docs.copilotkit.ai/ms-agent-python/custom-look-and-feel/markdown)
+
+20. **Surrounding setup incomplete**: the `my-link`/`my-heading` classes are defined nowhere, and the snippet strips the Streamdown classes and `data-streamdown`. The prescribed unused `node` destructure triggers `@typescript-eslint/no-unused-vars`. An unknown key gives an undocumented `TS7031` alongside `TS2353`. The page is missing from the sidebar.
+
+## A2UI
+
+14. **Catalog works with zod 3 only; zod 4 fails silently**: `@copilotkit/a2ui-renderer` depends on `zod@^3.25`. A zod 4 schema with a type cast builds, but `GenericBinder` reads `_def.typeName`/`_def.shape()`, so the card renders blank with no error. The repo uses `"zod-v3": "npm:zod@^3.25.75"`.
+
+## Threads
+
+11. **Needs Intelligence and a catch-all route**: `<CopilotThreadsDrawer>` needs `licenseStatus` `valid`/`expiring`, which `/info` reports only when `CopilotKitIntelligence` is set up. With the in-memory runtime the drawer stays locked. "Create thread with your own API on first message" is not implemented. The repo uses `/api/copilotkit-threads/[[...slug]]`.
+
+## [Threads Drawer](https://docs.copilotkit.ai/ms-agent-python/prebuilt-components/copilot-threads-drawer)
+
+12. **React wrapper drops `slot` children**: the page shows `<span slot="header">`, but `CopilotThreadsDrawerProps` has no `children` (type error) and the wrapper renders only the `renderRow` output.
+23. **Sidebar snippet uses an undefined `<YourMainContent />`**: the repo supplies a placeholder at `/threads/drawer/demo-chat`.
+
+## [Threads lifecycle](https://docs.copilotkit.ai/ms-agent-python/threads-lifecycle)
+
+22. **`existingId` is never defined**: the page calls `setActiveThreadId(existingId, { explicit: true })`. The demo passes the first thread id as a prop.
+
+## [Message history](https://docs.copilotkit.ai/ms-agent-python/backend/message-history)
+
+25. **Wrong claim about MAF history, plus snippet gaps**: the page says MAF keeps its own history, but the trimmed runtime answered `UNKNOWN` where the untrimmed one answered `Sam` (`agent-framework-ag-ui` 1.1.0, `-core` 1.14.0). The page never explains how MAF keeps history. `process.env.AGENT_URL!` is undefined (see #15), and the check script gives `TS2339` on `trimmedParallel[i].toolCallId`.
+
+## [Jev generative UI](https://docs.copilotkit.ai/ms-agent-python/cookbook/jev-generative-ui)
+
+21. **Pinned stack doesn't match, and needs a third-party key**:
+   - It pins 10 exact versions (CopilotKit 1.73.0, `zod@4.6.5`, `@typesafe-ai/sdk@0.6.0`, `@langchain/openai@1.5.13`, ...), and `@copilotkit/intelligence-langgraph@1.71.2` does not match the rest.
+   - It requires `TYPESAFE_API_KEY`.
+   - `@copilotkit/core` and `@langchain/core` are pinned but never imported. `rxjs` and `@ag-ui/core` are imported but not declared.
+   - `PickerAgent` `.catch(() => {…})` discards the cause, which breaks the page's own rule.
+   - `model: "jev-1.13.0"` is never explained.
+   - The page is missing from the sidebar.
+
+## [Automatic Learning](https://docs.copilotkit.ai/ms-agent-python/learning)
+
+19. **Container naming contradiction**: the manual path uses the env var `CPK_INTELLIGENCE_LEARNING_CONTAINER_ID`, but Skill delivery says that omitting the config disables skill requests even when env vars are set. So a `BuiltInAgent` configured by env alone silently requests nothing. See #27.
+29. **Prose puts `getLearningContainerId` "on the CopilotKit runtime"**, while the snippet and table use `CopilotKitIntelligence`. The runtime-level method is `@deprecated` at 1.73.3.
+
+## [Skill delivery](https://docs.copilotkit.ai/ms-agent-python/intelligence/learned-skills)
+
+26. **Every snippet contains the placeholder `revision: "exact-revision-id"`** (BuiltInAgent ×2, LangGraph Py/TS, Mastra, ADK, .NET, SDK client). The note to replace it appears only once.
+27. **"Omit them to use environment variables" contradicts "Omitting the configuration disables all skill requests"**: at runtime 1.73.3, `skillRegistry` is undefined when `learnedSkills === undefined`. The env fallback applies only with `learnedSkills: {}`.
+28. **SDK-client snippet sets `apiUrl` without `wsUrl`**: the runtime warns that wsUrl falls back to the managed default, so self-hosted realtime traffic goes to the cloud host.
+32. **Two different placeholders for `CPK_INTELLIGENCE_API_KEY`**: `"your-project-key"` and `cpk-...` (the second also appears in Automatic Learning and Quickstart). The first drops the `cpk-` prefix.
+
+## [Plans](https://docs.copilotkit.ai/ms-agent-python/intelligence/plans)
+
+30. **Says the free Developer plan includes User Memory**: sibling harnesses got `403 MEMORY_NOT_ENTITLED`. Not reproduced in this repo; needs a re-test.
+
+## Connect your runtime (removed)
+
+31. **`/ms-agent-python/intelligence/connect-your-runtime` returns 404 with no redirect**: the repo's links now point to `/intelligence/quickstart`.
