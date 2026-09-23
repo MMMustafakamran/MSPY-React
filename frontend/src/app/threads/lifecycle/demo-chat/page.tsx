@@ -92,7 +92,7 @@ function useCopilotKitWarnings(): string | null {
  *
  * `existingId` is never defined on the page, so it arrives here as a prop, with
  * `!` because the button stays disabled until one exists. Both handler calls
- * are otherwise the page's text. Recorded in README section 9.
+ * are otherwise the page's text. Recorded in FINDINGS.md.
  */
 // [1] threads-lifecycle: switch or start a thread, as published
 // [!code highlight]

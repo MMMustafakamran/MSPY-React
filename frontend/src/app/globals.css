@@ -53,7 +53,7 @@ body {
    visible effect is the one it removes: Streamdown's own classes and its
    `data-streamdown` attribute stop being emitted, and nothing takes their
    place. Defined here so `/custom-look-and-feel/markdown` shows a swap rather
-   than a regression. The snippet itself is untouched. See README §9 #20. */
+   than a regression. The snippet itself is untouched. See FINDINGS.md #20. */
 .my-link {
   font-weight: 600;
   color: #b45309;

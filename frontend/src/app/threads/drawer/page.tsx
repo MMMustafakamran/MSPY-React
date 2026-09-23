@@ -73,7 +73,7 @@ export default function Page() {
         renders the element with only <code>renderRow</code> output as its
         children — so passing them is a type error, and would be silently
         dropped even if it were not. Reported rather than worked around; see
-        README §9.
+        FINDINGS.md.
       </Callout>
 
       <Callout tone="warn" title="Two providers deep">

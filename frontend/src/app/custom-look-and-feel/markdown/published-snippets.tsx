@@ -10,7 +10,7 @@
  * route module, and this repo does not hang extra named exports off one, so
  * keeping the published `export` meant a module of its own. Everything inside
  * each snippet is what the page publishes; the only additions are marked
- * inline and written up in README §9 #20.
+ * inline and written up in FINDINGS.md #20.
  *
  * The two additions, both marked below:
  *
@@ -63,7 +63,7 @@ import { CopilotChat } from "@copilotkit/react-core/v2";
  *
  * `my-link` and `my-heading` are named but never defined anywhere on the doc
  * page. They are defined in `src/app/globals.css` here so the override is
- * visible rather than invisible. See README §9 #20.
+ * visible rather than invisible. See FINDINGS.md #20.
  */
 // [!code highlight]
 export function Chat() {
@@ -132,7 +132,7 @@ export function ClassStringChat() {
  *     messageView={{ assistantMessage: { markdownRenderer: PlainText } }}
  *   />;
  *
- * README §9 #5 says a bare function component is not assignable to most slots,
+ * FINDINGS.md #5 says a bare function component is not assignable to most slots,
  * because `SlotValue<C> = C | string | Partial<ComponentProps<C>>` pins the
  * replacement to the default component's statics. This slot is the exception,
  * and it does compile: `CopilotChatAssistantMessage.MarkdownRenderer` is a

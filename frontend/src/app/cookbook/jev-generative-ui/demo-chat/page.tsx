@@ -42,7 +42,7 @@ import {
  *   `agent.abortRun()`-> a no-op; there is no run to abort. `busy` is never
  *                        true here, so the Cancel button never renders anyway.
  *
- * See README §9 #21.
+ * See FINDINGS.md #21.
  */
 
 /** Which prepared control the tester placed. Jev's job upstream. */

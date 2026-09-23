@@ -395,7 +395,7 @@ export default function Page() {
             <code>OPENAI_MODEL=gpt-5.4</code> and the code then reads{" "}
             <code>process.env.OPENAI_MODEL || &quot;gpt-5.4&quot;</code>, so
             the variable can be deleted with no effect. The Quickstart has the
-            mirror-image defect in README §9 #7, where the env block and the
+            mirror-image defect in FINDINGS.md #7, where the env block and the
             code disagree.
           </Callout>
 
@@ -436,7 +436,7 @@ export default function Page() {
 
       <Panel
         title="The Automatic Learning extension, quoted"
-        description="lib/learned-guidance.ts. Needs @copilotkit/intelligence-langgraph plus a provisioned Learning container with published Skills, which is the same wall README §9 #16 and #19 describe."
+        description="lib/learned-guidance.ts. Needs @copilotkit/intelligence-langgraph plus a provisioned Learning container with published Skills, which is the same wall FINDINGS.md #16 and #19 describe."
       >
         <CodeBlock
           filename="lib/learned-guidance.ts (quoted, not shipped)"

@@ -25,7 +25,7 @@ import { HttpAgent } from "@ag-ui/client";
  *
  * Shipped with `basePath: "/api/copilotkit-landing"` so the handler is judged
  * on the snippet rather than on a base path that does not match its URL.
- * Recorded in README §9 #15. Everything else is the page's text, including the
+ * Recorded in FINDINGS.md #15. Everything else is the page's text, including the
  * two things that do not work:
  *
  * `process.env.AGENT_URL!` is not set by any step on any tracked page. The

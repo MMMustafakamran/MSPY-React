@@ -10,7 +10,7 @@
  * can run in this repo, so the one function in that file which depends on
  * nothing but `./workspaces` is split out here and the rest is quoted on the
  * route page. The function body, its signature and its comments are unchanged.
- * That split is the deviation; see README §9 #21.
+ * That split is the deviation; see FINDINGS.md #21.
  *
  * This is the recipe's own half of the decision: a room selection is applied
  * directly, without asking Jev, "the user has already chosen, so Jev doesn't

@@ -13,7 +13,7 @@
 // `typeName` strings rather than `instanceof` precisely so a schema built by a
 // different module instance still reads correctly — its own comment says so.
 //
-// See README §9, known issue 14. Everything else in this app, including the zod schemas the
+// See FINDINGS.md #14. Everything else in this app, including the zod schemas the
 // frontend tools are declared with, stays on zod 4.
 import { z } from "zod-v3";
 import type { CatalogDefinitions } from "@copilotkit/a2ui-renderer";

@@ -17,7 +17,7 @@
  * One deviation, and it is the location: the recipe puts this at `lib/` with
  * the `@/*` alias pointing at the project root. This repo's alias points at
  * `src/`, and its convention is that a doc page's code lives under that page's
- * route. See README §9 #21.
+ * route. See FINDINGS.md #21.
  */
 
 // `Guidance` below is exported but unused in this repo: its only consumer is
