@@ -167,12 +167,12 @@ export default function Page() {
         <code>expiring</code> during the grace period and then locks the drawer.
       </Callout>
 
-      <Callout tone="warn" title="The docs now say a managed project never issues this token">
+      <Callout tone="warn" title="The docs now say a cloud-hosted project never issues this token">
         Headless Threads gained a paragraph this sync:{" "}
-        &ldquo;Managed project setup does not issue{" "}
+        &ldquo;Cloud-hosted setup does not issue{" "}
         <code>COPILOTKIT_LICENSE_TOKEN</code>. That token is only for offline or
-        self-hosted licensing and does not replace the managed project API
-        key.&rdquo; Nothing then says what a managed-only project should do
+        self-hosted licensing and does not replace the cloud-hosted project API
+        key.&rdquo; Nothing then says what a cloud-hosted-only project should do
         about the drawer, which gates on a license status and stays locked
         without one. This repo holds a token an older CLI wrote, which is the
         only reason the drawer unlocks here — a reader following the current
@@ -195,15 +195,23 @@ export default function Page() {
       </Callout>
 
       <Callout tone="warn" title="Not covered — &ldquo;Try from here&rdquo;">
-        The 2026-08-30 sync added one line to this guide:{" "}
+        The guide&apos;s &ldquo;See it in Inspector&rdquo; step:{" "}
         &ldquo;Open a real thread and use <strong>Try from here</strong> to copy
         it into a Playground scratch session. The stored thread does not
-        change.&rdquo; That is an Inspector Playground action, and this repo
-        holds a working free-tier license, so unlike{" "}
-        <code>threads-import</code> above it is genuinely reachable here — it
-        simply is not exercised yet. No route asserts it and no clip shows it,
-        including the claim that the stored thread is left untouched. Flagged
-        rather than dropped: it is a documented step with no coverage.
+        change.&rdquo; At <code>@copilotkit/web-inspector</code> 1.69.2 there
+        was no such control: the pane was labelled <code>Threads</code> and had
+        no <strong>Try from here</strong>. At 1.73.3 (installed, transitive via{" "}
+        <code>@copilotkit/react-core</code> declared <code>^1.73.3</code>) the
+        pane is <strong>Rich Threads</strong> and the button exists; it renders
+        for a real, non-example thread when the runtime reports{" "}
+        <code>threadEndpoints.list</code> and does not set{" "}
+        <code>threadEndpoints.inspect</code> to <code>false</code>. On
+        2026-09-23 this repo&apos;s <code>/api/copilotkit-threads/info</code>{" "}
+        answered <code>&quot;threadEndpoints&quot;:&#123;&quot;list&quot;:true,&quot;inspect&quot;:true,&hellip;&#125;</code>{" "}
+        with <code>licenseStatus: &quot;valid&quot;</code>, and its thread list
+        returned real threads, so the control is reachable here. It is still not
+        exercised: no route asserts it and no clip shows it, including the claim
+        that the stored thread is left untouched.
       </Callout>
     </>
   );

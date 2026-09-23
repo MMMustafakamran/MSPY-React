@@ -13,9 +13,10 @@ import { DemoFrame } from "@/components/demo-frame";
  *   reaches the Microsoft Agent Framework endpoint with the final turn only;
  *   the transcript here stays whole.
  * - **Browser messageFilter** is the page's first recipe, verbatim, on the main
- *   runtime. No published `@copilotkit/react-core` declares `messageFilter`
- *   (checked on the installed 1.69.2 and the latest, 1.73.0), so it is a type
- *   error and, at runtime, an ignored prop: the full transcript goes out.
+ *   runtime. `@copilotkit/react-core` 1.69.2 did not declare `messageFilter`
+ *   (a type error and an ignored prop); 1.73.3, installed now, declares it on
+ *   `CopilotKitProps` and `@copilotkit/core` applies it. The page states no
+ *   minimum version. Its effect on this stack has not been re-observed.
  *
  * Observed 2026-09-22 (see the route page): this backend's AG-UI endpoint did
  * not keep its own history. Sent the whole transcript it answered from it; sent
@@ -87,9 +88,8 @@ export default function Page() {
             // [!code highlight]
             <CopilotKit
               runtimeUrl="/api/copilotkit"
-              // @ts-expect-error `messageFilter` is not a prop on any published
-              // release (1.69.2 installed, 1.73.0 latest). If one ships it, this
-              // suppression goes unused and the typecheck says so.
+              // No suppression: a type error at @copilotkit/react-core 1.69.2,
+              // a declared prop at 1.73.3 (tsc flagged the old one as unused).
               messageFilter={(messages) => messages.slice(-1)}
             >
               <YourApp agentId="my_agent" />

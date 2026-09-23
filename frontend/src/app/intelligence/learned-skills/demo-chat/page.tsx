@@ -5,7 +5,7 @@ import { CopilotChat } from "@copilotkit/react-core/v2";
 import { DemoFrame } from "@/components/demo-frame";
 
 /**
- * Automatic learned skill delivery, against this repo's quickstart agent.
+ * Skill delivery, against this repo's quickstart agent.
  *
  * There is no adapter to mount. The page's only Microsoft Agent Framework
  * adapter is `CopilotKit.Intelligence.AgentFramework`, a .NET 9 package, and
@@ -14,11 +14,12 @@ import { DemoFrame } from "@/components/demo-frame";
  * `SkillRegistryContextProvider` cannot be constructed here in any language
  * this repo runs, and the two tools it would register never exist.
  *
- * The 2026-09-21 sync added a second candidate, `BuiltInAgent`, which would run
- * in the TypeScript runtime this app already has. It does not help: at
- * `@copilotkit/runtime` 1.69.2 `learnedSkills` is not a property of
- * `BuiltInAgentConfiguration` in either mode, so neither published snippet
- * compiles. The route page carries the compiler output.
+ * The 2026-09-21 sync added a second candidate, `BuiltInAgent`, which runs in
+ * the TypeScript runtime this app already has. Its snippets failed to compile
+ * at `@copilotkit/runtime` 1.69.2 and compile at 1.73.3 (the route page carries
+ * both results). It still does not help here: a `BuiltInAgent` is its own
+ * TypeScript agent, so mounting it would replace this repo's Python agent
+ * rather than deliver skills to it.
  *
  * The demo shows the absence rather than faking the presence: the agent is
  * this repo's normal `my_agent`, and the prompt asks for the exact tool names
@@ -50,7 +51,7 @@ function SkillToolProbe() {
             >
               <th className="py-1 pr-3 font-medium text-slate-500">{tool}</th>
               <td data-testid="skill-tool-status" className="py-1 text-rose-600 dark:text-rose-400">
-                not registered: .NET adapter, or learnedSkills at 1.69.2
+                not registered: .NET adapter; BuiltInAgent not mounted
               </td>
             </tr>
           ))}
@@ -59,7 +60,7 @@ function SkillToolProbe() {
       <p className="mt-2 font-mono text-[11px] text-slate-500">
         CopilotKit.Intelligence.AgentFramework targets net9.0 · this backend is Python
         <br />
-        BuiltInAgent.learnedSkills · TS2353 at @copilotkit/runtime 1.69.2
+        BuiltInAgent.learnedSkills · compiles at @copilotkit/runtime 1.73.3 (TS2353 at 1.69.2), not mounted
       </p>
     </div>
   );

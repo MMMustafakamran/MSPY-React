@@ -74,7 +74,7 @@ export default function Page() {
         <code>.env.local</code>: the step runs{" "}
         <code>npx copilotkit@latest project select</code> from the frontend app
         directory and says that command writes the file. Step 1 no longer hands
-        out a license key either; it is now a sign-in to managed Intelligence,
+        out a license key either; it is now a sign-in to cloud-hosted Intelligence,
         and the page never runs <code>copilotkit login</code> before{" "}
         <code>project select</code>. This repo keeps its copy of the key in{" "}
         <code>frontend/.env.local</code>, which Next.js reads alongside{" "}

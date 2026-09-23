@@ -18,18 +18,18 @@ const GOALS: [string, string][] = [
   ["Confirm that CopilotKit is connected", "Home, then Agent"],
   ["Find out why a run or tool failed", "The red launcher or error pill"],
   ["Follow messages, events, tools, state, context", "Agent and the Inspect panes"],
-  ["Reproduce a saved conversation safely", "Threads → Try from here"],
-  ["Continue a saved Thread in your application", "Threads → View in your app"],
-  ["Enable or repair Intelligence", "Home, or a locked Threads"],
-  ["Review what Learning found", "Learning"],
+  ["Reproduce a saved conversation safely", "Rich Threads → Try from here"],
+  ["Continue a saved Thread in your application", "Rich Threads → View in your app"],
+  ["Enable or repair Intelligence", "Home, or a locked Rich Threads"],
+  ["Review what Learning found", "Automatic Learning"],
 ];
 
 const FAILURES: [string, string][] = [
   ["Runtime or connection", "Home"],
-  ["Loading the Thread list", "Threads"],
+  ["Loading the Thread list", "Rich Threads"],
   ["Agent run or RUN_ERROR", "AG-UI Events"],
   ["Tool handler or missing tool", "Agent"],
-  ["Loading Learning data", "Learning"],
+  ["Loading Learning data", "Automatic Learning"],
 ];
 
 const VISIBILITY: [string, string][] = [

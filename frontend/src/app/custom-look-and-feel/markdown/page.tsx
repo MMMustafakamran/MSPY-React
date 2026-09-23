@@ -147,7 +147,7 @@ export default function Page() {
             200, is listed in <code>sitemap.xml</code>, and carries a
             &ldquo;Custom Look and Feel&rdquo; breadcrumb. The sidebar tree the
             section serves lists exactly two pages under that folder, Slots and
-            Fully Headless UI. This page is not one of them, so nothing in the
+            Headless UI. This page is not one of them, so nothing in the
             docs links to it: it is reachable by URL, search or sitemap only.
           </Callout>
 

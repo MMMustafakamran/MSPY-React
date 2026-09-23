@@ -1,4 +1,4 @@
-# Fully Headless UI
+# Headless UI
 
 > Fully customize your Copilot's UI from the ground up using headless UI
 

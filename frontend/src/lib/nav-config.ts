@@ -107,7 +107,6 @@ export const NAV: NavGroup[] = [
         summary:
           "Replacing chat sub-components at three levels: class strings, prop overrides, and whole components.",
         status: "working",
-        offNav: true,
       },
       {
         path: "/custom-look-and-feel/markdown",
@@ -119,7 +118,7 @@ export const NAV: NavGroup[] = [
         status: "working",
         offNav: true,
         statusNote:
-          "All three published snippets ship verbatim and all three typecheck. The page is live and in the sitemap but absent from the section sidebar, which lists only Slots and Fully Headless UI under Custom Look and Feel.",
+          "All three published snippets ship verbatim and all three typecheck. The page is live and in the sitemap but absent from the section sidebar, which lists only Slots and Headless UI under Custom Look and Feel.",
       },
       {
         path: "/custom-look-and-feel/headless-ui",
@@ -129,7 +128,6 @@ export const NAV: NavGroup[] = [
         summary:
           "A chat interface built from scratch on the headless hooks, with no CopilotKit chrome.",
         status: "working",
-        offNav: true,
       },
       {
         path: "/programmatic-control",
@@ -405,7 +403,7 @@ export const NAV: NavGroup[] = [
           "Trimming the transcript forwarded to the agent: the page's middleware inside a second runtime, and its messageFilter prop.",
         status: "partial",
         statusNote:
-          "The middleware and its check work as published. `messageFilter`, the page's recommended recipe, is not a prop on any published @copilotkit/react-core (1.69.2 installed, 1.73.0 latest), so it is a type error and does nothing.",
+          "The middleware and its check work as published. `messageFilter`, the page's recommended recipe, was a type error and an ignored prop at @copilotkit/react-core 1.69.2 and is a declared prop at 1.73.3; the page states no minimum version. Its effect on this stack is not yet re-observed.",
       },
     ],
   },
@@ -426,9 +424,20 @@ export const NAV: NavGroup[] = [
         title: "Automatic Learning",
         docPath: "/ms-agent-python/learning",
         summary:
-          "Turn real application use into evidence-backed Insights and reviewed, reusable Skills.",
+          "Turn real use of your app into skills you can review and publish.",
         status: "not-started",
         statusNote: "Tracked for drift only — no demo yet.",
+      },
+      {
+        path: "/intelligence/learned-skills",
+        hasDemo: true,
+        title: "Skill delivery",
+        docPath: "/ms-agent-python/intelligence/learned-skills",
+        summary:
+          "Loading a Learning container's published skills into an agent through a framework adapter's catalog and two skill tools.",
+        status: "partial",
+        statusNote:
+          "No adapter can be mounted on this Python backend: the only Microsoft Agent Framework adapter is .NET, and copilotkit-intelligence-runtime 404s on PyPI. The BuiltInAgent snippets compile at @copilotkit/runtime 1.73.3 (not at 1.69.2) but would replace this repo's agent. Not recorded, by owner instruction.",
       },
     ],
   },

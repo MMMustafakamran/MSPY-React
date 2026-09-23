@@ -33,30 +33,31 @@ export default function Page() {
         <div className="mt-4">
           <TryIt
             prompts={["My name is Sam.", "What is my name?"]}
-            expect="Both tabs answer the first prompt. On the second, the Browser messageFilter tab should know the name and the Runtime middleware tab should not. Observed 2026-09-22 against this backend: sent the whole transcript, the Microsoft Agent Framework endpoint answered Sam; sent the last turn alone (through /api/copilotkit-trimmed, or as a second run of the same thread) it answered UNKNOWN. It keeps no history of its own here, so the trimmed tab forgets."
-            fail="The Runtime middleware tab errors or never answers: /api/copilotkit-trimmed could not reach the agent at AGENT_URL. Or the Browser tab forgets too: that would mean messageFilter shipped and took effect."
+            expect="Both tabs answer the first prompt. On the second, the Runtime middleware tab should not know the name. Observed 2026-09-22 against this backend: sent the whole transcript, the Microsoft Agent Framework endpoint answered Sam; sent the last turn alone (through /api/copilotkit-trimmed, or as a second run of the same thread) it answered UNKNOWN. It keeps no history of its own here, so the trimmed tab forgets. messageFilter is a real prop from @copilotkit/react-core 1.73.3, so the Browser tab is expected to forget too; not re-observed since the upgrade."
+            fail="The Runtime middleware tab errors or never answers: /api/copilotkit-trimmed could not reach the agent at AGENT_URL. Or the Browser tab still knows the name: at 1.73.3 that would mean the declared messageFilter prop does not take effect."
           />
         </div>
       </Panel>
 
-      <Callout tone="warn" title="messageFilter does not exist in any published release">
+      <Callout tone="warn" title="messageFilter: resolved at 1.73.3, failed at 1.69.2, no minimum version stated">
         The page&apos;s first and recommended recipe,{" "}
         <code>messageFilter=&#123;(messages) =&gt; messages.slice(-1)&#125;</code>{" "}
-        on <code>&lt;CopilotKit&gt;</code>, is not a prop on{" "}
-        <code>@copilotkit/react-core</code> 1.69.2 (installed) or 1.73.0 (the
-        latest on npm, published 2026-09-19). It is a type error, and at runtime
-        an ignored prop, so none of what the page says it does (trimming the
-        request body, repairing split tool-call pairs, re-applying across agent
-        replacement) happens. The demo mounts it verbatim under a{" "}
-        <code>@ts-expect-error</code>, so the typecheck fails the day a release
-        adds it. The demo also adds <code>agentId=&quot;my_agent&quot;</code> to
-        that tab&apos;s chat, marked: the main runtime registers no{" "}
-        <code>default</code> agent.
+        on <code>&lt;CopilotKit&gt;</code>, was not a prop on{" "}
+        <code>@copilotkit/react-core</code> 1.69.2 (declared{" "}
+        <code>^1.69.2</code>) or 1.73.0: a type error, and at runtime an ignored
+        prop. At 1.73.3 (declared <code>^1.73.3</code>) it is declared on{" "}
+        <code>CopilotKitProps</code> with the page&apos;s own example in its
+        JSDoc, and the demo&apos;s <code>@ts-expect-error</code> went unused,
+        which is how this was caught; the directive is gone and the line is
+        unchanged. The page names no minimum version, so a reader on an older
+        release still gets the silent no-op. The demo also adds{" "}
+        <code>agentId=&quot;my_agent&quot;</code> to that tab&apos;s chat, marked:
+        the main runtime registers no <code>default</code> agent.
       </Callout>
 
       <Callout tone="info" title="The middleware works as published">
         <code>trim-history.ts</code> compiles on <code>@ag-ui/client</code>{" "}
-        0.0.57 and the page&apos;s own check passes (
+        0.0.57 (and again on 0.0.59 after the 1.73.3 upgrade) and the page&apos;s own check passes (
         <code>trim-history: forwarded only the answered call, next to its result</code>
         ). Two gaps around it. The runtime snippet reads{" "}
         <code>process.env.AGENT_URL!</code>, which the page never defines; the
@@ -100,7 +101,7 @@ export default function Page() {
 
       <Panel
         title="Trim an agent you construct yourself"
-        description="Quoted, not mounted. selfManagedAgents is Enterprise Intelligence tier."
+        description="Quoted, not mounted. selfManagedAgents is Enterprise plan."
       >
         <CodeBlock filename="app/page.tsx" language="tsx" code={SELF_MANAGED_SNIPPET} />
       </Panel>
