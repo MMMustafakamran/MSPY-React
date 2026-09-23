@@ -430,7 +430,6 @@ Commit `doc-snapshot/` — `pages/`, `manifest.json` and `CHANGELOG.md` are the 
 CPK-MS-Agent-Python/
 ├── CLAUDE.md
 ├── README.md
-├── project-context.md         # how docs/ and code relate; rules for changing either
 ├── .env.example
 │
 ├── frontend/                  # Next.js 16 app — also hosts the Copilot Runtime

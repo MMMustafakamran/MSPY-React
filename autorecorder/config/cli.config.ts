@@ -491,7 +491,7 @@ export const CLI_FLOWS = defineCliFlows([
  * generated from the report (command, exit code, last screen) and the
  * hand-written `analysis` below is appended when there is one.
  *
- * `project-context.md`: a broken thing keeps its broken implementation and
+ * `../REPOS.md`: a broken thing keeps its broken implementation and
  * the recording exists to show the defect; every finding pins installed
  * against declared versions. That is what the finding clip's IDE tabs are.
  */
