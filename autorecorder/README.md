@@ -19,8 +19,8 @@ Both services must be up first — the recorder refuses to start otherwise, beca
 a video of a dead page is worse than no video.
 
 ```bash
-cd backend  && uv run --prerelease=allow main.py     # :8000
-cd frontend && npm run dev                           # :3000
+cd backend  && uv run --prerelease=allow main.py     # :8020
+cd frontend && npm run dev                           # :3020
 ```
 
 Then:
@@ -378,8 +378,8 @@ which is the one place four package managers can visibly differ. (`VERSIONS.md`,
 the generated summary of the same thing, stays on the install and finding clips;
 showing both here would say it twice before the app has appeared.)
 
-Each runs on its own port (3121–3124), never 3000. The repo's own frontend
-usually holds 3000, and a demo that quietly recorded against *that* would look
+Each runs on its own port (3021–3024), never 3000 or 3020. The repo's own frontend
+holds 3020 (and other apps hold 3000), and a demo that quietly recorded against *that* would look
 like a pass while proving nothing about the scaffold.
 
 Not 3101–3104 either, and that is not superstition. This suite is copied into
@@ -488,7 +488,7 @@ but the thing the doc promises did not: read the note, then watch the clip at
 that moment. Those notes are also in `videos/RECORD_RESULTS.json` and the CI
 report.
 
-**"Port 3121 is already in use"** — another dev server holds the port, usually
+**"Port 3021 is already in use"** — another dev server holds the port, usually
 a sibling repo's scaffold left running. Stop it; the recorder refuses rather
 than filming the wrong app.
 

@@ -72,8 +72,8 @@ export const PROJECT: ProjectConfig = {
 
   docBaseUrl: 'https://docs.copilotkit.ai/ms-agent-python',
 
-  frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
-  backendUrl: process.env.BACKEND_URL || 'http://localhost:8000',
+  frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3020',
+  backendUrl: process.env.BACKEND_URL || 'http://localhost:8020',
   backendHealthPath: '/health',
 
   frontendStartCmd: 'cd frontend && npm run dev',

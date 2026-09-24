@@ -19,7 +19,7 @@ if exist "%ROOT_DIR%npm\app\package.json" (
 if defined NPM_TARGET (
     echo [npm]  Opening terminal for: npm run dev
     echo        Target: !NPM_TARGET!
-    start "npm dev" cmd /k "cd /d "!NPM_TARGET!" && echo ================================================================ && echo  Location: !NPM_TARGET! && echo  Running:  npm run dev (UI :3000, Python Agent :8000) && echo ================================================================ && echo. && npm run dev"
+    start "npm dev" cmd /k "cd /d "!NPM_TARGET!" && echo ================================================================ && echo  Location: !NPM_TARGET! && echo  Running:  npm run dev (UI :3021, Python Agent :8021) && echo ================================================================ && echo. && set PORT=3021&& set AGENT_PORT=8021&& set AGENT_URL=http://localhost:8021&& npm run dev"
 ) else (
     echo [npm]  No project found in npm\app or npm. Skipping.
 )
@@ -35,7 +35,7 @@ if exist "%ROOT_DIR%pnpm\app\package.json" (
 if defined PNPM_TARGET (
     echo [pnpm] Opening terminal for: pnpm run dev
     echo        Target: !PNPM_TARGET!
-    start "pnpm dev" cmd /k "cd /d "!PNPM_TARGET!" && echo ================================================================ && echo  Location: !PNPM_TARGET! && echo  Running:  pnpm run dev (UI :3000, Python Agent :8000) && echo ================================================================ && echo. && pnpm run dev"
+    start "pnpm dev" cmd /k "cd /d "!PNPM_TARGET!" && echo ================================================================ && echo  Location: !PNPM_TARGET! && echo  Running:  pnpm run dev (UI :3022, Python Agent :8022) && echo ================================================================ && echo. && set PORT=3022&& set AGENT_PORT=8022&& set AGENT_URL=http://localhost:8022&& pnpm run dev"
 ) else (
     echo [pnpm] No project found in pnpm\app or pnpm. Skipping.
 )
@@ -51,7 +51,7 @@ if exist "%ROOT_DIR%bun\app\package.json" (
 if defined BUN_TARGET (
     echo [bun]  Opening terminal for: bun run dev
     echo        Target: !BUN_TARGET!
-    start "bun dev" cmd /k "cd /d "!BUN_TARGET!" && echo ================================================================ && echo  Location: !BUN_TARGET! && echo  Running:  bun run dev (UI :3000, Python Agent :8000) && echo ================================================================ && echo. && bun run dev"
+    start "bun dev" cmd /k "cd /d "!BUN_TARGET!" && echo ================================================================ && echo  Location: !BUN_TARGET! && echo  Running:  bun run dev (UI :3024, Python Agent :8024) && echo ================================================================ && echo. && set PORT=3024&& set AGENT_PORT=8024&& set AGENT_URL=http://localhost:8024&& bun run dev"
 ) else (
     echo [bun]  No project found in bun\app or bun. Skipping.
 )
@@ -67,7 +67,7 @@ if exist "%ROOT_DIR%yarn\app\package.json" (
 if defined YARN_TARGET (
     echo [yarn] Opening terminal for: yarn run dev
     echo        Target: !YARN_TARGET!
-    start "yarn dev" cmd /k "cd /d "!YARN_TARGET!" && echo ================================================================ && echo  Location: !YARN_TARGET! && echo  Running:  yarn run dev (UI :3000, Python Agent :8000) && echo ================================================================ && echo. && yarn run dev"
+    start "yarn dev" cmd /k "cd /d "!YARN_TARGET!" && echo ================================================================ && echo  Location: !YARN_TARGET! && echo  Running:  yarn run dev (UI :3023, Python Agent :8023) && echo ================================================================ && echo. && set PORT=3023&& set AGENT_PORT=8023&& set AGENT_URL=http://localhost:8023&& yarn run dev"
 ) else (
     echo [yarn] No project found in yarn\app or yarn. Skipping.
 )

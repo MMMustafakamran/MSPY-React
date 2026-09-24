@@ -17,7 +17,7 @@ export interface HealthReport {
   licenseKeySet: boolean;
 }
 
-export const AGENT_URL = process.env.MS_AGENT_URL ?? "http://localhost:8000";
+export const AGENT_URL = process.env.MS_AGENT_URL ?? "http://localhost:8020";
 
 export async function getHealth(): Promise<HealthReport> {
   const statusUrl = `${AGENT_URL}/health`;

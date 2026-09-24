@@ -81,7 +81,7 @@ Copy the **structure**, not the values. Run the CLI once by hand in
 ## 5 · `DEMO_PAGES` in `config/pages.config.ts`
 
 - ports: **pick a range no other repo uses**, never 3000 (the repo's own
-  frontend holds 3000) and not 3101–3104 or 3121–3124, which earlier ports
+  frontend holds 3000) and not 3101–3104 or 3121–3124 (this repo now uses 3020–3029 / 8020–8029), which earlier ports
   already took. Every copy of this folder that shared a range has collided
   with a sibling repo's dev server at least once; `startService` now refuses a
   port that is already answering, so the collision fails loudly instead of

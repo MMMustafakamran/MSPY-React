@@ -92,7 +92,7 @@ export default function Page() {
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               <tr>
                 <td className="py-2 pr-4 font-mono text-xs">my_agent</td>
-                <td className="py-2 pr-4 font-mono text-xs">:8000/</td>
+                <td className="py-2 pr-4 font-mono text-xs">:8020/</td>
                 <td className="py-2 text-slate-600 dark:text-slate-400">
                   <code>get_weather</code> · Quickstart, Tool Rendering, and every
                   route with no state schema
@@ -100,21 +100,21 @@ export default function Page() {
               </tr>
               <tr>
                 <td className="py-2 pr-4 font-mono text-xs">sample_agent</td>
-                <td className="py-2 pr-4 font-mono text-xs">:8000/sample_agent</td>
+                <td className="py-2 pr-4 font-mono text-xs">:8020/sample_agent</td>
                 <td className="py-2 text-slate-600 dark:text-slate-400">
                   <code>update_language</code> · Shared State read/write
                 </td>
               </tr>
               <tr>
                 <td className="py-2 pr-4 font-mono text-xs">search_agent</td>
-                <td className="py-2 pr-4 font-mono text-xs">:8000/search_agent</td>
+                <td className="py-2 pr-4 font-mono text-xs">:8020/search_agent</td>
                 <td className="py-2 text-slate-600 dark:text-slate-400">
                   <code>update_searches</code> · State Rendering
                 </td>
               </tr>
               <tr>
                 <td className="py-2 pr-4 font-mono text-xs">context_agent</td>
-                <td className="py-2 pr-4 font-mono text-xs">:8000/context_agent</td>
+                <td className="py-2 pr-4 font-mono text-xs">:8020/context_agent</td>
                 <td className="py-2 text-slate-600 dark:text-slate-400">
                   no tools · Agent App Context (<code>ContextAwareAgent</code>)
                 </td>

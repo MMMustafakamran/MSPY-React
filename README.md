@@ -33,12 +33,12 @@ Browser (React 19)
   │  POST /api/copilotkit            ← every route except /threads
   │  GET|POST /api/copilotkit-threads/*   ← /threads only
   ▼
-Next.js 16 App Router  ·  localhost:3000
+Next.js 16 App Router  ·  localhost:3020
   │  Copilot Runtime  (@copilotkit/runtime)
   │  agents: { my_agent, sample_agent, search_agent } → new HttpAgent({ url })
-  │  POST http://localhost:8000/{,sample_agent,search_agent}   ← AG-UI over SSE
+  │  POST http://localhost:8020/{,sample_agent,search_agent}   ← AG-UI over SSE
   ▼
-FastAPI + agent-framework-ag-ui  ·  localhost:8000     ← Python
+FastAPI + agent-framework-ag-ui  ·  localhost:8020     ← Python
   │  add_agent_framework_fastapi_endpoint(app, agent, path)
   ▼
 OpenAI or Azure OpenAI  (gpt-4o-mini by default)
@@ -62,7 +62,7 @@ Four points worth noting:
        ▼
 3. [InMemoryAgentRunner]
    ├─► Identifies the target agent ("my_agent")
-   ├─► Opens an HTTP connection to Python: http://localhost:8000/
+   ├─► Opens an HTTP connection to Python: http://localhost:8020/
    ├─► Pipes user messages into the Python AG-UI server
    │
    ▼
@@ -84,10 +84,10 @@ Four points worth noting:
 
 | Runtime id     | Endpoint             | Tool              | Serves                                                           |
 | -------------- | -------------------- | ----------------- | ---------------------------------------------------------------- |
-| `my_agent`     | `:8000/`             | `get_weather`     | Quickstart, Tool Rendering, and every route with no state schema |
-| `sample_agent` | `:8000/sample_agent` | `update_language` | Shared State read/write                                          |
-| `search_agent` | `:8000/search_agent` | `update_searches` | State Rendering                                                  |
-| `context_agent`| `:8000/context_agent`| —                 | Agent App Context (`ContextAwareAgent`)                          |
+| `my_agent`     | `:8020/`             | `get_weather`     | Quickstart, Tool Rendering, and every route with no state schema |
+| `sample_agent` | `:8020/sample_agent` | `update_language` | Shared State read/write                                          |
+| `search_agent` | `:8020/search_agent` | `update_searches` | State Rendering                                                  |
+| `context_agent`| `:8020/context_agent`| —                 | Agent App Context (`ContextAwareAgent`)                          |
 
 ---
 
@@ -165,9 +165,9 @@ Then edit `backend/.env`:
 | `OPENAI_CHAT_MODEL_ID`              | `backend/.env`        | Model id. Defaults to `gpt-4o-mini`.                                                       |
 | `AZURE_OPENAI_ENDPOINT`             | `backend/.env`        | Use Azure instead. Takes precedence when set.                                              |
 | `AZURE_OPENAI_CHAT_DEPLOYMENT_NAME` | `backend/.env`        | Azure deployment name.                                                                     |
-| `AGENT_PORT`                        | `backend/.env`        | Defaults to `8000`.                                                                        |
+| `AGENT_PORT`                        | `backend/.env`        | Defaults to `8020`.                                                                        |
 | `AUTH_BEARER_TOKEN`                 | `backend/.env`        | Enables the bearer-token middleware. Unset by default.                                     |
-| `MS_AGENT_URL`                      | `frontend/.env.local` | Where the runtime finds the agent. Defaults to `http://localhost:8000`.                    |
+| `MS_AGENT_URL`                      | `frontend/.env.local` | Where the runtime finds the agent. Defaults to `http://localhost:8020`.                    |
 | `NEXT_PUBLIC_AUTH_BEARER_TOKEN`     | `frontend/.env.local` | The token the provider forwards. Must match the backend's.                                 |
 | `COPILOTKIT_LICENSE_TOKEN`          | `frontend/.env.local` | `/threads`, self-hosted/OSS only. Signed license, verified offline. Not issued for managed projects. |
 | `CPK_INTELLIGENCE_API_KEY`          | `frontend/.env.local` | `/threads` only. Project key for the managed thread store. `INTELLIGENCE_API_KEY` still read. |
@@ -181,7 +181,7 @@ The `/threads` variables are the only credentials in this repo that are not opti
 
 As of the 2026-09-15 sync the drawer page splits these by deployment: `CPK_INTELLIGENCE_API_KEY` is the credential for a managed project, and `COPILOTKIT_LICENSE_TOKEN` is for self-hosted or offline licensing only — managed setup does not issue one, and it does not substitute for the project key. The runtime gate here follows that split: the project key alone wires Intelligence, and the license token is passed only when set.
 
-**Default ports:** frontend **3000**, backend **8000**.
+**Default ports:** frontend **3020**, backend **8020**.
 
 ---
 
@@ -199,7 +199,7 @@ uv run --prerelease=allow main.py
 Success looks like:
 
 ```
-INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Uvicorn running on http://0.0.0.0:8020 (Press CTRL+C to quit)
 INFO:     Application startup complete.
 ```
 
@@ -212,7 +212,7 @@ cd frontend
 npm run dev
 ```
 
-Open **<http://localhost:3000>**. The home page probes the agent server-side and shows a connection panel — check it first if anything misbehaves.
+Open **<http://localhost:3020>**. The home page probes the agent server-side and shows a connection panel — check it first if anything misbehaves.
 
 **Optional — record the demos.** With both processes up, `autorecorder/` drives a real browser through every route and saves a screen capture per doc page:
 
@@ -244,7 +244,7 @@ The code on a page is never a re-typed approximation: each page reads real files
 
 ### Getting Started
 
-**`/`** — Orientation plus a live connection check. **Pass:** "Agent Framework AG-UI server" shows green and `200 from http://localhost:8000/health`.
+**`/`** — Orientation plus a live connection check. **Pass:** "Agent Framework AG-UI server" shows green and `200 from http://localhost:8020/health`.
 
 **`/quickstart`** — The bring-your-own-agent path: FastAPI AG-UI server, runtime route, `CopilotSidebar`. **Try:** `Can you tell me a joke?` **Pass:** tokens stream in one at a time. **Fail:** nothing streams — the agent process is down.
 

@@ -7,15 +7,17 @@ Write-Host "================================================================" -F
 Write-Host ""
 
 $managers = @(
-    @{ Name = "npm";  Cmd = "npm run dev" },
-    @{ Name = "pnpm"; Cmd = "pnpm run dev" },
-    @{ Name = "bun";  Cmd = "bun run dev" },
-    @{ Name = "yarn"; Cmd = "yarn run dev" }
+    @{ Port = 3021; Name = "npm";  Cmd = "npm run dev" },
+    @{ Port = 3022; Name = "pnpm"; Cmd = "pnpm run dev" },
+    @{ Port = 3024; Name = "bun";  Cmd = "bun run dev" },
+    @{ Port = 3023; Name = "yarn"; Cmd = "yarn run dev" }
 )
 
 foreach ($m in $managers) {
     $name = $m.Name
     $cmd = $m.Cmd
+    $ui = $m.Port
+    $ag = $m.Port + 5000
     $targetPath = $null
 
     if (Test-Path "$rootDir\$name\app\package.json") {
@@ -28,10 +30,10 @@ foreach ($m in $managers) {
         Write-Host "[$name] Opening terminal for: $cmd" -ForegroundColor Green
         Write-Host "       Target: $targetPath" -ForegroundColor Gray
 
-        $psCommand = "Set-Location '$targetPath'; " +
+        $psCommand = "Set-Location '$targetPath'; `$env:PORT='$ui'; `$env:AGENT_PORT='$ag'; `$env:AGENT_URL='http://localhost:$ag'; " +
                      "Write-Host '================================================================' -ForegroundColor Cyan; " +
                      "Write-Host ' Location: $targetPath' -ForegroundColor Gray; " +
-                     "Write-Host ' Running:  $cmd (UI :3000, Python Agent :8000)' -ForegroundColor Yellow; " +
+                     "Write-Host ' Running:  $cmd (UI :$ui, Python Agent :$ag)' -ForegroundColor Yellow; " +
                      "Write-Host '================================================================' -ForegroundColor Cyan; " +
                      "Write-Host ''; " +
                      "$cmd"

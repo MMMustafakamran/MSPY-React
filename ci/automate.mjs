@@ -262,7 +262,7 @@ async function main() {
 
       if (!ignoreDocDrift) {
         console.log('⚠️ Halting so you can review the doc changes first.');
-        console.log('👉 Review in browser: http://localhost:3000/doc-sync');
+        console.log('👉 Review in browser: http://localhost:3020/doc-sync');
         console.log('👉 To run anyway, pass `--ignore-doc-drift` or `--force`.');
         generateReport(reportData);
         process.exit(2);

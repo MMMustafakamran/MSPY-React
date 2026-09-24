@@ -343,7 +343,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       // also evidence that this section is missing from the sitemap.
       console.log(` • ${u}  ${fromSitemap.has(u) ? '(sitemap)' : '(linked from a tracked page)'}`);
     }
-    console.log('   Snapshot them from http://localhost:3000/doc-sync, or add them to\n' +
+    console.log('   Snapshot them from http://localhost:3020/doc-sync, or add them to\n' +
       '   sitemap.knownUnmapped in doc-snapshot/manifest.json to acknowledge them.\n');
   }
   if (result.linked?.broken?.length > 0) {
@@ -393,7 +393,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
         }
       }
 
-      console.log('\n👉 Local markdown files NOT modified. Pass `--update` or visit http://localhost:3000/doc-sync to sync.');
+      console.log('\n👉 Local markdown files NOT modified. Pass `--update` or visit http://localhost:3020/doc-sync to sync.');
       process.exit(2);
     }
   }

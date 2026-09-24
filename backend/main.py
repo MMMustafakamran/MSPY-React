@@ -37,13 +37,13 @@ from agents import (  # noqa: E402 - must follow load_dotenv
 )
 from chat_client import build_chat_client  # noqa: E402
 
-PORT = int(os.getenv("AGENT_PORT", "8000"))
+PORT = int(os.getenv("AGENT_PORT", "8020"))
 
 _ALLOWED_ORIGINS = [
     o.strip()
     for o in os.getenv(
         "AGENT_CORS_ORIGINS",
-        "http://localhost:3000,http://127.0.0.1:3000",
+        "http://localhost:3020,http://127.0.0.1:3020",
     ).split(",")
     if o.strip()
 ]

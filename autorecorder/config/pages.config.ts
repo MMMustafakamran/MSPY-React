@@ -61,7 +61,7 @@ import { definePages, type PageDefinition } from '../core/types';
  * this entry starts producing a demo without anyone having to remember to add
  * it back.
  *
- * Port 3121 and up, never 3000: the repo's own frontend usually holds 3000, and
+ * Port 3021 and up, never 3000 or 3020: the repo's own frontend usually holds 3000, and
  * a recording that quietly used *that* would look like a pass while proving
  * nothing about the scaffold.
  *
@@ -77,17 +77,17 @@ import { definePages, type PageDefinition } from '../core/types';
  * that the server never started — the right failure, since it never became
  * reachable in a way this config recognises.
  */
-// `agentPort` mirrors `port` in the 81xx range: one Python agent per copy, none
-// of them on 8000, which this repo's own backend holds. Keep the two columns in
+// `agentPort` mirrors `port` in the 802x range: one Python agent per copy, none
+// of them on 8000 or 8020 (this repo's own backend). Keep the two columns in
 // step — `AGENT_URL` is built from `agentPort` below.
 const DEMO_PAGES: PageDefinition[] = [
-  { pm: 'npm', command: 'npm', args: ['run', 'dev'], lockfile: 'package-lock.json', port: 3121, agentPort: 8121 },
-  { pm: 'pnpm', command: 'pnpm', args: ['run', 'dev'], lockfile: 'pnpm-lock.yaml', port: 3122, agentPort: 8122 },
-  { pm: 'yarn', command: 'yarn', args: ['run', 'dev'], lockfile: 'yarn.lock', port: 3123, agentPort: 8123 },
+  { pm: 'npm', command: 'npm', args: ['run', 'dev'], lockfile: 'package-lock.json', port: 3021, agentPort: 8021 },
+  { pm: 'pnpm', command: 'pnpm', args: ['run', 'dev'], lockfile: 'pnpm-lock.yaml', port: 3022, agentPort: 8022 },
+  { pm: 'yarn', command: 'yarn', args: ['run', 'dev'], lockfile: 'yarn.lock', port: 3023, agentPort: 8023 },
   // bun 1.2 writes a text `bun.lock`; older bun wrote the binary `bun.lockb`,
   // which has nothing readable to put on screen. The doctor names this file if
   // the installed bun produced the other one.
-  { pm: 'bun', command: 'bun', args: ['run', 'dev'], lockfile: 'bun.lock', port: 3124, agentPort: 8124 },
+  { pm: 'bun', command: 'bun', args: ['run', 'dev'], lockfile: 'bun.lock', port: 3024, agentPort: 8024 },
 ].map(({ pm, command, args, lockfile, port, agentPort }) => {
   const app = `1-cli-testing/${pm}/app`;
   return {

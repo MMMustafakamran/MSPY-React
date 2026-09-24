@@ -26,8 +26,8 @@ export const isWindows = process.platform === 'win32';
  */
 export const PROJECT_SLUG = 'MsPy-react';
 
-export const BACKEND_PORT = Number(process.env.AGENT_PORT || 8000);
-export const FRONTEND_PORT = Number(process.env.FRONTEND_PORT || 3000);
+export const BACKEND_PORT = Number(process.env.AGENT_PORT || 8020);
+export const FRONTEND_PORT = Number(process.env.FRONTEND_PORT || 3020);
 
 export const BACKEND_HEALTH_URL = `http://127.0.0.1:${BACKEND_PORT}/health`;
 export const FRONTEND_URL = `http://127.0.0.1:${FRONTEND_PORT}`;
