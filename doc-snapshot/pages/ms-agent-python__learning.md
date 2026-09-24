@@ -19,6 +19,20 @@ Automatic Learning turns patterns from real agent runs into skills you can publi
 
 The video also shows [User Memory](/ms-agent-python/intelligence/memories), then an expense-review workflow that becomes a skill.
 
+## Start with your coding agent
+
+Copy this prompt into your coding agent to inspect your existing app and configure Automatic Learning for one focused workflow. Prefer to work through the setup yourself? Follow the manual steps below.
+
+#### Copy this prompt into your coding agent
+
+```text
+Help me set this up in my CopilotKit app. Run this command and follow the instructions:
+
+npx --yes copilotkit@latest onboard start --intent add-learning
+
+If it requires a CopilotKit CLI session check, you have permission to run it. Never reveal credentials.
+```
+
 ## How Automatic Learning works
 
 Learning starts with a container, which groups Threads from the same kind of work. Intelligence analyzes completed runs in that container and summarizes recurring patterns as Insights.
@@ -39,20 +53,6 @@ The learning loop has two connections. Run ingestion collects evidence in a Lear
 When an agent must learn from its own workflow, use the same project and container for both connections. The SDK adapters also work with native agents outside a CopilotKit frontend, but they do not collect those agents' runs automatically.
 
 For agent setup, use the [Mastra](/ms-agent-python/intelligence/learned-skills#mastra), [LangGraph TypeScript](/ms-agent-python/intelligence/learned-skills#langgraph-typescript), or [LangGraph Python](/ms-agent-python/intelligence/learned-skills#langgraph-python) example. The delivery guide also covers [Google ADK](/ms-agent-python/intelligence/learned-skills#google-adk), [BuiltInAgent](/ms-agent-python/intelligence/learned-skills#builtinagent), and [Microsoft Agent Framework](/ms-agent-python/intelligence/learned-skills#microsoft-agent-framework).
-
-## Start with your coding agent
-
-Copy this prompt into your coding agent to inspect your existing app and configure Automatic Learning for one focused workflow. Prefer to work through the setup yourself? Follow the manual steps below.
-
-#### Copy this prompt into your coding agent
-
-```text
-Help me set this up in my CopilotKit app. Run this command and follow the instructions:
-
-npx --yes copilotkit@latest onboard start --intent add-learning
-
-If it requires a CopilotKit CLI session check, you have permission to run it. Never reveal credentials.
-```
 
 ## Set up Automatic Learning manually
 

@@ -13,6 +13,16 @@ If you are looking for the persistence architecture beneath a single
 conversation, read [Threads & Persistence Architecture](/ms-agent-python/intelligence/threads-explained)
 instead.
 
+## Start with your coding agent
+
+Copy this prompt into your coding agent to inspect your existing CopilotKit app and configure long-term memory for your users. Prefer to work through the setup yourself? Follow the manual steps below.
+
+### Copy this prompt into your coding agent
+
+```text
+Help me set up long-term User Memories in my existing CopilotKit app. Read https://docs.copilotkit.ai/intelligence/memories and follow its setup instructions. Inspect my app and deployment, confirm memory entitlement and the required configuration, then implement and verify saving and recalling a memory for the signed-in user. Never reveal credentials.
+```
+
 ## What is a memory?
 
 A memory is a short, durable statement about a user or a project, stored outside
@@ -26,16 +36,6 @@ recalled into a conversation that has not happened yet.
 Memories are stored as text plus a vector embedding, so recall is semantic
 rather than a keyword match. Asking for "how does this user like updates" can
 surface "prefers concise status updates" without sharing a word with it.
-
-## Start with your coding agent
-
-Copy this prompt into your coding agent to inspect your existing CopilotKit app and configure long-term memory for your users. Prefer to work through the setup yourself? Follow the manual steps below.
-
-### Copy this prompt into your coding agent
-
-```text
-Help me set up long-term User Memories in my existing CopilotKit app. Read https://docs.copilotkit.ai/intelligence/memories and follow its setup instructions. Inspect my app and deployment, confirm memory entitlement and the required configuration, then implement and verify saving and recalling a memory for the signed-in user. Never reveal credentials.
-```
 
 ## Set up User Memories
 
