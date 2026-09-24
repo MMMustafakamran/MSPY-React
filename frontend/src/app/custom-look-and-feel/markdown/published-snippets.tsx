@@ -132,7 +132,7 @@ export function ClassStringChat() {
  *     messageView={{ assistantMessage: { markdownRenderer: PlainText } }}
  *   />;
  *
- * FINDINGS.md #5 says a bare function component is not assignable to most slots,
+ * The removed FINDINGS.md #5 (see git history) said a bare function component is not assignable to most slots,
  * because `SlotValue<C> = C | string | Partial<ComponentProps<C>>` pins the
  * replacement to the default component's statics. This slot is the exception,
  * and it does compile: `CopilotChatAssistantMessage.MarkdownRenderer` is a

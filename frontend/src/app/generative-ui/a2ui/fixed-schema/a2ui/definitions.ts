@@ -13,7 +13,7 @@
 // `typeName` strings rather than `instanceof` precisely so a schema built by a
 // different module instance still reads correctly — its own comment says so.
 //
-// See FINDINGS.md #14. Everything else in this app, including the zod schemas the
+// See the removed FINDINGS.md #14 (git history; the A2UI page no longer uses a zod catalog). Everything else in this app, including the zod schemas the
 // frontend tools are declared with, stays on zod 4.
 import { z } from "zod-v3";
 import type { CatalogDefinitions } from "@copilotkit/a2ui-renderer";
