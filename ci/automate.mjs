@@ -27,7 +27,9 @@ import { checkAllDocDrift } from './check-doc-drift.mjs';
 import {
   BACKEND_DIR,
   BACKEND_HEALTH_URL,
+  BACKEND_PORT,
   FRONTEND_DIR,
+  FRONTEND_PORT,
   FRONTEND_URL,
   LOGS_DIR,
   RECORDER_DIR,
@@ -192,6 +194,17 @@ function spawnServer(command, cwd, logName) {
     stdio: ['ignore', fd, fd],
     shell: true,
     detached: !isWindows,
+    // Single source of truth for ports: ci/lib/config.mjs. Explicit values win
+    // over backend/.env (load_dotenv does not override) so both halves agree.
+    env: {
+      ...process.env,
+      PORT: String(FRONTEND_PORT),
+      AGENT_PORT: String(BACKEND_PORT),
+      MS_AGENT_URL: process.env.MS_AGENT_URL || `http://localhost:${BACKEND_PORT}`,
+      AGENT_CORS_ORIGINS:
+        process.env.AGENT_CORS_ORIGINS ||
+        `http://localhost:${FRONTEND_PORT},http://127.0.0.1:${FRONTEND_PORT}`,
+    },
   });
   return { proc, logPath };
 }
