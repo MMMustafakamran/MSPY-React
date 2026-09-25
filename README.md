@@ -427,7 +427,7 @@ Commit `doc-snapshot/` — `pages/`, `manifest.json` and `CHANGELOG.md` are the 
 ## 11. Project structure
 
 ```
-CPK-MS-Agent-Python/
+MSPY-React/
 ├── CLAUDE.md
 ├── README.md
 ├── .env.example
