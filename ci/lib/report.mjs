@@ -194,6 +194,11 @@ export function generateReport(data) {
       checkedPages: data.driftResult?.total || 0,
       driftDetected: data.driftResult?.drifted || false,
       driftedPages: data.driftResult?.driftedPages || [],
+      unreadable: [
+        ...(data.driftResult?.errors || []).map((e) => ({ docPath: e.docPath, error: e.error })),
+        ...(data.driftResult?.sitemap?.error ? [{ docPath: 'sitemap.xml', error: data.driftResult.sitemap.error }] : []),
+        ...(data.driftResult?.linked?.error ? [{ docPath: 'snapshot link scan', error: data.driftResult.linked.error }] : []),
+      ],
     },
     packages: getPackageVersions(),
     healthChecks: data.health || {},
@@ -220,10 +225,14 @@ export function generateReport(data) {
     for (const p of report.docDrift.driftedPages) {
       lines.push(`- **[${p.severity}]** \`${p.docPath}\` (${p.file})`);
     }
-  } else {
+  } else if (report.docDrift.unreadable.length === 0) {
     lines.push(
       `✅ **No Doc Drift Detected:** All ${report.docDrift.checkedPages} pages match \`doc-snapshot/\`.`,
     );
+  }
+  if (report.docDrift.unreadable.length > 0) {
+    lines.push(`❓ **Drift unknown** for ${report.docDrift.unreadable.length} item(s) that could not be read:`);
+    for (const u of report.docDrift.unreadable) lines.push(`- \`${u.docPath}\`: ${u.error}`);
   }
   lines.push('');
 

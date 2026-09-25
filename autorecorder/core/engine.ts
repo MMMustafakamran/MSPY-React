@@ -12,7 +12,7 @@ import {
   type RunningService,
 } from './cli/service';
 import { generateTerminalHtml } from './cli/terminal';
-import { captureConsole, type ConsoleEntry } from './console-capture';
+import { breakingErrors, captureConsole, type ConsoleEntry } from './console-capture';
 import {
   buildFailureEvidence,
   evidenceCast,
@@ -1084,6 +1084,16 @@ export class RecordingEngine {
       console.error(`❌ Recording error for ${config.id}:`, recordError);
     } finally {
       console_?.stop();
+
+      // The app throwing is a failure, not a footnote. It used to become one
+      // warning line, so a page that crashed mid-take still reported PASS*.
+      const breaking = distinctErrors(breakingErrors(console_?.entries ?? []));
+      if (!recordError && breaking.length > 0) {
+        recordError =
+          `The app threw during the take (${breaking.length} distinct error(s)), first: ${breaking[0]}`;
+        recordSuccess = false;
+        console.error(`\n❌ [Page error on ${config.id}]: ${recordError}\n`);
+      }
 
       // A failed take ends with the person opening the terminal to read what
       // went wrong: the diagnosed error, the browser console, and this page's
