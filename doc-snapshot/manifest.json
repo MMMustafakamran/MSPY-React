@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "docsRoot": "https://docs.copilotkit.ai/ms-agent-python",
-  "syncedAt": "2026-09-24T07:28:09.834Z",
+  "syncedAt": "2026-09-25T07:49:05.293Z",
   "pages": {
     "/ms-agent-python": {
       "file": "ms-agent-python.md",
@@ -402,15 +402,15 @@
     },
     "/ms-agent-python/intelligence/learned-skills": {
       "file": "ms-agent-python__intelligence__learned-skills.md",
-      "sha256": "ca354076248dd83b4ab188bb6a006faae3e725b9fc9bcb029863247d777fa195",
-      "bytes": 27420,
-      "lines": 465,
+      "sha256": "048169d91a8c4a7c49e610a522d6034914a45f1fe7d849c94f98ce0aed236102",
+      "bytes": 31608,
+      "lines": 580,
       "routes": [
         "/intelligence/learned-skills"
       ],
       "status": "ok",
       "age": 0,
-      "date": "Wed, 23 Sep 2026 07:50:29 GMT"
+      "date": "Fri, 25 Sep 2026 07:49:05 GMT"
     },
     "/ms-agent-python/custom-look-and-feel/markdown": {
       "file": "ms-agent-python__custom-look-and-feel__markdown.md",

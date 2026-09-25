@@ -9,6 +9,30 @@ Holds the 3 most recent dated entries. When a change lands on a fourth
 date, the oldest entry is dropped. Entries are counted, not aged, so a gap of
 weeks between changes does not expire anything.
 
+## 2026-09-25
+
+### 07:49 UTC — 1 page, highest severity high · _npm run drift:sync_
+
+**High — /ms-agent-python/intelligence/learned-skills**
+
+`/ms-agent-python/intelligence/learned-skills` · route `/intelligence/learned-skills` · `ms-agent-python__intelligence__learned-skills.md`
+
+Code fence count changed. Hash ca354076 ➔ 048169d9.
+
+````diff
+- Skill delivery makes one Learning container's published skills available to an agent without another CLI download or process restart. A framework adapter adds an alphabetical catalog and two tools.
+- <Image
+- src="/images/cloud-hosted/cloud-hosted-skill-delivery.png"
+- alt="The Skills tab of a Learning container in cloud-hosted Intelligence. The Skill delivery toggle is on, and skill candidates wait for review."
++ Skill delivery makes published skills from one or more Learning containers available to an agent without another CLI download or process restart. A framework adapter adds an alphabetical catalog and two tools.
++ <Image
++ src="/images/cloud-hosted/cloud-hosted-skill-delivery.png"
++ alt="The Skills tab of a Learning container in cloud-hosted Intelligence. The Skill delivery toggle is on, and skill candidates wait for review."
+  … region truncated
+````
+
+---
+
 ## 2026-09-24
 
 ### 07:28 UTC — 2 pages, highest severity medium · _npm run drift:sync_
@@ -48,6 +72,8 @@ Headings / Structure changed. Hash a78b7305 ➔ 60db9be2.
 + ```text
   … region truncated
 ````
+
+---
 
 ---
 
@@ -265,149 +291,6 @@ Listed upstream, tracked nowhere in this repo. Not snapshotted by this run.
 **New — https://docs.copilotkit.ai/ms-agent-python/intelligence/plans**
 
 Listed upstream, tracked nowhere in this repo. Not snapshotted by this run.
-
----
-
----
-
-## 2026-09-22
-
-### 09:31 UTC — 1 page, highest severity high · _npm run drift:sync_
-
-**High — /ms-agent-python/backend/message-history**
-
-`/ms-agent-python/backend/message-history` · route `/backend/message-history` · `ms-agent-python__backend__message-history.md`
-
-Code fence count changed. Hash  ➔ abc21ea8.
-
-````diff
-+ # Message history
-+ > Trim the conversation history CopilotKit forwards to an agent that already stores its own.
-+ CopilotKit forwards the whole conversation on every run. The frontend holds the
-+ transcript, and each run carries it to your agent as `input.messages`. A
-+ stateless agent needs that, because the transcript is the only record of the
-+ conversation.
-+ An agent that stores its own history does not need it. If your backend keeps a
-+ LangGraph checkpointer, Mastra memory, an AWS Strands `SessionManager`, or a
-  … region truncated
-````
-
-### 08:52 UTC — 9 pages, highest severity high · _npm run drift:sync_
-
-**Low — /ms-agent-python/inspector**
-
-`/ms-agent-python/inspector` · route `/inspector` · `ms-agent-python__inspector.md`
-
-Prose / text phrasing updated. Hash a750872b ➔ 8d2065c6.
-
-````diff
-- choose **Copy setup prompt**. See [Learning](/ms-agent-python/learning) for the complete workflow.
-+ choose **Copy setup prompt**. See [Automatic Learning](/ms-agent-python/learning) for the complete workflow.
-````
-
-**High — /ms-agent-python/prebuilt-components/copilot-threads-drawer**
-
-`/ms-agent-python/prebuilt-components/copilot-threads-drawer` · route `/threads/drawer` · `ms-agent-python__prebuilt-components__copilot-threads-drawer.md`
-
-Code fence count changed. Hash b9592d3d ➔ 0b056af7.
-
-````diff
-- ```tsx title="app/page.tsx"
-- import {
-- CopilotKitProvider,
-- CopilotChatConfigurationProvider,
-+ <Callout type="warn">
-+ **The Drawer ships only in `@copilotkit/react-core/v2`.** There is no v1
-+ Drawer, so take the Drawer, the chat and the provider from that one package.
-+ Watch the import path: `@copilotkit/react-ui` is the [deprecated v1
-  … region truncated
-````
-
-**Low — /ms-agent-python/quickstart**
-
-`/ms-agent-python/quickstart` · route `/quickstart` · `ms-agent-python__quickstart.md`
-
-Prose / text phrasing updated. Hash 107840f5 ➔ 48619c1e.
-
-````diff
-- 3. Open **Threads**. The list is unlocked (Intelligence is on), or locked with Enable Intelligence (Intelligence is off).
-+ 3. Open **Rich Threads**. The list is unlocked (Intelligence is on), or locked with Enable Intelligence (Intelligence is off).
-````
-
-**High — /ms-agent-python/threads**
-
-`/ms-agent-python/threads` · route `/threads` · `ms-agent-python__threads.md`
-
-Code block content changed. Hash 5de8e463 ➔ fc5bb80b.
-
-````diff
-- Open Inspector on localhost. Stay on **Threads** (it is the default).
-+ Open Inspector on localhost. Stay on **Rich Threads** (it is the default).
-````
-
-**Medium — /ms-agent-python/intelligence/memories**
-
-`/ms-agent-python/intelligence/memories` · route `/intelligence/memories` · `ms-agent-python__intelligence__memories.md`
-
-Headings / Structure changed. Hash 2c764691 ➔ 190448e7.
-
-````diff
-- # Memories & Recall
-- > Give your agents long-term memory across conversations.
-- Threads remember a conversation. Memories remember a person. This page explains
-- what a memory is, how recall selects them, and what has to be true of your
-+ # User Memories
-+ > Give your agents long-term memory across conversations.
-+ Rich Threads remember a conversation. User Memories remember a person. This page explains
-+ what a memory is, how recall selects them, and what has to be true of your
-  … region truncated
-````
-
-**High — /ms-agent-python/learning**
-
-`/ms-agent-python/learning` · route `/learning` · `ms-agent-python__learning.md`
-
-Code block content changed. Hash 1f896eca ➔ 69b78f67.
-
-````diff
-- # Learning
-- > Turn real application use into evidence-backed Insights and reviewed, reusable Skills.
-- ## Overview
-- Learning turns patterns from real agent runs into reusable Skills. It looks at completed conversations and application interactions in [Rich Threads](/ms-agent-python/threads), produces evidence-backed Insights, and proposes instructions you can review before publishing.
-+ # Automatic Learning
-+ > Turn real application use into evidence-backed Insights and reviewed, reusable Skills.
-+ ## Overview
-+ Automatic Learning turns patterns from real agent runs into reusable Skills. It looks at completed conversations and application interactions in [Rich Threads](/ms-agent-python/threads), produces evidence-backed Insights, and proposes instructions you can review before publishing.
-  … region truncated
-````
-
-**Low — /ms-agent-python/intelligence/learned-skills**
-
-`/ms-agent-python/intelligence/learned-skills` · route `/intelligence/learned-skills` · `ms-agent-python__intelligence__learned-skills.md`
-
-Prose / text phrasing updated. Hash 2e5b4fe2 ➔ 37a4367a.
-
-````diff
-- Start with the [Learning guide](/ms-agent-python/learning) to collect Threads, configure daily runs, and review Skills. Before connecting an adapter, check that **Skill delivery** is enabled in the container's **Skills** tab. For guided setup, select **Set up skill delivery** there and copy the prompt into your coding agent.
-- </Callout>
-- ## Choose an adapter
-- | Framework                 | Package                                  | Native extension                                                     |
-+ Start with the [Automatic Learning guide](/ms-agent-python/learning) to collect Threads, configure daily runs, and review Skills. Before connecting an adapter, check that **Skill delivery** is enabled in the container's **Skills** tab. For guided setup, select **Set up skill delivery** there and copy the prompt into your coding agent.
-+ </Callout>
-+ ## Choose an adapter
-+ | Framework                 | Package                                  | Native extension                                                     |
-  … region truncated
-````
-
-**New — https://docs.copilotkit.ai/ms-agent-python/backend/message-history**
-
-Listed upstream, tracked nowhere in this repo. Not snapshotted by this run.
-
-**New — https://docs.copilotkit.ai/ms-agent-python/intelligence/self-hosting-ecs**
-
-Listed upstream, tracked nowhere in this repo. Not snapshotted by this run.
-
----
 
 ---
 
