@@ -11,8 +11,8 @@
  * Hence a small generated file, read from the installed tree after install, so
  * the clip shows the versions the recording actually ran against.
  *
- * Deliberately standalone rather than reusing `ci/`: `core/` may not depend on
- * anything outside this folder, or the recorder stops being portable.
+ * Deliberately standalone: `core/` may not depend on anything outside this
+ * folder, or the recorder stops being portable.
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';

@@ -47,14 +47,12 @@ npm run record            # all pages, in order
 | `--pages=<id,id>` | Exactly these pages (`--only=` is an alias) |
 | `--filter=<query>` | Record every page whose id or name contains the query |
 | `--limit=<n>` | First *n* of the selection (`--first=`, `--count=`) |
-| `--shard=<k>/<n>` | Every *n*th page starting at *k*, for matrix workers (dealt round-robin so the long pages spread out) |
 | `--force` | Record even if the pre-flight health check fails |
-| `--allow-ci` | On a runner, still record pages that boot their own dev server |
 
 Every run also writes `videos/RECORD_RESULTS.json` — one entry per page with
-pass/fail, the notes, the browser console errors and the file it wrote. The CI
-report is built from that file, not from whatever `.webm` files happen to be
-in the folder.
+pass/fail, the notes, the browser console errors and the file it wrote. Read
+results from that file, not from whatever `.webm` files happen to be in the
+folder.
 
 ```bash
 npm run check             # typecheck + unit tests + core/ drift check
@@ -98,7 +96,7 @@ this policy when you copy the folder into another repo.
 - **FAIL** — the demo route 404'd, never rendered a chat surface, the agent never
   answered, the IDE view could not be built, or the handler called `ctx.fail`
   (an approval card that never appeared, a button that was not there to click).
-  The clip is still saved. The process exits 1, so this is safe to gate CI on.
+  The clip is still saved. The process exits 1, so a script can gate on it.
 
 Handlers report through `ctx.warn` / `ctx.fail` (see `actions/index.ts`). A
 `console.log` in a handler reaches the terminal and nothing else.
@@ -114,8 +112,8 @@ diagnosed verdict, the browser console errors, and this page's slice of
 take began). Each section is windowed around the line most worth reading --
 a traceback, an `Error`, a 4xx/5xx -- and that line is painted red, so the
 clip itself shows the cause. The same text is written to
-`videos/logs/<page-id>.error.log`, which CI uploads with the run, so an agent
-can diagnose from the log without re-running anything locally.
+`videos/logs/<page-id>.error.log`, so an agent can diagnose from the log
+without re-running anything.
 
 Passing takes are untouched: the terminal appears only on failure, which is
 what a person who hit an error would do. `core/failure-evidence.ts` holds
@@ -163,7 +161,6 @@ autorecorder/
 │   │   ├── distribute.ts           one scaffold → four package-manager copies
 │   │   ├── versions.ts             VERSIONS.md from an installed tree
 │   │   ├── audio.ts                narration mux via ffmpeg
-│   │   ├── ci-guard.ts             capture/render refuse to run on a runner
 │   │   ├── finding.ts              the written note for a failed install, from its report
 │   │   └── flow.ts                 CliFlowDefinition → CliFlowConfig, onSuccess / onFailure
 │   └── overlays/                 Windows 11 taskbar, cursor, Notepad, alert dialog
@@ -211,7 +208,7 @@ last night's, which keeps two recordings of the same page comparable.
 - **Scrolling** is in bursts: a few wheel notches, a reading pause, a few more,
   sometimes a nudge back up.
 - **Pauses** vary by about a quarter around their nominal length. They are
-  the only thing `AUTORECORD_PACE` scales (CI sets `0.85`): a reading or
+  the only thing `AUTORECORD_PACE` scales (e.g. `0.85`): a reading or
   thinking pause gets shorter, the typing, the mouse and the scrolling do not.
 - **The cursor** overshoots slightly on long travel and settles, hovers a
   variable moment before a click, drifts while a reply streams instead of
@@ -423,43 +420,21 @@ saying how to produce them. Naming one explicitly still records it, and still
 fails — which is the right answer to "record this specific thing that is
 missing".
 
-### On a runner: `.github/workflows/cli-recorder.yml`
+### Run it at your own machine
 
-The guard below still stands for an ordinary CI job. The CLI workflow lifts it
-deliberately, one reason at a time: it restores the CLI's saved session from
-the `COPILOTKIT_CLI_SESSION` secret (so no browser opens), runs the driver
-under node-pty (so there is a terminal), is weekly and opt-in (so the account
-is spent knowingly), and restores the session in its own named step (so a
-scaffold that still stops at the sign-in prompt reads as "session rejected",
-not "CLI broken"). The sign-up flows stay manual: they need a browser nobody has
-signed into. The workflow header says how to create and refresh the secret.
-
-### Local only — enforced, not just documented
-
-`npm run capture` and `npm run render` **refuse to run in CI** and exit 1.
-`npm run record` additionally skips any page that boots its own dev server when
-it detects a runner. The check looks for `GITHUB_ACTIONS`, `CI`, `BUILD_BUILDID`
-or `GITLAB_CI`; `AUTORECORD_ALLOW_CI=1` or `--allow-ci` overrides it for
-capture and render, and `--allow-ci` lifts the dev-server skip for record.
-
-Four reasons, not one:
+The CLI pipeline is meant to be run by a person at a real terminal. Four
+reasons, not one:
 
 - **Sign-in is interactive.** Linking the app to an Intelligence project opens a
-  browser and finishes back at the terminal. A runner cannot complete that, and
-  the CLI refuses to run in a shell with no terminal rather than opening a
-  browser it cannot finish with.
+  browser and finishes back at the terminal. The CLI refuses to run in a shell
+  with no terminal rather than opening a browser it cannot finish with.
 - **They are side-effecting** — scaffolding writes directories, and the installs
   fetch four dependency trees.
 - **They spend a real account** — a hosted Intelligence project, and a real model
   key for the demos.
-- **The failure would be misread.** A job that timed out waiting for a browser
+- **The failure would be misread.** A run that timed out waiting for a browser
   sign-in looks exactly like a broken CLI, which is the opposite of what this
   suite exists to report.
-
-It refuses rather than skipping silently, because a job that quietly does
-nothing is how a suite stays green while testing nothing. CI records doc pages
-with `node ci/automate.mjs`, which calls `npm run record` and never touches the
-CLI pipeline.
 
 Run `--login` once up front and everything after it is deterministic.
 
@@ -485,8 +460,7 @@ agent that is slow rather than broken, raise `replyStartMs` on that page.
 
 **A page passes with `PASS*` and a note from the handler** — the reply came,
 but the thing the doc promises did not: read the note, then watch the clip at
-that moment. Those notes are also in `videos/RECORD_RESULTS.json` and the CI
-report.
+that moment. Those notes are also in `videos/RECORD_RESULTS.json`.
 
 **"Port 3021 is already in use"** — another dev server holds the port, usually
 a sibling repo's scaffold left running. Stop it; the recorder refuses rather

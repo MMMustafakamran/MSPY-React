@@ -132,9 +132,7 @@ const RAW_PER_VISIBLE_CHAR = 16;
  * Cut from the raw bytes first, a prompt followed by one frame's worth of
  * styled padding can fall outside it while `lastLines`, which strips first,
  * still shows it as the last thing on screen. A defensive fix with a test of
- * its own: it did NOT cause the CI "App name" timeout on 2026-09-21. That was
- * the CLI withholding its prompts under `CI=true`; see `INTERACTIVE_TUI_ENV`
- * in `config/cli.config.ts`.
+ * its own.
  */
 export function tailMatches(
   raw: string,

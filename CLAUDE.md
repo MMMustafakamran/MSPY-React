@@ -94,7 +94,7 @@ This README is the front door of the repo — someone should be able to clone it
 ### 1. Header
 - Project title: `CopilotKit + {Framework} Test Suite`
 - One-line description of what this repo demonstrates
-- Badges/status line: build status if CI exists, doc-sync date (the date Step 0 was last run against live docs), CopilotKit package versions used
+- Badges/status line: build status (typecheck and lint), doc-sync date (the date Step 0 was last run against live docs), CopilotKit package versions used
 
 ### 2. Overview
 - 2–4 sentences: what this framework integration is, and what this repo is for (a navigable, working test harness covering every `docs.copilotkit.ai/{framework}` page)

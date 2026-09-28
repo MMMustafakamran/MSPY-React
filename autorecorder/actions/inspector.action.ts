@@ -59,9 +59,9 @@ import { sendPrompt } from '../core/actions';
  * `data-inspector-menu-key` exists in @copilotkit/web-inspector 1.69.x. Older
  * installs (1.66.x still sits in some repos' node_modules) do not have it, so
  * the throw below is the correct outcome there rather than a silent fallback to
- * text matching — CI resolves without a lockfile and gets 1.69.x, and a local
- * run on 1.66.x SHOULD fail loudly rather than record something different from
- * what CI records.
+ * text matching — a fresh install resolves 1.69.x, and a run on a stale 1.66.x
+ * tree SHOULD fail loudly rather than record something different from what a
+ * fresh install records.
  */
 
 /** Nav keys the Inspector renders. `agents` is deliberately not used here. */

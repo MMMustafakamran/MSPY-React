@@ -37,9 +37,7 @@ autorecorder/videos/.temp_chunks/
 autorecorder/videos/*.webm
 autorecorder/videos/.temp_chunks/
 
-# Run artifacts written by ci/automate.mjs — regenerated every run.
-autorecorder/videos/RUN_REPORT.md
-autorecorder/videos/RUN_REPORT.json
+# Per-page error logs written by `npm run record` — regenerated every run.
 autorecorder/videos/logs/
 
 # Captured terminal sessions from `npm run capture`. Regenerable, and they hold

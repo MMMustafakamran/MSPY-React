@@ -32,8 +32,8 @@ A page handler in `actions/` reports through its fourth argument, `ctx`:
 `ctx.warn(...)` for something the doc promises that was not observed (the run
 shows `PASS*` with the note), `ctx.fail(...)` when the feature did not work
 (the clip is still saved, the page reports `FAIL`). A `console.log` reaches
-nobody — the summary, `videos/RECORD_RESULTS.json` and the CI report only see
-what goes through `ctx`.
+nobody — the summary and `videos/RECORD_RESULTS.json` only see what goes
+through `ctx`.
 
 When a change here is worth keeping across repos, it belongs in `core/` and
 should be ported to the other copies — say so explicitly so it can be.

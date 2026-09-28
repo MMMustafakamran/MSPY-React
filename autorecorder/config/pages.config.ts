@@ -161,8 +161,8 @@ const DEMO_PAGES: PageDefinition[] = [
 /**
  * Pages that stay registered but are never filmed.
  *
- * They keep their route, their doctor entry and their CI group, so drift and
- * coverage still track them and the findings still hold. Only the camera is
+ * They keep their route and their doctor entry, so drift and coverage still
+ * track them and the findings still hold. Only the camera is
  * off. A page belongs here when a clip would show nothing the findings do not
  * already say, or would film a wall rather than the feature.
  *
@@ -190,7 +190,8 @@ export const PAGES = definePages([
     // Leads with the versions, not the manifest. package.json declares
     // RANGES, so this clip used to show a floor while the run it
     // documented had installed something newer. VERSIONS.md is generated
-    // after install (ci/write-versions.mjs) and names what resolved.
+    // by scripts/write-versions.mjs (run by `npm run doctor`) and names what
+    // resolved.
     // package.json stays as the first tab: the range is still what a
     // reader would write in their own project.
     ideFile: 'frontend/VERSIONS.md',

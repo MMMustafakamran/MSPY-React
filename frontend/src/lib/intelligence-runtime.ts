@@ -28,8 +28,7 @@ import { HttpAgent } from "@ag-ui/client";
 
 const AGENT_URL = process.env.MS_AGENT_URL ?? "http://localhost:8000";
 
-// Treat empty/whitespace values as absent. A GitHub Actions `${{ secrets.X }}`
-// reference to a secret that does not exist expands to an empty string, which
+// Treat empty/whitespace values as absent. An empty `KEY=` line in an env file
 // still *defines* the variable — so a plain `??` or truthiness check on
 // process.env would sail past it and hand Intelligence an empty credential.
 const firstSet = (...values: (string | undefined)[]) =>

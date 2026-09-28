@@ -17,7 +17,6 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CLI_DISTRIBUTION, CLI_FLOWS } from './config/cli.config';
 import { distribute } from './core/cli/distribute';
-import { refuseInCi } from './core/cli/ci-guard';
 import { runCliFlow, type CliRunResult } from './core/cli/driver';
 import { hasInstalledTree, writeVersionsFile } from './core/cli/versions';
 
@@ -109,9 +108,6 @@ function selectFlows(args: string[]): typeof CLI_FLOWS {
 }
 
 async function main(): Promise<void> {
-  // Before any work, so nothing is half-done when it refuses.
-  refuseInCi('npm run capture');
-
   const args = process.argv.slice(2);
 
   if (args.length === 0 || args.includes('--list') || args.includes('--help') || args.includes('-h')) {

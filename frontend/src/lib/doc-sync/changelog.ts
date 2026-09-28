@@ -30,13 +30,12 @@ const LOGGED: ReadonlySet<PageOutcome> = new Set<PageOutcome>([
 
 const TITLE = "# Doc drift changelog";
 
-// Must stay byte-identical to INTRO in ci/lib/changelog.mjs. Both writers
-// regenerate this header, so a divergence means each rewrites the other's.
+// Regenerated on every sync, so editing it here rewrites the header on the
+// next run.
 const INTRO = [
-  "What the CopilotKit docs changed under this repo, written by whichever sync",
-  "ran — the `/doc-sync` page or `npm run drift:sync`. Only pages that actually",
-  "moved are recorded — a sync that finds everything unchanged writes nothing",
-  "here at all.",
+  "What the CopilotKit docs changed under this repo, written by the `/doc-sync`",
+  "page. Only pages that actually moved are recorded — a sync that finds",
+  "everything unchanged writes nothing here at all.",
   "",
   `Holds the ${KEEP_ENTRIES} most recent dated entries. When a change lands on a fourth`,
   "date, the oldest entry is dropped. Entries are counted, not aged, so a gap of",

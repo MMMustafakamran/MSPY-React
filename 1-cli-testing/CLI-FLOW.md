@@ -49,7 +49,7 @@ project by hand afterwards; the automation's job ends when the CLI exits.
 |---|---|
 | Node + npx on PATH | The whole flow is `npx`-driven |
 | Network | Downloads the `copilotkit` package and talks to Intelligence |
-| A signed-in CopilotKit CLI session | `init` reuses an existing session and only opens browser sign-in when there is none — and **refuses outright in a shell with no terminal** rather than opening a browser it cannot finish with. This is why the flow is local-only and not CI-able |
+| A signed-in CopilotKit CLI session | `init` reuses an existing session and only opens browser sign-in when there is none — and **refuses outright in a shell with no terminal** rather than opening a browser it cannot finish with. This is why the flow needs a person at a real terminal |
 | Working directory | The app folder is created *under the cwd*, named at step 4 |
 
 ---
@@ -188,7 +188,7 @@ unrecorded 0:20 → 2:21 window and accounts for most of that ~2 minutes.
 
 Per `--help`, `init` "reuses an existing CLI session or opens browser sign-in when
 needed", so the wait is **conditional on cached credentials** and is what makes the
-flow local-only.
+flow need a person at the keyboard.
 
 There is **no** Intelligence yes/no question: `-i, --intelligence` is documented as
 a *deprecated no-op* because Intelligence now ships with every supported framework.
@@ -368,8 +368,8 @@ editing the config.
   Log the resolved version with every run so a failure can be attributed to a CLI
   change rather than to the driver; pin an exact version when a run must be
   reproducible.
-- **CI: out of scope by design.** Step 6 needs interactive browser sign-in, and the
-  CLI refuses to run in a shell with no terminal.
+- **Needs a person at the keyboard.** Step 6 needs interactive browser sign-in, and
+  the CLI refuses to run in a shell with no terminal.
 - **Post-conditions to assert:** `app/` exists, contains `package.json` + `agent/`,
   and no dependencies are installed. The project ships **without** a model key —
   that is expected, not a failure.

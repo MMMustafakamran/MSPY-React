@@ -28,8 +28,8 @@
  *   ctx.warn('Language panel still reads "english"')   -> [PASS*] with the note
  *   ctx.fail('Approve button never rendered')           -> [FAIL], clip still saved
  *
- * A `console.log` reaches nobody: the summary and the CI report only see what
- * goes through `ctx`.
+ * A `console.log` reaches nobody: the summary and the results file only see
+ * what goes through `ctx`.
  */
 
 import { type ActionContext, type PageActionHandler, type PageRecordConfig } from '../core/types';

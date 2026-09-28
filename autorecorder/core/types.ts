@@ -195,11 +195,11 @@ export function definePages(defs: PageDefinition[]): PageRecordConfig[] {
 }
 
 /**
- * How a page handler reports what it saw, so the summary and CI see it too.
+ * How a page handler reports what it saw, so the summary and results see it too.
  *
  * Before this, a handler that noticed "the weather card never rendered" could
  * only `console.log` it. The run still printed `[PASS]` with no asterisk, and
- * the CI report carried nothing. `warn` puts the note on the result as `PASS*`;
+ * the results carried nothing. `warn` puts the note on the result as `PASS*`;
  * `fail` marks the recording failed once the handler returns, so the clip is
  * still filmed to the end and still saved as evidence.
  */

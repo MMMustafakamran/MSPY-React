@@ -6,8 +6,8 @@
   "scripts": {
     "record": "tsx cli.ts",
     "record:list": "tsx cli.ts --list",
-    "doctor": "node ../ci/write-versions.mjs && tsx cli.ts --doctor",
-    "doctor:online": "node ../ci/write-versions.mjs && tsx cli.ts --doctor --online",
+    "doctor": "node scripts/write-versions.mjs && tsx cli.ts --doctor",
+    "doctor:online": "node scripts/write-versions.mjs && tsx cli.ts --doctor --online",
     "typecheck": "tsc --noEmit",
     "capture": "tsx cli-capture.ts",
     "capture:list": "tsx cli-capture.ts --list",
